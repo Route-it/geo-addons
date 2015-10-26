@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_geo_certifications_geo_certifications,geo_certifications.geo_certifications,model_geo_certifications_geo_certifications,,1,0,0,0
