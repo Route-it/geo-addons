@@ -2,19 +2,16 @@
 <openerp>
   <data>
     <!-- explicit list view definition -->
-    <!--
     <record model="ir.ui.view" id="geo_certifications.list">
-      <field name="name">geo_certifications list</field>
-      <field name="model">geo_certifications.geo_certifications</field>
+      <field name="name">Certificaciones</field>
+      <field name="model">geo.certification</field>
       <field name="arch" type="xml">
         <tree>
           <field name="name"/>
           <field name="value"/>
-          <field name="value2"/>
         </tree>
       </field>
     </record>
-    -->
 
     <!-- actions opening views on models -->
     <!--
