@@ -3,8 +3,8 @@
 from openerp import models, fields, api
 
 class geo_certifications(models.Model):
-     _name = 'certifications.certification'
-
+	_name = 'certifications.certification'
+	
 	parte = fields.Char()
 	pozo = fields.Char()
 	operadora = fields.Many2one('res.partner',domain = [('is_company','=','True')])
