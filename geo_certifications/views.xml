@@ -15,7 +15,7 @@
 
     <!-- actions opening views on models -->
     <record model="ir.actions.act_window" id="geo_certifications.action_window">
-      <field name="name">geo_certifications window</field>
+      <field name="name">Proyectos</field>
       <field name="res_model">certifications.certification</field>
       <field name="view_mode">tree,form</field>
 <!--       <field name="view_mode">kanban,tree,form,calendar,pivot,graph</field> -->
@@ -63,9 +63,10 @@
             action="geo_certifications.action_window"/>
     
     <!-- menu categories -->
-    <menuitem name="Lista" id="geo_certifications.menu_1" parent="base.menu_main_cert"/>
+    <menuitem name="Proyectos" id="geo_certifications.left_menu_category" parent="base.menu_main_cert"/>
+    <menuitem name="Lista" id="geo_certifications.left_menu_list" parent="geo_certifications.left_menu_category"
+    		 action="geo_certifications.action_window"/>
     <!--
-    <menuitem name="Menu 2" id="geo_certifications.menu_2" parent="geo_certifications.menu_root"/>
     -->
     <!-- actions -->
     <!--
