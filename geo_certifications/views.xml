@@ -23,7 +23,7 @@
     			<field name="nombre"/>
     			<field name="apellido"/>
     			<field name="operacionesHechas" string="operaciones realizadas"/>
-    			<field name="nivelOperacion"/>
+    			<field name="nivelOperacion" string=""/>
     		</tree>
 		</field>
     </record>
@@ -36,6 +36,13 @@
 <!--       <field name="view_mode">kanban,tree,form,calendar,pivot,graph</field> -->
       <field name="search_view_id" ref="geo_certifications.list"/>
       
+    </record>
+    
+    <record model="ir.actions.act_window" id="geo_certifications.superviros_action_window">
+    	<field name="name">Supervisores</field>
+    	<field name="res_model">certifications.supervisor</field>
+    	<field name="view_mode">tree,form</field>
+    	<field name="search_view_id" ref="geo_certifications.supervisor_list"/>
     </record>
 
     <!-- server action to the one above -->
@@ -78,9 +85,11 @@
             action="geo_certifications.action_window"/>
     
     <!-- menu categories -->
-    <menuitem name="Proyectos" id="geo_certifications.left_menu_category" parent="base.menu_main_cert"/>
+    <menuitem name="Certificaciones" id="geo_certifications.left_menu_category" parent="base.menu_main_cert"/>
     <menuitem name="Lista" id="geo_certifications.left_menu_list" parent="geo_certifications.left_menu_category"
     		 action="geo_certifications.action_window"/>
+   	<menuitem name="Supervisores" id="geo_certifications.supervisors_left_menu_list" parent="geo_certifications.left_menu_category"
+   			 action="geo_certifications.superviros_action_window"/>
     <!--
     -->
     <!-- actions -->
