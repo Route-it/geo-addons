@@ -9,7 +9,7 @@ class certifications_certification(models.Model):
 	_name = 'certifications.certification'
 	
 	color = fields.Integer('Color Index')
-	parte = fields.Char(readonly=True,required=True)
+	parte = fields.Char(readonly=True)
 	pozo = fields.Char(required=True)
 	operadora = fields.Many2one('res.partner',domain = [('is_company','=','True')],required=True)
 	yacimiento = fields.Selection([('chubut','Chubut'),('santa cruz','Santa Cruz')],required=True)
@@ -18,21 +18,22 @@ class certifications_certification(models.Model):
 	bombeador = fields.Char(required=True)
 	operacion = fields.Selection([("op1","op1"),("op2",("op2"))],required=True)
 	blscemento = fields.Integer(required=True)
-	fechacierre = fields.Datetime(required=True, readonly=True)
+	fechacierre = fields.Datetime(readonly=True)
 	valorServicios = fields.Float(required=True)
 	valorProductos = fields.Float(required=True)
-	ValorTotal = fields.Float(required=True,readonly=True)
-	confirmacion = fields.Char(required=True)
+	ValorTotal = fields.Float(readonly=True,compute='setTotalValue')
+	confirmacion = fields.Char()
 	stage = fields.Many2one('certifications.certification.stage','Etapa', required=False, copy=False)
 	
 	@api.model
 	@api.returns('self', lambda value:value.id)
 	def create(self, vals):
-		_logger.debug("modificando")
 		superv = self.env['certifications.supervisor'].search([('id','=',self.supervisor._uid)])
 		vals['parte'] = str(superv.numeroSupervisor) + "." + str(superv.operacionesHechas)
 		return models.Model.create(self, vals)
 	
+	def setTotalValue(self):
+		self.ValorTotal = self.valorProductos + self.valorServicios
 
 	def _read_group_stage_ids(self, cr, uid, ids, domain, read_group_order=None, access_rights_uid=None, context=None):
 		if context is None:
