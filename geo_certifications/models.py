@@ -71,6 +71,19 @@ class certifications_supervisor(models.Model):
 	operacionesHechas = fields.Integer(readonly=True)
 	nivelOperacion = fields.Selection([('1','1'),('2','2'),('3','3')],required=True)
 	
+	def name_get(self, cr, uid, ids, context=None):
+		if context is None:
+			context = {}
+		if isinstance(ids, (int, long)):
+			ids = [ids]
+	
+		res = []
+		for record in self.browse(cr, uid, ids, context=context):
+			name = record.nombre + ' ' + record.apellido
+			res.append((record.id, name))
+		
+		return res
+	
 	
 	
 class certifications_certification_type(models.Model):
