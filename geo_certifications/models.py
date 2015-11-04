@@ -9,20 +9,20 @@ class certifications_certification(models.Model):
 	_name = 'certifications.certification'
 	
 	color = fields.Integer('Color Index')
-	parte = fields.Char(readonly=True)
-	pozo = fields.Char()
-	operadora = fields.Many2one('res.partner',domain = [('is_company','=','True')])
-	yacimiento = fields.Selection([('chubut','Chubut'),('santa cruz','Santa Cruz')])
-	supervisor = fields.Many2one('certifications.supervisor','Supervisor')
-	equipo = fields.Char()
-	bombeador = fields.Char()
-	operacion = fields.Selection([("op1","op1"),("op2",("op2"))])
-	blscemento = fields.Integer()
-	fechacierre = fields.Datetime()
-	valorServicios = fields.Float()
-	valorProductos = fields.Float()
-	ValorTotal = fields.Float()
-	confirmacion = fields.Char()
+	parte = fields.Char(readonly=True,required=True)
+	pozo = fields.Char(required=True)
+	operadora = fields.Many2one('res.partner',domain = [('is_company','=','True')],required=True)
+	yacimiento = fields.Selection([('chubut','Chubut'),('santa cruz','Santa Cruz')],required=True)
+	supervisor = fields.Many2one('certifications.supervisor','Supervisor',required=True)
+	equipo = fields.Char(required=True)
+	bombeador = fields.Char(required=True)
+	operacion = fields.Selection([("op1","op1"),("op2",("op2"))],required=True)
+	blscemento = fields.Integer(required=True)
+	fechacierre = fields.Datetime(required=True, readonly=True)
+	valorServicios = fields.Float(required=True)
+	valorProductos = fields.Float(required=True)
+	ValorTotal = fields.Float(required=True,readonly=True)
+	confirmacion = fields.Char(required=True)
 	stage = fields.Many2one('certifications.certification.stage','Etapa', required=False, copy=False)
 	
 	@api.model
@@ -64,11 +64,11 @@ class certifications_certification(models.Model):
 class certifications_supervisor(models.Model):
 	_name = "certifications.supervisor"
 	
-	nombre = fields.Char()
-	apellido = fields.Char()
-	numeroSupervisor = fields.Integer()
-	operacionesHechas = fields.Integer()
-	nivelOperacion = fields.Selection([('1','1'),('2','2'),('3','3')])
+	nombre = fields.Char(required=True)
+	apellido = fields.Char(required=True)
+	numeroSupervisor = fields.Integer(readonly=True)
+	operacionesHechas = fields.Integer(readonly=True)
+	nivelOperacion = fields.Selection([('1','1'),('2','2'),('3','3')],required=True)
 	
 	
 	
