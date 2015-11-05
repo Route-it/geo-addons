@@ -150,6 +150,7 @@
                         </h1>
                     </div>
                     <group name="trabajo">
+                    		<field name="numeroSupervisor" class="oe_inline" string="Numero de operador"/>
                           	<field name="operacionesHechas" class="oe_inline"  string="Operaciones Realizadas"/>
                           	<field name="nivelOperacion" class="oe_inline"  string="Nivel de Operacion"/>
                     </group>
