@@ -17,12 +17,16 @@
     """,
 
     # any module necessary for this one to work correctly
-    'depends': ['project'],
+    'depends': [],
+    # ['project'],
 
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
-        'views.xml'
+        'views/certification.xml',
+        'views/supervisor.xml',
+        'views/task.xml',
+        'views/menu.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

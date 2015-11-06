@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+ 
+    
+    <record model="ir.ui.view" id="geo_certifications.task_list">
+    	<field name="name">Tareas de certificaciones</field>
+    	<field name="model">certifications.certification.task</field>
+    	<field name="arch" type="xml">
+    		<tree>
+    			<field name="name" string="Nombre"/>
+    			<field name="description" string="Descripcion"/>
+    			<field name="fechaFin" string="Fecha Fin de tarea"/>
+    		</tree>
+		</field>
+    </record>
+    
+    <record model="ir.ui.view" id="geo_certifications.stage_list">
+    	<field name="name">Etapas de tareas</field>
+    	<field name="model">certifications.certification.task.stage</field>
+    	<field name="arch" type="xml">
+    		<tree>
+    			<field name="name" string="Nombre"/>
+    			<field name="description" string="Descripcion"/>
+    			<field name="fold" string="Replegada en la vista Kanban"/>
+    			<field name="sequence" string="Secuencia"/>
+    		</tree>
+		</field>
+    </record>
+
+
+    <record model="ir.ui.view" id="geo_certifications.task_kanban">
+      <field name="name">Certificaciones - Tareas</field>
+      <field name="model">certifications.certification.task</field>
+      <field name="arch" type="xml">
+         <kanban default_group_by="stage"  quick_create="true" delete="true" edit="true" class="o_kanban_small_column">
+
+		  <field name="color"/>           
+          <field name="name"/>
+          <field name="description"/>
+          <field name="certification"/>
+		  <field name="fechaFin" />
+		  <field name="stage"/>           
+             <templates>
+                 <t t-name="kanban-box">
+                     <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.id.raw_value)} oe_kanban_card oe_kanban_global_click">
+
+                            <div class="o_dropdown_kanban dropdown" groups="base.group_user">
+                                <a class="dropdown-toggle btn" data-toggle="dropdown" href="#" >
+                                    <span class="fa fa-bars fa-lg"/>
+                                </a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                    <t t-if="widget.editable"><li><a type="edit">Editar Tarea</a></li></t>
+                                    <t t-if="widget.deletable"><li><a type="delete">Borrar</a></li></t>
+                                    <li><ul class="oe_kanban_colorpicker" data-field="color"/></li>
+                                </ul>
+                            </div>
+		                     <div style="position: relative">
+		                         <div class="oe_module_vignette">
+		                             <div class="oe_module_desc">
+								          <field name="name"/>
+								          <field name="description"/>
+								          <field name="certification"/>
+										  <field name="fechaFin" />
+		                             </div>
+		                         </div>
+		                     </div>
+		              </div>
+                 </t>
+             </templates>
+         </kanban>
+   	  </field>
+    </record>
+    
+    
+  </data>
+</openerp>

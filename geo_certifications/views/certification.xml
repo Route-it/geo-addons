@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+    <!-- explicit list view definition -->
+   <record model="ir.ui.view" id="geo_certifications.list">
+      <field name="name">Certificaciones</field>
+      <field name="model">certifications.certification</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="parte"/>
+          <field name="pozo"/>
+		  <field name="operadora" />
+		  <field name="yacimiento"/>
+        </tree>
+      </field>
+    </record>
+    
+    
+    <record id="geo_certifications.form" model="ir.ui.view">
+            <field name="name">certifications.certification.form</field>
+            <field name="model">certifications.certification</field>
+            <field name="arch" type="xml">
+                <form string="Certificaciones">
+                <header>
+                    <button name="set_carga" type="object" states="validado" class="oe_highlight" groups="base.group_user"/>
+                    <button name="set_validado" type="object" states="carga,operadora" class="oe_highlight" groups="base.group_user"/>
+                    <button name="set_operadora" type="object" states="validado,aprobado" class="oe_highlight" groups="base.group_user"/>
+                    <button name="set_aprobado" type="object" states="operadora" class="oe_highlight" groups="base.group_user"/>
+
+                    <field name="state" widget="statusbar" clickable="True"/>
+                </header>
+                <sheet string="Certificaciones">
+ 					<div class="oe_title">
+                        <h1>
+                            <field name="operadora" placeholder="Operadora"/>
+                        </h1>
+                        <div name="options_active">
+                            <div>
+                                <label for="parte" class="oe_inline"/>
+                                <field name="parte" class="oe_inline" string="Parte"/>
+                            </div>
+                        </div>
+                    </div>
+                    <group name="trabajo">
+                                <field name="pozo" class="oe_inline" string="Pozo"/>
+                                <field name="yacimiento" class="oe_inline" string="Yacimiento"/>
+                                <field name="supervisor" class="oe_inline" string="Supervisor"/>
+                                <field name="equipo" class="oe_inline" string="Equipo"/>
+                                <field name="bombeador" class="oe_inline" string="Bombeador"/>
+                    </group>
+                    <group name="operacion">
+                                <field name="operacion" class="oe_inline" string="Operacion"/>
+                                <field name="blscemento" class="oe_inline" string="Blis de Cemento" widget="integer"/>
+                    </group>
+                    <group name="valor">
+                                <field name="valorServicios" class="oe_inline" string="Valor de Servicios" widget="monetary"/>
+                                <field name="valorProductos" class="oe_inline" string="Valor de Productos"  widget="monetary"/>
+                                <field name="ValorTotal" class="oe_inline" string="Total"/>
+                                <field name="fechacierre" class="oe_inline" string="Fecha de Cierre"  widget="date"/>
+                                <field name="confirmacion" class="oe_inline" string="Confirmacion"/>
+                    </group>
+                </sheet>
+<!--     			  <notebook> -->
+<!--                      <page string="Etapas"> -->
+<!--                      	many2many_checkboxes -->
+<!--                  	 </page> -->
+<!--                   </notebook> -->
+               </form>
+            </field>
+	</record>
+                  
+    
+  </data>
+</openerp>

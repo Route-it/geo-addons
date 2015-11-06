@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+
+ 
+                    
+                    
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="geo_certifications.action_window">
+      <field name="name">Proyectos</field>
+      <field name="res_model">certifications.certification</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+      
+<!--       <field name="view_mode">kanban,tree,form,calendar,pivot,graph</field> -->
+      <field name="search_view_id" ref="geo_certifications.list"/>
+      
+    </record>
+    
+    <record model="ir.actions.act_window" id="geo_certifications.superviros_action_window">
+    	<field name="name">Supervisores</field>
+    	<field name="res_model">certifications.supervisor</field>
+    	<field name="view_mode">tree,form</field>
+    	<field name="search_view_id" ref="geo_certifications.supervisor_list"/>
+    </record>
+    
+    
+    
+       <record model="ir.actions.act_window" id="geo_certifications.tasks_action_window">
+    	<field name="name">Tareas</field>
+    	<field name="res_model">certifications.certification.task</field>
+    	<field name="view_mode">kanban,tree,form</field>
+    	<field name="search_view_id" ref="geo_certifications.task_list"/>
+    </record>
+    
+    
+    <record model="ir.actions.act_window" id="geo_certifications.stages_action_window">
+    	<field name="name">Etapas de kanban de tareas</field>
+    	<field name="res_model">certifications.certification.task.stage</field>
+    	<field name="view_mode">tree,form</field>
+    	<field name="search_view_id" ref="geo_certifications.stage_list"/>
+    </record>
+    
+    
+    
+
+    <!--
+    -->
+    <!-- actions -->
+    <!--
+    <menuitem name="List" id="geo_certifications.menu_1_list" parent="geo_certifications.menu_1"
+              action="geo_certifications.action_window"/>
+    <menuitem name="Server to list" id="geo_certifications" parent="geo_certifications.menu_2"
+              action="geo_certifications.action_server"/>
+    -->
+    
+
+    <!-- server action to the one above -->
+    <!--
+    <record model="ir.actions.server" id="geo_certifications.action_server">
+      <field name="name">geo_certifications server</field>
+      <field name="model_id" ref="model_geo_certifications_geo_certifications"/>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": self._name,
+        }
+      </field>
+    </record>
+    -->
+  
+    <record id="group_certification_user" model="res.groups">
+        <field name="name">Usuario</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="base.module_category_project_management"/>
+        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+    </record>
+
+    <record id="group_certification_manager" model="res.groups">
+        <field name="name">Administrador</field>
+        <field name="category_id" ref="base.module_category_project_management"/>
+        <field name="implied_ids" eval="[(4, ref('group_certification_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+    </record>
+  
+  
+  
+    <!-- Top menu item -->
+    <menuitem name="Certificaciones" id="base.menu_main_cert"
+            groups="group_certification_manager,group_certification_user"
+            icon="fa-calendar"
+            web_icon="project,static/description/icon.png"
+            sequence="250"
+            action="geo_certifications.action_window"/>
+    
+    <!-- menu categories -->
+    <menuitem name="Certificaciones" id="geo_certifications.left_menu_category" parent="base.menu_main_cert"/>
+    <menuitem name="Lista" id="geo_certifications.left_menu_list" parent="geo_certifications.left_menu_category"
+    		 action="geo_certifications.action_window"/>
+   	<menuitem name="Supervisores" id="geo_certifications.supervisors_left_menu_list" parent="geo_certifications.left_menu_category"
+   			 action="geo_certifications.superviros_action_window"/>
+    
+   	<menuitem name="Tareas" id="geo_certifications.task_left_menu_list" parent="geo_certifications.left_menu_category"
+   			 action="geo_certifications.tasks_action_window"/>
+   	<menuitem name="Etapas de kanban de tareas" id="geo_certifications.stage_left_menu_list" parent="geo_certifications.left_menu_category"
+   			 action="geo_certifications.stages_action_window"/>
+    
+    <!--
+    -->
+    <!-- actions -->
+    <!--
+    <menuitem name="List" id="geo_certifications.menu_1_list" parent="geo_certifications.menu_1"
+              action="geo_certifications.action_window"/>
+    <menuitem name="Server to list" id="geo_certifications" parent="geo_certifications.menu_2"
+              action="geo_certifications.action_server"/>
+    -->
+  </data>
+</openerp>
