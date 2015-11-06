@@ -25,7 +25,7 @@ class certifications_certification(models.Model):
 	state = fields.Selection([("carga","Carga de Datos"),
 							("validado","Validado"),
 							("operadora","Proceso de Operadora"),
-							("aprobada","Certificacion Aprobada")
+							("aprobado","Certificacion Aprobada")
 							])
 	
 	
@@ -47,6 +47,7 @@ class certifications_certification(models.Model):
 	def create(self, vals):
 		superv = self.env['certifications.supervisor'].search([('id','=',vals['supervisor'])])
 		vals['parte'] = str(superv.numeroSupervisor) + "." + str(superv.operacionesHechas)
+		vals['state'] = 'carga'
 		return models.Model.create(self, vals)
 	
 	def setTotalValue(self):

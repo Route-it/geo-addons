@@ -22,12 +22,12 @@
             <field name="arch" type="xml">
                 <form string="Certificaciones">
                 <header>
-                    <button name="set_carga" type="object" states="validado" class="oe_highlight" groups="base.group_user"/>
-                    <button name="set_validado" type="object" states="carga,operadora" class="oe_highlight" groups="base.group_user"/>
-                    <button name="set_operadora" type="object" states="validado,aprobado" class="oe_highlight" groups="base.group_user"/>
-                    <button name="set_aprobado" type="object" states="operadora" class="oe_highlight" groups="base.group_user"/>
+                    <button name="set_carga" type="object" string="A Carga" states="validado" class="oe_highlight" groups="base.group_user"/>
+                    <button name="set_validado" type="object" string="Validar"  states="carga,operadora" class="oe_highlight" groups="base.group_user"/>
+                    <button name="set_operadora" type="object" string="A Operadora"  states="validado,aprobado" class="oe_highlight" groups="base.group_user"/>
+                    <button name="set_aprobado" type="object" string="Aprobar"  states="operadora" class="oe_highlight" groups="base.group_user"/>
 
-                    <field name="state" widget="statusbar" clickable="True"/>
+                    <field name="state" widget="statusbar" clickable="False"/>
                 </header>
                 <sheet string="Certificaciones">
  					<div class="oe_title">
