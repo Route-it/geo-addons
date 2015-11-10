@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from openerp import models, fields, api
+from openerp.exceptions import UserError, ValidationError
+
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -39,8 +41,25 @@ class certifications_certification(models.Model):
 		return self.write(cr, uid, ids, {'state': 'operadora'}, context=context)
 		
 	def set_aprobado(self, cr, uid, ids, context=None):
+		for record in self.browse(cr, uid, ids, context=context):
+			if not record.confirmacion:
+				raise ValidationError('Your Message!')
+				return
+			record.supervisor.operacionesHechas+=1
 		return self.write(cr, uid, ids, {'state': 'aprobado'}, context=context)
 	
+	def name_get(self, cr, uid, ids, context=None):
+		if context is None:
+			context = {}
+		if isinstance(ids, (int, long)):
+			ids = [ids]
+	
+		res = []
+		for record in self.browse(cr, uid, ids, context=context):
+			name = record.parte
+			res.append((record.id, name))
+		
+		return res
 	
 	@api.model
 	@api.returns('self', lambda value:value.id)

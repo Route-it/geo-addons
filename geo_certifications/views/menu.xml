@@ -26,7 +26,7 @@
     
     
     
-       <record model="ir.actions.act_window" id="geo_certifications.tasks_action_window">
+    <record model="ir.actions.act_window" id="geo_certifications.tasks_action_window">
     	<field name="name">Tareas</field>
     	<field name="res_model">certifications.certification.task</field>
     	<field name="view_mode">kanban,tree,form</field>

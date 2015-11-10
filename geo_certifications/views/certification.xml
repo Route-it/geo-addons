@@ -57,7 +57,7 @@
                                 <field name="valorProductos" class="oe_inline" string="Valor de Productos"  widget="monetary"/>
                                 <field name="ValorTotal" class="oe_inline" string="Total"/>
                                 <field name="fechacierre" class="oe_inline" string="Fecha de Cierre"  widget="date"/>
-                                <field name="confirmacion" class="oe_inline" string="Confirmacion"/>
+                                <field name="confirmacion" attrs="{'readonly':[('state','!=','operadora')],'required':[('state','=','aprobado')]}" class="oe_inline" string="Confirmacion"/>
                     </group>
                 </sheet>
 <!--     			  <notebook> -->
