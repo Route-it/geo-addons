@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+    	<record id="geo_certifications.certification_workflow" model="workflow">
+			<field name="name">geo_certification.certification_workflow</field>
+			<field name="osv">certifications.certification</field>
+			<field name="on_create">True</field>
+		</record>
+		<record id="geo_certifications.certification_dataloading" model="workflow.activity">
+			<field name="wkf_id" ref="geo_certifications.certification_workflow"></field>
+			<field name="flow_start">True</field>
+			<field name="name">carga</field>
+			<field name="kind">dummy</field>
+		</record>
+		<record id="geo_certifications.certification_validated" model="workflow.activity">
+			<field name="wkf_id" ref="geo_certifications.certification_workflow"></field>
+			<field name="name">validado</field>
+			<field name="kind">dummy</field>
+		</record>
+		<record id="geo_certifications.certification_onOperator" model="workflow.activity">
+			<field name="wkf_id" ref="geo_certifications.certification_workflow"></field>
+			<field name="name">operadora</field>
+			<field name="kind">dummy</field>
+		</record>
+		<record id="geo_certifications.certification_aproved" model="workflow.activity">
+			<field name="wkf_id" ref="geo_certifications.certification_workflow"></field>
+			<field name="name">aprobado</field>
+			<field name="kind">dummy</field>
+			<field name="flow_stop">True</field>
+		</record>
+		
+		<!-- pasar a estado de validado -->
+		<record id="geo_certifications.certification_carga_validado" model="workflow.transition">
+            <field name="act_from" ref="geo_certifications.certification_dataloading"/>
+            <field name="act_to" ref="geo_certifications.certification_validated"/>
+            <field name="signal">set_validado</field>
+        </record>
+        
+        <!-- volver al estado de carga -->
+        <record id="geo_certifications.certification_carga_validado" model="workflow.transition">
+            <field name="act_from" ref="geo_certifications.certification_validated"/>
+            <field name="act_to" ref="geo_certifications.certification_dataloading"/>
+            <field name="signal">set_carga</field>
+        </record>
+  
+  		<!-- Pasar a estado de operadora -->
+        <record id="geo_certifications.certification_validado_operadora" model="workflow.transition">
+            <field name="act_from" ref="geo_certifications.certification_validated"/>
+            <field name="act_to" ref="geo_certifications.certification_onOperator"/>
+ 		    <field name="signal">set_operadora</field>
+        </record>
+        
+        
+        <record id="geo_certifications.certification_validado_operadora" model="workflow.transition">
+            <field name="act_from" ref="geo_certifications.certification_onOperator"/>
+            <field name="act_to" ref="geo_certifications.certification_aproved"/>
+ 		    <field name="signal">set_aprobado</field>
+        </record> 
+	</data>
+</openerp>

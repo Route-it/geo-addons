@@ -28,7 +28,7 @@ class certifications_certification(models.Model):
 							("validado","Validado"),
 							("operadora","Proceso de Operadora"),
 							("aprobado","Certificacion Aprobada")
-							])
+							],readonly=True)
 	
 	
 	def set_carga(self, cr, uid, ids, context=None):
@@ -43,7 +43,7 @@ class certifications_certification(models.Model):
 	def set_aprobado(self, cr, uid, ids, context=None):
 		for record in self.browse(cr, uid, ids, context=context):
 			if not record.confirmacion:
-				raise ValidationError('Your Message!')
+				raise ValidationError('Debe agregar el número de confirmación')
 				return
 			record.supervisor.operacionesHechas+=1
 		return self.write(cr, uid, ids, {'state': 'aprobado'}, context=context)

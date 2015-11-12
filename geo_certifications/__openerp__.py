@@ -26,7 +26,8 @@
         'views/certification.xml',
         'views/supervisor.xml',
         'views/task.xml',
-        'views/menu.xml'
+        'views/menu.xml',
+        'workflows/certification_wkfl.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
