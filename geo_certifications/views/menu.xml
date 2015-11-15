@@ -69,26 +69,10 @@
       </field>
     </record>
     -->
-  
-    <record id="group_certification_user" model="res.groups">
-        <field name="name">Usuario</field>
-        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
-        <field name="category_id" ref="base.module_category_project_management"/>
-        <field name="users" eval="[(4, ref('base.user_root'))]"/>
-    </record>
 
-    <record id="group_certification_manager" model="res.groups">
-        <field name="name">Administrador</field>
-        <field name="category_id" ref="base.module_category_project_management"/>
-        <field name="implied_ids" eval="[(4, ref('group_certification_user'))]"/>
-        <field name="users" eval="[(4, ref('base.user_root'))]"/>
-    </record>
-  
-  
-  
     <!-- Top menu item -->
     <menuitem name="Certificaciones" id="base.menu_main_cert"
-            groups="group_certification_manager,group_certification_user"
+            groups="group_name_certification_administrator,group_name_certification_user"
             icon="fa-calendar"
             web_icon="project,static/description/icon.png"
             sequence="250"
@@ -97,7 +81,7 @@
     <!-- menu categories -->
     <menuitem name="Certificaciones" id="geo_certifications.left_menu_category" parent="base.menu_main_cert"/>
     <menuitem name="Lista" id="geo_certifications.left_menu_list" parent="geo_certifications.left_menu_category"
-    		 action="geo_certifications.action_window"/>
+    		 action="geo_certifications.action_window" />
    	<menuitem name="Supervisores" id="geo_certifications.supervisors_left_menu_list" parent="geo_certifications.left_menu_category"
    			 action="geo_certifications.superviros_action_window"/>
     

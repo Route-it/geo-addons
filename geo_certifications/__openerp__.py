@@ -27,7 +27,9 @@
         'views/supervisor.xml',
         'views/task.xml',
         'views/menu.xml',
-        'workflows/certification_wkfl.xml'
+        'workflows/certification_wkfl.xml',
+        'security/certifications_security.xml',
+        'security/ir.model.access.csv'
     ],
     # only loaded in demonstration mode
     'demo': [
