@@ -2,7 +2,27 @@
 <openerp>
   <data>
  
-    
+     <record id="geo_certifications_task_form" model="ir.ui.view">
+            <field name="name">certifications.certification.task.form</field>
+            <field name="model">certifications.certification.task</field>
+            <field name="arch" type="xml">
+                <form string="Tareas de certificación">
+                <sheet string="Tareas de certificación">
+ 					<div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Nombre"/>
+                        </h1>
+                    </div>
+                    <group name="descripción">
+                                <field name="description" class="oe_inline" string="Descripción"/>
+                                <field name="fechaFin" string="Fecha Fin de tarea"/>
+                                <field name="stage" string="Etapa"/>
+                    </group>
+                </sheet>
+               </form>
+            </field>
+	</record>
+	
     <record model="ir.ui.view" id="geo_certifications.task_list">
     	<field name="name">Tareas de certificaciones</field>
     	<field name="model">certifications.certification.task</field>
@@ -11,6 +31,7 @@
     			<field name="name" string="Nombre"/>
     			<field name="description" string="Descripcion"/>
     			<field name="fechaFin" string="Fecha Fin de tarea"/>
+    			<field name="stage" string="Etapa"/>
     		</tree>
 		</field>
     </record>

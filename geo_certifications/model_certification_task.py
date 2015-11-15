@@ -9,14 +9,14 @@ class certifications_certification_task(models.Model):
 	_name = 'certifications.certification.task'
 	
 	name = fields.Char(required=True)
-	description = fields.Char(required=True)
+	description = fields.Text(required=True)
 	certification = fields.Many2one('certifications.certification',required=True)
 	
 	color = fields.Integer('Color Index')
 	
-	fechaFin = fields.Datetime(readonly=True)
+	fechaFin = fields.Datetime()
 
-	stage = fields.Many2one('certifications.certification.task.stage','Etapa', required=False, copy=False)
+	stage = fields.Many2one('certifications.certification.task.stage','Etapa', required=True, copy=False)
 	
 	def _read_group_stage_ids(self, cr, uid, ids, domain, read_group_order=None, access_rights_uid=None, context=None):
 		if context is None:
