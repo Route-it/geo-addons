@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from openerp import models, fields, api
-from openerp.exceptions import UserError, ValidationError
+from openerp.exceptions import ValidationError
+from datetime import date
 
 import logging
 
@@ -46,6 +47,7 @@ class certifications_certification(models.Model):
 				raise ValidationError('Debe agregar el número de confirmación')
 				return
 			record.supervisor.operacionesHechas+=1
+			record.fechacierre = date.today()
 		return self.write(cr, uid, ids, {'state': 'aprobado'}, context=context)
 	
 	def name_get(self, cr, uid, ids, context=None):
