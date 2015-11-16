@@ -14,9 +14,10 @@
                         </h1>
                     </div>
                     <group name="descripción">
-                                <field name="description" class="oe_inline" string="Descripción"/>
-                                <field name="fechaFin" string="Fecha Fin de tarea"/>
-                                <field name="stage" string="Etapa"/>
+                    	<field name="certification" string="Certificación"/>
+                    	<field name="description" class="oe_inline" string="Descripción"/>
+                        <field name="fechaFin" string="Fecha Fin de tarea"/>
+                        <field name="stage" string="Etapa"/>
                     </group>
                 </sheet>
                </form>
