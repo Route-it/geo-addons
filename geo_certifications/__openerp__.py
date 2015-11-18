@@ -23,12 +23,12 @@
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
+        'security/certifications_security.xml',
         'views/certification.xml',
         'views/supervisor.xml',
         'views/task.xml',
         'views/menu.xml',
         'workflows/certification_wkfl.xml',
-        'security/certifications_security.xml',
         'security/ir.model.access.csv'
     ],
     # only loaded in demonstration mode
