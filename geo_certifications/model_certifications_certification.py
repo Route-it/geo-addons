@@ -18,7 +18,12 @@ class certifications_certification(models.Model):
 	supervisor = fields.Many2one('certifications.supervisor','Supervisor',required=True)
 	equipo = fields.Char(required=True)
 	bombeador = fields.Char(required=True)
-	operacion = fields.Selection([("op1","op1"),("op2",("op2"))],required=True)
+	operacion = fields.Selection([("guia","Guía"),("fit","FIT"),("pit","PIT"),("lot","LOT"),
+								("aislacion","Aislación"),("intermedia","Intermedia"),
+								("estimulacion acida","Estimulación ácida"),("estimulacion gas oil","Estimulación con gas oil"),
+								("presion","Presión"),("patagoniano","Patagoniano"),("tapon balanceado","Tapón balanceado"),
+								("prueba de valvulas","Prueba de válvulas"),("venta de productos","Venta de productos"),
+								("alquiler de cisterna","Alquiler de cisterna"),("ahogo","Ahogo")],required=True)
 	blscemento = fields.Integer(required=True)
 	fechacierre = fields.Datetime(readonly=True)
 	valorServicios = fields.Float(required=True)
