@@ -50,7 +50,7 @@
                     </group>
                     <group name="operacion">
                                 <field name="operacion" class="oe_inline" string="Operacion"/>
-                                <field name="blscemento" class="oe_inline" string="Blis de Cemento" widget="integer"/>
+                                <field name="blscemento" class="oe_inline" string="Bolsas de Cemento" widget="integer"/>
                     </group>
                     <group name="valor">
                                 <field name="valorServicios" class="oe_inline" string="Valor de Servicios" widget="monetary"/>
