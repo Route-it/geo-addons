@@ -76,6 +76,7 @@ class certifications_certification(models.Model):
 		vals['state'] = 'carga'
 		return models.Model.create(self, vals)
 	
+	@api.one
 	def setTotalValue(self):
 		self.ValorTotal = self.valorProductos + self.valorServicios
 

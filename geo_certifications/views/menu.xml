@@ -10,11 +10,8 @@
       <field name="name">Proyectos</field>
       <field name="res_model">certifications.certification</field>
       <field name="view_type">form</field>
-      <field name="view_mode">tree,form</field>
-      
-<!--       <field name="view_mode">kanban,tree,form,calendar,pivot,graph</field> -->
-      <field name="search_view_id" ref="geo_certifications.list"/>
-      
+      <field name="view_mode">tree,form,graph</field>
+      <field name="search_view_id" ref="geo_certifications.list"/> 
     </record>
     
     <record model="ir.actions.act_window" id="geo_certifications.superviros_action_window">
@@ -41,34 +38,6 @@
     	<field name="search_view_id" ref="geo_certifications.stage_list"/>
     </record>
     
-    
-    
-
-    <!--
-    -->
-    <!-- actions -->
-    <!--
-    <menuitem name="List" id="geo_certifications.menu_1_list" parent="geo_certifications.menu_1"
-              action="geo_certifications.action_window"/>
-    <menuitem name="Server to list" id="geo_certifications" parent="geo_certifications.menu_2"
-              action="geo_certifications.action_server"/>
-    -->
-    
-
-    <!-- server action to the one above -->
-    <!--
-    <record model="ir.actions.server" id="geo_certifications.action_server">
-      <field name="name">geo_certifications server</field>
-      <field name="model_id" ref="model_geo_certifications_geo_certifications"/>
-      <field name="code">
-        action = {
-          "type": "ir.actions.act_window",
-          "view_mode": "tree,form",
-          "res_model": self._name,
-        }
-      </field>
-    </record>
-    -->
 
     <!-- Top menu item -->
     <menuitem name="Certificaciones" id="base.menu_main_cert"

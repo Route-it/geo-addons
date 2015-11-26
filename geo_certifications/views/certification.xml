@@ -11,6 +11,8 @@
           <field name="pozo"/>
 		  <field name="operadora" />
 		  <field name="yacimiento"/>
+		  <field name="operacion" string="Operación"/>
+		  <field name="ValorTotal" string="Valor total"/>
         </tree>
       </field>
     </record>
@@ -69,7 +71,15 @@
                </form>
             </field>
 	</record>
-                  
+    
+	<record id="view_certifications_certification_graph" model="ir.ui.view">
+		<field name="name">certifications.certification.graph</field>
+        <field name="model">certifications.certification</field>
+        <field name="arch" type="xml">
+        <graph string="Projects" type="bar">
+        </graph>
+        </field>
+    </record>
     
   </data>
 </openerp>
