@@ -11,7 +11,7 @@ _logger = logging.getLogger(__name__)
 class certifications_certification(models.Model):
 	_name = 'certifications.certification'
 	
-	parte = fields.Char(readonly=True)
+	parte = fields.Char(required=True)
 	pozo = fields.Char(required=True)
 	operadora = fields.Many2one('res.partner',domain = [('is_company','=','True')],required=True)
 	yacimiento = fields.Selection([('chubut','Chubut'),('santa cruz','Santa Cruz')],required=True)
@@ -68,13 +68,12 @@ class certifications_certification(models.Model):
 		
 		return res
 	
-	@api.model
-	@api.returns('self', lambda value:value.id)
-	def create(self, vals):
-		superv = self.env['certifications.supervisor'].search([('id','=',vals['supervisor'])])
-		vals['parte'] = str(superv.numeroSupervisor) + "." + str(superv.operacionesHechas)
-		vals['state'] = 'carga'
-		return models.Model.create(self, vals)
+#	@api.model
+#	@api.returns('self', lambda value:value.id)
+#	def create(self, vals):
+#		superv = self.env['certifications.supervisor'].search([('id','=',vals['supervisor'])])
+#		vals['parte'] = str(superv.numeroSupervisor) + "." + str(superv.operacionesHechas)
+##		return models.Model.create(self, vals)
 	
 	@api.one
 	def setTotalValue(self):
