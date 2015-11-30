@@ -3,7 +3,7 @@
   <data>
 
  
-                    
+    <record></record>
                     
     <!-- actions opening views on models -->
     <record model="ir.actions.act_window" id="geo_certifications.action_window">
