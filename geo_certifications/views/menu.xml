@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
   <data>
-
- 
-    <record></record>
                     
     <!-- actions opening views on models -->
     <record model="ir.actions.act_window" id="geo_certifications.action_window">
