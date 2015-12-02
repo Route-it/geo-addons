@@ -68,12 +68,13 @@ class certifications_certification(models.Model):
 		
 		return res
 	
-#	@api.model
-#	@api.returns('self', lambda value:value.id)
-#	def create(self, vals):
+	@api.model
+	@api.returns('self', lambda value:value.id)
+	def create(self, vals):
 #		superv = self.env['certifications.supervisor'].search([('id','=',vals['supervisor'])])
 #		vals['parte'] = str(superv.numeroSupervisor) + "." + str(superv.operacionesHechas)
-##		return models.Model.create(self, vals)
+		vals['state'] = 'carga'
+		return models.Model.create(self, vals)
 	
 	@api.one
 	def setTotalValue(self):
