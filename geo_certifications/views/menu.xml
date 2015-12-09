@@ -3,11 +3,12 @@
   <data>
                     
     <!-- actions opening views on models -->
+    
     <record model="ir.actions.act_window" id="geo_certifications.action_window">
-      <field name="name">Proyectos</field>
+      <field name="name">Certificaciones</field>
       <field name="res_model">certifications.certification</field>
       <field name="view_type">form</field>
-      <field name="view_mode">tree,form,graph</field>
+      <field name="view_mode">tree,form,graph,pivot</field>
       <field name="search_view_id" ref="geo_certifications.list"/> 
     </record>
     

@@ -44,6 +44,7 @@
                         </div>
                     </div>
                     <group name="trabajo">
+                                <field name="fechaRealizacion" string="Fecha de Realización" class="oe_inline"/>
                                 <field name="pozo" class="oe_inline" string="Pozo"/>
                                 <field name="yacimiento" class="oe_inline" string="Yacimiento"/>
                                 <field name="supervisor" class="oe_inline" string="Supervisor"/>
@@ -76,10 +77,20 @@
 		<field name="name">certifications.certification.graph</field>
         <field name="model">certifications.certification</field>
         <field name="arch" type="xml">
-        <graph string="Projects" type="bar">
+        <graph string="Certificaciones" type="bar">
         </graph>
         </field>
     </record>
+
+<!-- 	<record id="view_certifications_certification_pivot" model="ir.ui.view"> -->
+<!-- 		<field name="name">certifications.certification.graph</field> -->
+<!--         <field name="model">certifications.certification</field> -->
+<!--         <field name="arch" type="xml"> -->
+<!--         <pivot string="Certificaciones"> -->
+        	
+<!--         </pivot> -->
+<!--         </field> -->
+<!--     </record> -->
     
   </data>
 </openerp>

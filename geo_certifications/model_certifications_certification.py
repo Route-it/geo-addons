@@ -12,6 +12,7 @@ class certifications_certification(models.Model):
 	_name = 'certifications.certification'
 	
 	parte = fields.Char(required=True)
+	fechaRealizacion = fields.Datetime(required=True)
 	pozo = fields.Char(required=True)
 	operadora = fields.Many2one('res.partner',domain = [('is_company','=','True')],required=True)
 	yacimiento = fields.Selection([('chubut','Chubut'),('santa cruz','Santa Cruz')],required=True)
