@@ -12,7 +12,7 @@
 		  <field name="operadora" />
 		  <field name="yacimiento"/>
 		  <field name="operacion" string="Operación"/>
-		  <field name="ValorTotal" string="Valor total"/>
+		  <field name="valortotal" string="Valor total"/>
         </tree>
       </field>
     </record>
@@ -56,9 +56,9 @@
                                 <field name="blscemento" class="oe_inline" string="Bolsas de Cemento" widget="integer"/>
                     </group>
                     <group name="valor">
-                                <field name="valorServicios" class="oe_inline" string="Valor de Servicios" widget="monetary"/>
-                                <field name="valorProductos" class="oe_inline" string="Valor de Productos"  widget="monetary"/>
-                                <field name="ValorTotal" class="oe_inline" string="Total"/>
+                                <field name="valorservicios" class="oe_inline" string="Valor de Servicios" widget="monetary"/>
+                                <field name="valorproductos" class="oe_inline" string="Valor de Productos"  widget="monetary"/>
+                                <field name="valortotal" class="oe_inline" string="Total"/>
                                 <field name="fechacierre" class="oe_inline" string="Fecha de Cierre"  widget="date"/>
                                 <field name="confirmacion" class="oe_inline" string="Confirmacion" attrs="{'readonly':[('state','!=','operadora')],'required':[('state','=','aprobado')]}"/>
                                 <!---->
@@ -82,15 +82,19 @@
         </field>
     </record>
 
-<!-- 	<record id="view_certifications_certification_pivot" model="ir.ui.view"> -->
-<!-- 		<field name="name">certifications.certification.graph</field> -->
-<!--         <field name="model">certifications.certification</field> -->
-<!--         <field name="arch" type="xml"> -->
-<!--         <pivot string="Certificaciones"> -->
-        	
-<!--         </pivot> -->
-<!--         </field> -->
-<!--     </record> -->
+	<record id="view_certifications_certification_pivot" model="ir.ui.view">
+		<field name="name">certifications.certification.pivot</field>
+        <field name="model">certifications.certification</field>
+        <field name="arch" type="xml">
+	        <pivot string="Certificaciones" >
+	        	<field name="fechaRealizacion" type="row"/>
+	        	<field name="operadora" type="col"/>
+	        	<field name="valortotal" type="measure"/>
+	        </pivot>
+        </field>
+    </record>
+    
+    
     
   </data>
 </openerp>

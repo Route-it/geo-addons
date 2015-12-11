@@ -11,31 +11,31 @@ _logger = logging.getLogger(__name__)
 class certifications_certification(models.Model):
 	_name = 'certifications.certification'
 	
-	parte = fields.Char(required=True)
-	fechaRealizacion = fields.Datetime(required=True)
-	pozo = fields.Char(required=True)
-	operadora = fields.Many2one('res.partner',domain = [('is_company','=','True')],required=True)
-	yacimiento = fields.Selection([('chubut','Chubut'),('santa cruz','Santa Cruz')],required=True)
+	parte = fields.Char(required=True,string="Parte")
+	fechaRealizacion = fields.Datetime(required=True,string="Fecha de realización")
+	pozo = fields.Char(required=True,string="Pozo")
+	operadora = fields.Many2one('res.partner',domain = [('is_company','=','True')],required=True,string="Operadora")
+	yacimiento = fields.Selection([('chubut','Chubut'),('santa cruz','Santa Cruz')],required=True,string="Yacimiento")
 	supervisor = fields.Many2one('certifications.supervisor','Supervisor',required=True)
-	equipo = fields.Char(required=True)
-	bombeador = fields.Char(required=True)
+	equipo = fields.Char(required=True,string="Equipo")
+	bombeador = fields.Char(required=True,string="Bombeador")
 	operacion = fields.Selection([("guia","Guía"),("fit","FIT"),("pit","PIT"),("lot","LOT"),
 								("aislacion","Aislación"),("intermedia","Intermedia"),
 								("estimulacion acida","Estimulación ácida"),("estimulacion gas oil","Estimulación con gas oil"),
 								("presion","Presión"),("patagoniano","Patagoniano"),("tapon balanceado","Tapón balanceado"),
 								("prueba de valvulas","Prueba de válvulas"),("venta de productos","Venta de productos"),
-								("alquiler de cisterna","Alquiler de cisterna"),("ahogo","Ahogo")],required=True)
-	blscemento = fields.Integer(required=True)
-	fechacierre = fields.Datetime(readonly=True)
-	valorServicios = fields.Float(required=True)
-	valorProductos = fields.Float(required=True)
-	ValorTotal = fields.Float(readonly=True,compute='setTotalValue')
-	confirmacion = fields.Char()
+								("alquiler de cisterna","Alquiler de cisterna"),("ahogo","Ahogo")],required=True,string="Operación")
+	blscemento = fields.Integer(required=True,string="Bolsas de cemento")
+	fechacierre = fields.Datetime(readonly=True,string="Fecha de cierre")
+	valorservicios = fields.Float(required=True,string="Valor de servicios")
+	valorproductos = fields.Float(required=True,string="Valor de productos")
+	valortotal = fields.Float(readonly=True,compute='setTotalValue',store=True,string="Valor total")
+	confirmacion = fields.Char(string="Confirmación")
 	state = fields.Selection([("carga","Carga de Datos"),
 							("validado","Validado"),
 							("operadora","Proceso de Operadora"),
 							("aprobado","Certificacion Aprobada")
-							],readonly=True)
+							],readonly=True,string="Estado")
 	
 	
 	def set_carga(self, cr, uid, ids, context=None):
@@ -77,8 +77,8 @@ class certifications_certification(models.Model):
 		vals['state'] = 'carga'
 		return models.Model.create(self, vals)
 	
-	@api.one
+	@api.depends('valorproductos','valorservicios')
 	def setTotalValue(self):
-		self.ValorTotal = self.valorProductos + self.valorServicios
+		self.valortotal = self.valorproductos + self.valorservicios
 
 
