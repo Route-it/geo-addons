@@ -27,9 +27,9 @@ class certifications_certification(models.Model):
 								("alquiler de cisterna","Alquiler de cisterna"),("ahogo","Ahogo")],required=True,string="Operación")
 	blscemento = fields.Integer(required=True,string="Bolsas de cemento")
 	fechacierre = fields.Datetime(readonly=True,string="Fecha de cierre")
-	valorservicios = fields.Float(required=True,string="Valor de servicios")
-	valorproductos = fields.Float(required=True,string="Valor de productos")
-	valortotal = fields.Float(readonly=True,compute='setTotalValue',store=True,string="Valor total")
+	valorservicios = fields.Float(required=True,string="Valor de servicios",oldname="valorServicios")
+	valorproductos = fields.Float(required=True,string="Valor de productos",oldname="valorProductos")
+	valortotal = fields.Float(readonly=True,compute='setTotalValue',store=True,string="Valor total",oldname="ValorTotal")
 	confirmacion = fields.Char(string="Confirmación")
 	state = fields.Selection([("carga","Carga de Datos"),
 							("validado","Validado"),
