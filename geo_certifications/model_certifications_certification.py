@@ -78,6 +78,7 @@ class certifications_certification(models.Model):
 		return models.Model.create(self, vals)
 	
 	@api.depends('valorproductos','valorservicios')
+	@api.one
 	def setTotalValue(self):
 		self.valortotal = self.valorproductos + self.valorservicios
 
