@@ -44,7 +44,7 @@
                         </div>
                     </div>
                     <group name="trabajo">
-                                <field name="fechaRealizacion" string="Fecha de Realización" class="oe_inline"/>
+                                <field name="fechaRealizacion" string="Fecha de Realización" class="oe_inline" widget="date"/>
                                 <field name="pozo" class="oe_inline" string="Pozo"/>
                                 <field name="yacimiento" class="oe_inline" string="Yacimiento"/>
                                 <field name="supervisor" class="oe_inline" string="Supervisor"/>
