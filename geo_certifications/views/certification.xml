@@ -6,8 +6,9 @@
       <field name="name">Certificaciones</field>
       <field name="model">certifications.certification</field>
       <field name="arch" type="xml">
-        <tree>
+        <tree colors="green:state == 'aprobado'">
           <field name="parte"/>
+          <field name="state"/>
           <field name="pozo"/>
 		  <field name="operadora" />
 		  <field name="yacimiento"/>
