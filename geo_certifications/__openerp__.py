@@ -17,7 +17,7 @@
     """,
 
     # any module necessary for this one to work correctly
-    'depends': [],
+    'depends': ['mail'],
     # ['project'],
 
     # always loaded

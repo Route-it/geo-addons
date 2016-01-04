@@ -10,6 +10,7 @@ _logger = logging.getLogger(__name__)
 
 class certifications_certification(models.Model):
 	_name = 'certifications.certification'
+	_inherit = 'mail.thread'
 	
 	parte = fields.Char(required=True,string="Parte")
 	fechaRealizacion = fields.Date(required=True,string="Fecha de realización")

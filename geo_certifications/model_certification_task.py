@@ -15,6 +15,8 @@ class certifications_certification_task(models.Model):
 	color = fields.Integer('Color Index')
 	
 	fechaFin = fields.Datetime()
+	
+	operadora = fields.Char("Operadora", help="La operadora a la que pertenece esta tarea", related='certification.operadora.name')
 
 	stage = fields.Many2one('certifications.certification.task.stage','Etapa', required=True, copy=False)
 	

@@ -6,13 +6,15 @@
       <field name="name">Certificaciones</field>
       <field name="model">certifications.certification</field>
       <field name="arch" type="xml">
-        <tree>
+        <tree colors="green:state == 'aprobado'">
           <field name="parte"/>
+          <field name="state"/>
           <field name="pozo"/>
 		  <field name="operadora" />
 		  <field name="yacimiento"/>
 		  <field name="operacion" string="Operación"/>
 		  <field name="valortotal" string="Valor total"/>
+		  <field name="fechaRealizacion"/>
         </tree>
       </field>
     </record>
@@ -64,11 +66,10 @@
                                 <!---->
                     </group>
                 </sheet>
-<!--     			  <notebook> -->
-<!--                      <page string="Etapas"> -->
-<!--                      	many2many_checkboxes -->
-<!--                  	 </page> -->
-<!--                   </notebook> -->
+     			  	<div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
                </form>
             </field>
 	</record>
