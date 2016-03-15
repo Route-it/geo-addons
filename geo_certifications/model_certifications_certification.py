@@ -28,9 +28,11 @@ class certifications_certification(models.Model):
 								("alquiler de cisterna","Alquiler de cisterna"),("ahogo","Ahogo")],required=True,string="Operación")
 	blscemento = fields.Integer(required=True,string="Bolsas de cemento")
 	fechacierre = fields.Datetime(readonly=True,string="Fecha de cierre")
-	valorservicios = fields.Float(required=True,string="Valor de servicios",oldname="valorServicios")
-	valorproductos = fields.Float(required=True,string="Valor de productos",oldname="valorProductos")
-	valortotal = fields.Float(readonly=True,compute='setTotalValue',store=True,string="Valor total",oldname="ValorTotal")
+	currency_id = fields.Many2one('res.currency', string='Account Currency',
+        help="Forces all moves for this account to have this account currency.")
+	valorservicios = fields.Monetary(required=True,string="Valor de servicios",oldname="valorServicios")
+	valorproductos = fields.Monetary(required=True,string="Valor de productos",oldname="valorProductos")
+	valortotal = fields.Monetary(readonly=True,compute='setTotalValue',store=True,string="Valor total",oldname="ValorTotal")
 	confirmacion = fields.Char(string="Confirmación")
 	state = fields.Selection([("carga","Carga de Datos"),
 							("validado","Validado"),
