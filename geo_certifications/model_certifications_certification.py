@@ -25,7 +25,8 @@ class certifications_certification(models.Model):
 								("estimulacion acida","Estimulación ácida"),("estimulacion gas oil","Estimulación con gas oil"),
 								("presion","Presión"),("patagoniano","Patagoniano"),("tapon balanceado","Tapón balanceado"),
 								("prueba de valvulas","Prueba de válvulas"),("venta de productos","Venta de productos"),
-								("alquiler de cisterna","Alquiler de cisterna"),("ahogo","Ahogo")],required=True,string="Operación")
+								("alquiler de cisterna","Alquiler de cisterna"),("ahogo","Ahogo"),("bombeo","Bombeo"),
+								("gel","Gel"),("pozo","Pozo")],required=True,string="Operación")
 	blscemento = fields.Integer(required=True,string="Bolsas de cemento")
 	fechacierre = fields.Datetime(readonly=True,string="Fecha de cierre")
 	currency_id = fields.Many2one('res.currency', string='Account Currency',
@@ -33,6 +34,9 @@ class certifications_certification(models.Model):
 	valorservicios = fields.Monetary(required=True,string="Valor de servicios",oldname="valorServicios")
 	valorproductos = fields.Monetary(required=True,string="Valor de productos",oldname="valorProductos")
 	valortotal = fields.Monetary(readonly=True,compute='setTotalValue',store=True,string="Valor total",oldname="ValorTotal")
+	valor_a_facturar = fields.Monetary("Valor a facturar")
+	tipo_confirmacion = fields.Selection([("factura","Factura nro"),("habilita","Habilita nro"),("orden_compra","Orden de compra nro"),
+										("hes","Hes nro")],string="Tipo de confirmación")
 	confirmacion = fields.Char(string="Confirmación")
 	state = fields.Selection([("carga","Carga de Datos"),
 							("validado","Validado"),

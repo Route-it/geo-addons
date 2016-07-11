@@ -39,7 +39,7 @@
 
     <!-- Top menu item -->
     <menuitem name="Certificaciones" id="base.menu_main_cert"
-            groups="group_name_certification_administrator,group_name_certification_user"
+            groups="group_name_certification_administrator,group_name_certification_user,group_name_certification_user_reader"
             icon="fa-calendar"
             web_icon="project,static/description/icon.png"
             sequence="250"
@@ -48,14 +48,14 @@
     <!-- menu categories -->
     <menuitem name="Certificaciones" id="geo_certifications.left_menu_category" parent="base.menu_main_cert"/>
     <menuitem name="Lista" id="geo_certifications.left_menu_list" parent="geo_certifications.left_menu_category"
-    		 action="geo_certifications.action_window" />
+    		 action="geo_certifications.action_window" groups="group_name_certification_administrator,group_name_certification_user,group_name_certification_user_reader"/>
    	<menuitem name="Supervisores" id="geo_certifications.supervisors_left_menu_list" parent="geo_certifications.left_menu_category"
-   			 action="geo_certifications.superviros_action_window"/>
+   			 action="geo_certifications.superviros_action_window" groups="group_name_certification_administrator,group_name_certification_user,group_name_certification_user_reader"/>
     
    	<menuitem name="Tareas" id="geo_certifications.task_left_menu_list" parent="geo_certifications.left_menu_category"
-   			 action="geo_certifications.tasks_action_window"/>
+   			 action="geo_certifications.tasks_action_window" groups="group_name_certification_administrator,group_name_certification_user,group_name_certification_user_reader"/>
    	<menuitem name="Etapas de kanban de tareas" id="geo_certifications.stage_left_menu_list" parent="geo_certifications.left_menu_category"
-   			 action="geo_certifications.stages_action_window"/>
+   			 action="geo_certifications.stages_action_window" groups="group_name_certification_administrator"/>
     
     <!--
     -->
