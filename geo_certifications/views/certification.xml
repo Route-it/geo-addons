@@ -7,13 +7,13 @@
       <field name="model">certifications.certification</field>
       <field name="arch" type="xml">
         <tree colors="green:state == 'aprobado'">
-          <field name="parte" groups="certifications.group_name_certification_administrator,certifications.group_name_certification_user,certifications.group_name_certification_user_reader"/>
-          <field name="state" groups="certifications.group_name_certification_administrator,certifications.group_name_certification_user,certifications.group_name_certification_user_reader"/>
+          <field name="parte" groups="geo_certifications.group_name_certification_administrator,geo_certifications.group_name_certification_user,geo_certifications.group_name_certification_reader"/>
+          <field name="state" groups="geo_certifications.group_name_certification_administrator,geo_certifications.group_name_certification_user,geo_certifications.group_name_certification_reader"/>
           <field name="pozo" />
 		  <field name="operadora" />
 		  <field name="yacimiento"/>
 		  <field name="operacion" string="Operación"/>
-		  <field name="valortotal" string="Valor total" groups="certifications.group_name_certification_administrator,certifications.group_name_certification_user,certifications.group_name_certification_user_reader"/>
+		  <field name="valortotal" string="Valor total" groups="geo_certifications.group_name_certification_administrator,geo_certifications.group_name_certification_user,geo_certifications.group_name_certification_reader"/>
 		  <field name="fechaRealizacion"/>
         </tree>
       </field>
@@ -49,17 +49,17 @@
                                 <field name="fechaRealizacion" string="Fecha de Realización" class="oe_inline" widget="date"/>
                                 <field name="pozo" class="oe_inline" string="Pozo"/>
                                 <field name="yacimiento" class="oe_inline" string="Yacimiento"/>
-                                <field name="supervisor" class="oe_inline" string="Supervisor"/>
+                                <field name="supervisor" class="oe_inline" string="Supervisor" />
                                 <field name="equipo" class="oe_inline" string="Equipo"/>
                                 <field name="bombeador" class="oe_inline" string="Bombeador"/>
                     
                                 <field name="operacion" class="oe_inline" string="Operacion"/>
                                 <field name="blscemento" class="oe_inline" string="Bolsas de Cemento" widget="integer"/>
                  
-                                <field name="valorservicios" class="oe_inline" string="Valor de Servicios" widget="monetary" groups="certifications.group_name_certification_administrator,certifications.group_name_certification_user,certifications.group_name_certification_user_reader"/>
-                                <field name="valorproductos" class="oe_inline" string="Valor de Productos"  widget="monetary" groups="certifications.group_name_certification_administrator,certifications.group_name_certification_user,certifications.group_name_certification_user_reader"/>
-                                <field name="valortotal" class="oe_inline" string="Total" groups="certifications.group_name_certification_administrator,certifications.group_name_certification_user,certifications.group_name_certification_user_reader"/>
-                                <field name="valor_a_facturar" groups="certifications.group_name_certification_administrator,certifications.group_name_certification_user,certifications.group_name_certification_user_reader"/>
+                                <field name="valorservicios" class="oe_inline" string="Valor de Servicios" widget="monetary" groups="geo_certifications.group_name_certification_administrator,geo_certifications.group_name_certification_user,geo_certifications.group_name_certification_reader"/>
+                                <field name="valorproductos" class="oe_inline" string="Valor de Productos"  widget="monetary" groups="geo_certifications.group_name_certification_administrator,geo_certifications.group_name_certification_user,geo_certifications.group_name_certification_reader"/>
+                                <field name="valortotal" class="oe_inline" string="Total" groups="geo_certifications.group_name_certification_administrator,geo_certifications.group_name_certification_user,geo_certifications.group_name_certification_reader"/>
+                                <field name="valor_a_facturar" groups="geo_certifications.group_name_certification_administrator,geo_certifications.group_name_certification_user,geo_certifications.group_name_certification_reader"/>
                                 <field name="fechacierre" class="oe_inline" string="Fecha de Cierre"  widget="date"/>
                                
                                 <!---->
