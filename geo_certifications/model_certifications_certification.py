@@ -31,10 +31,10 @@ class certifications_certification(models.Model):
 	fechacierre = fields.Datetime(readonly=True,string="Fecha de cierre")
 	currency_id = fields.Many2one('res.currency', string='Account Currency',
         help="Forces all moves for this account to have this account currency.")
-	valorservicios = fields.Monetary(required=True,string="Valor de servicios",oldname="valorServicios")
-	valorproductos = fields.Monetary(required=True,string="Valor de productos",oldname="valorProductos")
-	valortotal = fields.Monetary(readonly=True,compute='setTotalValue',store=True,string="Valor total",oldname="ValorTotal")
-	valor_a_facturar = fields.Monetary("Valor a facturar")
+	valorservicios = fields.Monetary(required=True,string="Valor de servicios",oldname="valorServicios",groups="geo_certifications.group_name_certification_administrator,geo_certifications.group_name_certification_user,geo_certifications.group_name_certification_user_reader")
+	valorproductos = fields.Monetary(required=True,string="Valor de productos",oldname="valorProductos",groups="geo_certifications.group_name_certification_administrator,geo_certifications.group_name_certification_user,geo_certifications.group_name_certification_user_reader")
+	valortotal = fields.Monetary(readonly=True,compute='setTotalValue',store=True,string="Valor total",oldname="ValorTotal",groups="geo_certifications.group_name_certification_administrator,geo_certifications.group_name_certification_user,geo_certifications.group_name_certification_user_reader")
+	valor_a_facturar = fields.Monetary("Valor a facturar",groups="geo_certifications.group_name_certification_administrator,geo_certifications.group_name_certification_user,geo_certifications.group_name_certification_user_reader")
 	tipo_confirmacion = fields.Selection([("factura","Factura nro"),("habilita","Habilita nro"),("orden_compra","Orden de compra nro"),
 										("hes","Hes nro")],string="Tipo de confirmación")
 	confirmacion = fields.Char(string="Confirmación")
