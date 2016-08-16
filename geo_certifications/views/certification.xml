@@ -14,12 +14,22 @@
 		  <field name="yacimiento"/>
 		  <field name="operacion" string="Operación"/>
 		  <field name="valortotal" string="Valor total" groups="geo_certifications.group_name_certification_administrator,geo_certifications.group_name_certification_user,geo_certifications.group_name_certification_user_reader"/>
-		  <field name="fechaRealizacion"/>
+		  <field name="fecha_realizacion"/>
         </tree>
       </field>
     </record>
-    
-    
+
+	<record id="certifications_search" model="ir.ui.view">
+		<field name="name">certifications.search</field>
+		<field name="model">certifications.certification</field>
+		<field name="arch" type="xml">
+			<search>
+				<group expand="0" string="Agrupar por">
+					<filter string="Mes" domain="[ ]" context="{'group_by': 'fecha_realizacion:month'}" />
+				</group>
+			</search>
+		</field>
+	</record>    
     <record id="geo_certifications.form" model="ir.ui.view">
             <field name="name">certifications.certification.form</field>
             <field name="model">certifications.certification</field>
@@ -46,7 +56,7 @@
                         </div>
                     </div>
                     <group name="trabajo">
-                                <field name="fechaRealizacion" string="Fecha de Realización" class="oe_inline" widget="date"/>
+                                <field name="fecha_realizacion" string="Fecha de Realización" class="oe_inline" widget="date"/>
                                 <field name="pozo" class="oe_inline" string="Pozo"/>
                                 <field name="yacimiento" class="oe_inline" string="Yacimiento"/>
                                 <field name="supervisor" class="oe_inline" string="Supervisor" />
@@ -95,7 +105,7 @@
         <field name="model">certifications.certification</field>
         <field name="arch" type="xml">
 	        <pivot string="Certificaciones" >
-	        	<field name="fechaRealizacion" type="row"/>
+	        	<field name="fecha_realizacion" type="row"/>
 	        	<field name="operadora" type="col"/>
 	        	<field name="valortotal" type="measure"/>
 	        </pivot>
