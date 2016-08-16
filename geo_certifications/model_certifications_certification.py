@@ -13,7 +13,7 @@ class certifications_certification(models.Model):
 	_inherit = 'mail.thread'
 	
 	parte = fields.Char(required=True,string="Parte")
-	fechaRealizacion = fields.Date(required=True,string="Fecha de realización")
+	fecha_realizacion = fields.Date(required=True,string="Fecha de realización",oldname="fechaRealizacion")
 	pozo = fields.Char(required=True,string="Pozo")
 	operadora = fields.Many2one('res.partner',domain = [('is_company','=','True')],required=True,string="Operadora")
 	yacimiento = fields.Selection([('chubut','Chubut'),('santa cruz','Santa Cruz')],required=True,string="Yacimiento")

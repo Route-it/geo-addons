@@ -9,7 +9,7 @@
       <field name="res_model">certifications.certification</field>
       <field name="view_type">form</field>
       <field name="view_mode">tree,form,graph,pivot</field>
-      <field name="search_view_id" ref="geo_certifications.list"/> 
+      <field name="search_view_id" ref="geo_certifications.certifications_search"/> 
     </record>
     
     <record model="ir.actions.act_window" id="geo_certifications.superviros_action_window">
