@@ -13,7 +13,10 @@
 		  <field name="operadora" />
 		  <field name="yacimiento"/>
 		  <field name="operacion" string="Operación"/>
-		  <field name="valortotal" string="Valor total" groups="geo_certifications.group_name_certification_administrator,geo_certifications.group_name_certification_user,geo_certifications.group_name_certification_user_reader"/>
+		  <field name="valorservicios" groups="geo_certifications.group_name_certification_user_reader_accounting"/>
+		  <field name="valorproductos" groups="geo_certifications.group_name_certification_user_reader_accounting"/>
+		  <field name="valortotal" groups="geo_certifications.group_name_certification_administrator,geo_certifications.group_name_certification_user,geo_certifications.group_name_certification_user_reader"/>
+		  <field name="valor_a_facturar" groups="geo_certifications.group_name_certification_administrator,geo_certifications.group_name_certification_user,geo_certifications.group_name_certification_user_reader"/>
 		  <field name="fecha_realizacion"/>
         </tree>
       </field>
