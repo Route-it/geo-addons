@@ -27,6 +27,13 @@
 		<field name="model">certifications.certification</field>
 		<field name="arch" type="xml">
 			<search>
+				<field name="parte" />
+          		<field name="state" />
+          		<field name="pozo" />
+		  		<field name="operadora" />
+		  		<field name="yacimiento"/>
+		  		<field name="operacion" string="Operación"/>
+		  		<field name="fecha_realizacion"/>
 				<group expand="0" string="Agrupar por">
 					<filter string="Mes" domain="[ ]" context="{'group_by': 'fecha_realizacion:month'}" />
 				</group>
