@@ -22,17 +22,21 @@
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
         'security/certifications_security.xml',
-        'views/certification.xml',
+        'views/certification-ceyf.xml',
+        'views/certification-coiled-tubing.xml',
         'views/supervisor.xml',
         'views/task.xml',
         'views/menu.xml',
-        'workflows/certification_wkfl.xml',
+        'views/res_partner_company_operator.xml',
+        'views/web_ct_style.xml',
         'security/ir.model.access.csv'
     ],
     # only loaded in demonstration mode
     'demo': [
         'demo.xml',
     ],
+    'application': True,
+    'installable': True,
+
 }

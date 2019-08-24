@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openerp>
+	<data>
+
+		<record model='ir.ui.view' id='geopatagonia_delivery_form'>
+			<field name="name">geopatagonia.vehicle.form</field>
+			<field name="model">geopatagonia.vehicle</field>
+			<field name="inherit_id" ref="geopatagonia_base.vehicle_form"></field>
+			<field name="arch" type="xml">
+					<field name="ubicacion" position="after">
+								<field name="cotizacion_webscrap_state" readonly="1"/>
+					</field>
+			</field>
+		</record>
+		
+		
+	</data>
+</openerp>

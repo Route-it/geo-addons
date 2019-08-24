@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<record model="ir.ui.view" id="res_partner_company_operator_form">
+			<field name="name">certifications.res.partner.form</field>
+			<field name="model">res.partner</field>
+			<field name="inherit_id" ref="base.view_partner_form" />
+			<field name="mode">primary</field> 
+			<field name="priority">100</field> 
+
+			<field name="arch" type="xml">
+				<field name="name" position="after">
+					<field name="vat" placeholder="Cuit/Cuil"></field>
+				</field>
+				<field name="company_type" position="attributes">
+					<attribute name="invisible">1</attribute>
+				</field>
+
+                <field name="lang" position="attributes">
+					<attribute name="invisible">1</attribute>
+				</field>
+                <field name="category_id" position="attributes">
+					<attribute name="invisible">1</attribute>
+				</field>
+
+				<notebook position="attributes">
+					<attribute name="invisible">1</attribute>
+				</notebook>
+
+
+			</field>
+		</record>
+
+	</data>
+</openerp>

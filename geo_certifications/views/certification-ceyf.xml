@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<!-- explicit list view definition -->
+		<record model="ir.ui.view" id="certifications_ceyf_list">
+			<field name="name">certifications.certification_ceyf.list</field>
+			<field name="model">certifications.certification_ceyf</field>
+			<field name="arch" type="xml">
+				<tree colors="green:state in ('facturacion','cobrado')">
+					<field name="operadora_id" />
+					<field name="pozo" />
+					<field name="state"/>
+					<field name="parte"/>
+					<field name="yacimiento" />
+					<field name="operacion"/>
+					<field name="fecha_realizacion" />
+					<field name="valor_total"/>
+				</tree>
+			</field>
+		</record>
+
+		<record id="certifications_ceyf_search" model="ir.ui.view">
+			<field name="name">certifications.certification_ceyf.search</field>
+			<field name="model">certifications.certification_ceyf</field>
+			<field name="arch" type="xml">
+				<search>
+					<field name="operadora_id" />
+					<field name="parte" />
+					<field name="state" />
+					<field name="pozo" />
+					<field name="yacimiento" />
+					<field name="operacion" string="Operación" />
+					<field name="fecha_realizacion" />
+					
+					<filter string="Pendientes por facturar" name="invoice_pending" domain="[('state','in',('carga','proceso_facturacion'))]" />
+					<separator />
+					<filter string="Registros Antigüos" name="antique_register" domain="[('antique_register','!=',False)]" />
+					<filter string="Registros Nuevos" name="antique_register" domain="[('antique_register','=',False)]" />
+					
+					<group expand="0" string="Agrupar por">
+						<filter string="Mes" domain="[ ]" context="{'group_by': 'fecha_realizacion:month'}" />
+						<filter string="Operadora" domain="[ ]" context="{'group_by': 'operadora_id'}" />
+					</group>
+				</search>
+			</field>
+		</record>
+
+		<record id="certifications_ceyf_form" model="ir.ui.view">
+			<field name="name">certifications.certification_ceyf.form</field>
+			<field name="model">certifications.certification_ceyf</field>
+			<field name="arch" type="xml">
+				<form string="Certificaciones">
+					<header>
+
+						<field name="state" widget="statusbar" clickable="True" />
+					</header>
+					<sheet string="Certificaciones CEYF">
+						<div class="oe_title">
+							<h1>
+								<field name="id" invisible="1"/>
+								<label for="operadora_id" />
+								
+								<!-- 
+						<field name="delivery_photos_ids" widget="many2many_kanban" 
+							context="{'default_res_model':'delsol.delivery','default_res_id':id,'default_res_name':name,'form_view_ref':'entregas_photos.view_attachment_delivery_form','tree_view_ref':'entregas_photos.view_attachment_delivery_tree'}" 
+							domain="[('res_model','=','delsol.delivery'),('res_id','=',id)]" attrs="{'readonly': [('delivery_images_sended', '=', True)]}">
+ -->								
+								
+								<field name="operadora_id" 
+														placeholder="Operadora" domain="[('is_company_operator','=',True),('is_company','=',True),]"
+														context="{'default_is_company_operator':True,'default_is_company':True,'default_company_operator_code':'otros','form_view_ref':'geo_certifications.res_partner_company_operator_form'}"
+														options="{'no_create_edit':True}"
+														attrs="{'readonly':[('state','not in',('carga'))]}"/>
+								<field name="company_operator_code" invisible="1"/>
+							</h1>
+						</div>
+						<group >
+							<group string="Trabajo" attrs="{'readonly':[('state','not in',('carga'))]}">
+							<!-- obligatorio solo si es ypf -->
+								<field name="contrato"  attrs="{'readonly':[('state','not in',('carga'))],'required': [('company_operator_code', '=', 'ypf')], 'invisible': [('company_operator_code', '!=', 'ypf')]}"/> 		<!--  -->						
+								<field name="fecha_realizacion" string="Fecha de Realización"
+									class="oe_inline" widget="date"  attrs="{'readonly':[('state','not in',('carga'))]}"/>
+								<field name="operacion" string="Operación"  attrs="{'readonly':[('state','not in',('carga'))]}"/>
+								<field name="parte" readonly="True" attrs="{'invisible': [('id','=',False)]}"/>
+							<!-- obligatorio solo si es ypf o pae -->
+								<field name="evento"  attrs="{'required': ['|','&amp;',('company_operator_code', '=', 'ypf'),('company_operator_code', '=', 'pae'),('operacion', '=', 'patagoniano')],
+															  'invisible': ['&amp;','|',('company_operator_code', '!=', 'pae'),('company_operator_code', '!=', 'ypf'),('operacion', '!=', 'patagoniano')],
+															  'readonly':[('state','not in',('carga'))]}" />
+							</group>
+							<group string="Detalle">
+								<field name="supervisor_id" domain="[('activo','=',True)]" attrs="{'readonly':[('state','not in',('carga'))]}" options="{'limit': 15}"/>
+								<field name="pozo" attrs="{'readonly':[('state','not in',('carga'))]}"/>
+								<field name="yacimiento" attrs="{'readonly':[('state','not in',('carga'))]}"/>
+								<field name="equipo" attrs="{'readonly':[('state','not in',('carga'))]}"/>
+								<field name="bombeador" attrs="{'readonly':[('state','not in',('carga'))]}"/>
+	
+								<field name="blscemento"
+									widget="integer" attrs="{'readonly':[('state','not in',('carga'))]}"/>
+							</group>
+						</group>
+						<group>
+							<group string="Valores" >
+								<field name="valor_productos" widget="monetary" />
+								<field name="valor_servicios" widget="monetary"/>
+								<field name="valor_servicios_pesos" widget="monetary"/>
+								<field name="valor_total" string="Total"/>
+							</group>
+
+							<group string="Confirmación" attrs="{'invisible': [('company_operator_code', '!=', 'ypf'),('company_operator_code', '!=', 'pae'),('company_operator_code', '!=', 'sinopec'),('company_operator_code', '!=', 'tecpetrol')]}">
+								<field name="dm"  attrs="{'required': [('company_operator_code', '=', 'ypf')], 'invisible': [('company_operator_code', '!=', 'ypf')]}"/>
+								<field name="habilita"   attrs="{'required': [('company_operator_code', '=', 'ypf'),('state','in',('proceso_facturacion','facturacion','cobrado'))],'invisible': [('company_operator_code', '!=', 'ypf')]}"/> 
+								<field name="certop" attrs="{'required': [('company_operator_code', '=', 'pae')],'invisible': [('company_operator_code', '!=', 'pae')]}"/> 
+								<field name="hesop" attrs="{'required': [('company_operator_code', '=', 'pae'),('state','in',('proceso_facturacion','facturacion','cobrado'))],'invisible': [('company_operator_code', '!=', 'pae')]}"/> 
+								<field name="codigo" attrs="{'required': [('company_operator_code', '=', 'sinopec')],'invisible': [('company_operator_code', '!=', 'sinopec')]}"/> 
+								<field name="hoja_de_servicio" attrs="{'invisible': [('company_operator_code', '!=', 'tecpetrol')]}"/> 
+							</group>							
+						</group>						
+						<group>
+							<group string="Facturación" attrs="{'invisible': [('id','=',False)]}">
+								<field name="invoice_id" invisible="1"/>
+								
+								<field name="invoice_date" attrs="{'required': [('state','in',('facturacion','cobrado'))]}" />
+								<field name="invoice_number" attrs="{'required': [('state','in',('facturacion','cobrado'))]}"/>
+								<field name="valor_total_factura" attrs="{'required': [('state','in',('facturacion','cobrado'))]}"/>
+
+								<field name="invoice_date_charge" attrs="{'required': [('state','in',('cobrado'))]}"/>
+							</group>
+							<group string="Cotización">
+								<field name="cotizacion_to_date_charge" attrs="{'required': [('state','in',('facturacion','cobrado'))]}"/>
+							</group>
+						</group>
+					</sheet>
+					<div class="oe_chatter">
+						<field name="message_follower_ids" widget="mail_followers"
+							groups="base.group_user" />
+						<field name="message_ids" widget="mail_thread" />
+					</div>
+				</form>
+			</field>
+		</record>
+
+        <record id="view_ceyf_timeline" model="ir.ui.view">
+            <field name="name">certifications.certification.timeline</field>
+            <field name="model">certifications.certification_ceyf</field>
+            <field name="arch" type="xml">
+                <timeline date_stop="fecha_cierre" date_start="fecha_realizacion" progress="100" string="Productions" >
+                </timeline>
+            </field>
+         </record>
+
+		<record id="certifications_ceyf_graph" model="ir.ui.view">
+			<field name="name">certifications.certification.graph</field>
+			<field name="model">certifications.certification_ceyf</field>
+			<field name="arch" type="xml">
+				<graph string="Certificaciones" type="bar">
+				</graph>
+			</field>
+		</record>
+
+		<record id="certifications_ceyf_pivot" model="ir.ui.view">
+			<field name="name">certifications.certification.pivot</field>
+			<field name="model">certifications.certification_ceyf</field>
+			<field name="arch" type="xml">
+				<pivot string="Certificaciones">
+					<field name="fecha_realizacion" type="row" />
+					<field name="operadora_id" type="col" />
+					<field name="valor_total" type="measure" />
+				</pivot>
+			</field>
+		</record>
+
+
+
+	</data>
+</openerp>

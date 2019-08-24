@@ -8,8 +8,8 @@
     		<tree>
     			<field name="nombre"/>
     			<field name="apellido"/>
-    			<field name="operacionesHechas" string="Operaciones Realizadas"/>
-    			<field name="nivelOperacion" string="Nivel de Operaciones"/>
+    			<field name="operacionesHechas"/>
+    			<field name="nivelOperacion"/>
     		</tree>
 		</field>
     </record>
@@ -21,16 +21,16 @@
             <field name="arch" type="xml">
                 <form string="Supervisor">
                 <sheet string="Supervisor">
- 					<div class="oe_title">
                         <h1>
-                            <field name="nombre" class="oe_inline" placeholder="Nombre" />
-                            <field name="apellido" class="oe_inline"  placeholder="Apellido"/>
+                			<label for="nombre" string="Nombre y Apellido"/>
+                            <field name="nombre" placeholder="Nombre" class="oe_inline"/>
+                            <field name="apellido" placeholder="Apellido" class="oe_inline"/>
                         </h1>
-                    </div>
                     <group name="trabajo">
-                    		<field name="numeroSupervisor" class="oe_inline" string="Numero de operador"/>
-                          	<field name="operacionesHechas" class="oe_inline"  string="Operaciones Realizadas"/>
-                          	<field name="nivelOperacion" class="oe_inline"  string="Nivel de Operacion"/>
+                    		<field name="numeroSupervisor"/>
+                          	<field name="operacionesHechas" />
+                          	<field name="nivelOperacion" />
+                          	<field name="activo" widget="toggle_button"/>
                     </group>
                  </sheet>
             	</form>

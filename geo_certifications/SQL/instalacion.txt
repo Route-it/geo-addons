@@ -1,0 +1,11 @@
+1) Actualizar infraestructura (con traducciones al español completas)
+
+2) instalar sql de columnas de res_partner
+2.1) actualizar la tabla supervisor
+3) activar modo desarrollador y actualizar lista de aplicaciones.
+4) correr los scripts de migracion de datos.
+
+5) instalar web_m2x_options
+
+6) correr cliente transifex
+7) cargar el idioma y sobreescribir los terminos.

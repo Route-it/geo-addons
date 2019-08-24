@@ -16,7 +16,7 @@ class certifications_certification_task(models.Model):
 	
 	fechaFin = fields.Datetime()
 	
-	operadora = fields.Char("Operadora", help="La operadora a la que pertenece esta tarea", related='certification.operadora.name')
+	operadora_id = fields.Char("Operadora", help="La operadora a la que pertenece esta tarea", related='certification.operadora_id.name')
 
 	stage = fields.Many2one('certifications.certification.task.stage','Etapa', required=True, copy=False)
 	

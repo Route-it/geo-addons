@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<!-- explicit list view definition -->
+		<record model="ir.ui.view" id="certifications_coiled_tubing_list">
+			<field name="name">certifications.certification_coiled_tubing.list</field>
+			<field name="model">certifications.certification_coiled_tubing</field>
+			<field name="arch" type="xml">
+				<tree colors="green:state in ('facturacion','cobrado')">
+					<field name="pozo" />
+					<field name="fecha_inicio" />
+					<field name="fecha_fin" />
+					<field name="operacion" />
+					<field name="equipo" />
+					<field name="valor_total" />
+					<field name="dm" />
+					<field name="habilita" />
+					<field name="observaciones"/>
+					<field name="state" invisible="1"/>
+				</tree>
+			</field>
+		</record>
+
+		<record id="certifications_coiled_tubing_search" model="ir.ui.view">
+			<field name="name">certifications.certification_coiled_tubing.search</field>
+			<field name="model">certifications.certification_coiled_tubing</field>
+			<field name="arch" type="xml">
+				<search>
+					<field name="state" />
+					<field name="pozo" />
+					<field name="operadora_id" />
+					<field name="operacion" string="Operación" />
+					<field name="fecha_inicio" />
+					<filter string="Pendientes por facturar" name="invoice_pending" domain="[('state','in',('carga','proceso_facturacion'))]" />
+					<group expand="0" string="Agrupar por">
+						<filter string="Mes" domain="[ ]" context="{'group_by': 'fecha_inicio:month'}" />
+						<filter string="Operadora" domain="[ ]" context="{'group_by': 'operadora_id'}" />
+						<filter string="Equipo" domain="[ ]" context="{'group_by': 'equipo'}" />
+					</group>
+				</search>
+			</field>
+		</record>
+
+
+		<record model="ir.ui.view" id="certifications_kanban">
+			<field name="name">Certifications.kanban</field>
+			<field name="model">certifications.certification_coiled_tubing</field>
+			<field name="arch" type="xml">
+<!-- 				<kanban default_group_by="operadora_id" quick_create="false" delete="false" class="o_kanban_small_column"> -->
+				<kanban quick_create="false" delete="false" class="o_kanban_small_column">
+				
+					<field name="id" />
+					<field name="operadora_id" />
+					<field name="valor_total" />
+					<field name="fecha_inicio" />
+					<templates>
+						<t t-name="kanban-box">
+							<div>
+
+								<div class="o_dropdown_kanban dropdown" groups="base.group_user">
+									<a class="dropdown-toggle btn" data-toggle="dropdown" href="#">
+										<span class="fa fa-bars fa-lg" />
+									</a>
+									<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+										<t t-if="widget.editable">
+											<li>
+												<a type="edit">Editar Tarea</a>
+											</li>
+										</t>
+										<t t-if="widget.deletable">
+											<li>
+												<a type="delete">Borrar</a>
+											</li>
+										</t>
+										<li>
+											<ul class="oe_kanban_colorpicker" data-field="id" />
+										</li>
+									</ul>
+								</div>
+								<div class="oe_kanban_details">
+									<div class="oe_partner_heading">
+									<field name="operadora_id" />
+									</div>
+									<field name="fecha_inicio" />
+								</div>
+								<div style="position: relative">
+									<div class="oe_module_vignette">
+										<field name="valor_total" widget="gauge"  style="width:160px;height:120px;cursor:pointer"></field>
+									</div>
+								</div>
+							</div>
+						</t>
+					</templates>
+				</kanban>
+			</field>
+		</record>
+-->
+		<record id="certifications_coiled_tubing_form" model="ir.ui.view">
+			<field name="name">certifications.certification_coiled_tubing.form</field>
+			<field name="model">certifications.certification_coiled_tubing</field>
+			<field name="arch" type="xml">
+				<form string="Certificaciones">
+					<header>
+
+						<field name="state" widget="statusbar" clickable="True" />
+					</header>
+					<sheet string="Certificaciones CEYF">
+						<field name="id" invisible="1"/>
+						<div class="oe_title">
+							<h1>
+								<label for="operadora_id" />
+								<field name="operadora_id" placeholder="Operadora" domain="[('is_company_operator','=',True),('is_company','=',True),]"
+														context="{'default_is_company_operator':True,'default_is_company':True,'form_view_ref':'geo_certifications.res_partner_company_operator_form'}"
+														 attrs="{'readonly':[('state','in',('proceso_facturacion','facturacion','cobrado'))]}"/> 
+								<field name="company_operator_code" invisible="1"/>
+							</h1>
+						</div>
+						<group >
+							<group string="Trabajo" rowspan="2">
+								<field name="contrato" requierd="True"  attrs="{'readonly':[('state','in',('proceso_facturacion','facturacion','cobrado'))]}"/> 							
+								<field name="equipo" requierd="True"  attrs="{'readonly':[('state','in',('proceso_facturacion','facturacion','cobrado'))]}"/>
+								<field name="pozo"  requierd="True"  attrs="{'readonly':[('state','in',('proceso_facturacion','facturacion','cobrado'))]}"/>
+								<field name="fecha_inicio" widget="date"  requierd="True"  attrs="{'readonly':[('state','in',('proceso_facturacion','facturacion','cobrado'))]}"/>
+								<field name="fecha_fin" widget="date" requierd="True"  attrs="{'readonly':[('state','in',('proceso_facturacion','facturacion','cobrado'))]}"/>
+								<field name="operacion"  requierd="True"  attrs="{'readonly':[('state','in',('proceso_facturacion','facturacion','cobrado'))]}"/>
+								<field name="regional"  requierd="True" attrs="{'readonly':[('state','in',('proceso_facturacion','facturacion','cobrado'))]}" />
+							</group>
+							<group string="Confirmacion" attrs="{'invisible': [('company_operator_code', '!=', 'ypf')]}">
+<!-- 									<field name="dm"  attrs="{'required': [('company_operator_code', '=', 'ypf')], 'invisible': [('company_operator_code', '!=', 'ypf')]}"/> -->
+<!-- 									<field name="habilita"   attrs="{'required': [('company_operator_code', '=', 'ypf'),('state','in',('proceso_facturacion','facturacion','cobrado'))],'invisible': [('company_operator_code', '!=', 'ypf')]}"/>  -->
+							
+									<field name="dm"  attrs="{'required': ['&amp;',('state', 'in', ('proceso_facturacion','facturacion','cobrado')),('company_operator_code', '=', 'ypf')], 'readonly':[('state','in',('facturacion','cobrado'))], 'invisible': [('company_operator_code', '!=', 'ypf')]}"/>
+									<field name="habilita"   attrs="{'required': ['&amp;',('state', 'in', ('proceso_facturacion','facturacion','cobrado')),('company_operator_code', '=', 'ypf')], 'readonly':[('state','in',('facturacion','cobrado'))], 'invisible': [('company_operator_code', '!=', 'ypf')]}"/> 
+							</group>
+							<group string="Valores" >
+								<field name="valor_productos" widget="monetary" />
+								<field name="valor_servicios" widget="monetary"/>
+								<field name="valor_servicios_pesos" widget="monetary"/>
+								<field name="valor_total" requierd="True" widget="percentpie"/>
+								
+							</group>
+							<group string="Observaciones">
+							
+								<field name="observaciones" nolabel="1"/>
+							</group>
+						</group>						
+						<group>
+							<group string="Facturación"  attrs="{'invisible':[('id','=',False)]}">
+								<field name="invoice_date"  attrs="{'required': [('state', 'in', ('facturacion','cobrado'))]}"/>
+								<field name="invoice_number"  attrs="{'required': [('state', 'in', ('facturacion','cobrado'))]}"/>
+								<field name="valor_total_factura"  attrs="{'required': [('state', 'in', ('facturacion','cobrado'))]}"/>
+								<field name="invoice_date_charge" attrs="{'required': [('state', '=', 'cobrado')]}"/>
+							</group>
+							<group string="Cotización">
+								<field name="cotizacion_to_date_charge" attrs="{'required': [('state','in',('facturacion','cobrado'))]}"/>
+							</group>                               
+						</group>	
+						
+						<group attrs="{'invisible':['|',('id','=',False),('operacion','!=','servicio_ct')]}">
+							<group>
+									<field name="operating_hours"/>
+									<field name="time_losed_ids" context="{'default_certification_coiled_tubing_id':id}">
+										<tree limit="5" editable="bottom" create="1" delete="1">
+											<field name="time_losed_quantity" />
+											<field name="reason" />
+											<field name="comments" />
+											<field name="monetary_losed" />
+										</tree>
+									</field>
+							</group>
+							
+						</group>
+											
+					</sheet>
+					<div class="oe_chatter">
+						<field name="message_follower_ids" widget="mail_followers"
+							groups="base.group_user" />
+						<field name="message_ids" widget="mail_thread" />
+					</div>
+				</form>
+			</field>
+		</record>
+
+		<record id="certifications_coiled_tubing_graph" model="ir.ui.view">
+			<field name="name">certifications.certification_coiled_tubing.graph</field>
+			<field name="model">certifications.certification_coiled_tubing</field>
+			<field name="arch" type="xml">
+				<graph string="Certificaciones" type="bar">
+				</graph>
+			</field>
+		</record>
+
+		<record id="certifications_coiled_tubing_pivot" model="ir.ui.view">
+			<field name="name">certifications.certification_coiled_tubing.pivot</field>
+			<field name="model">certifications.certification_coiled_tubing</field>
+			<field name="arch" type="xml">
+				<pivot string="Certificaciones">
+					<field name="fecha_inicio" type="row" />
+					<field name="operadora_id" type="col" />
+					<field name="valor_total" type="measure" />
+				</pivot>
+			</field>
+		</record>
+
+
+
+	</data>
+</openerp>

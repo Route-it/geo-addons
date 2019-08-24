@@ -33,7 +33,7 @@
     			<field name="description" string="Descripcion"/>
     			<field name="fechaFin" string="Fecha Fin de tarea"/>
     			<field name="stage" string="Etapa"/>
-    			<field name="operadora"/>
+    			<field name="operadora_id"/>
     		</tree>
 		</field>
     </record>
@@ -85,7 +85,7 @@
 								          <field name="description"/>
 								          <field name="certification"/>
 								          <field name="certification"/>
-								          <field name="operadora"/>
+								          <field name="operadora_id"/>
 										  <field name="fechaFin" />
 		                             </div>
 		                         </div>

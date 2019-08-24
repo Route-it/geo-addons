@@ -10,15 +10,17 @@ _logger = logging.getLogger(__name__)
 
 class certifications_supervisor(models.Model):
 	_name = "certifications.supervisor"
-	
+
+
+	activo = fields.Boolean(default=True,string="Activo")	
 	nombre = fields.Char(required=True)
 	apellido = fields.Char(required=True)
-	numeroSupervisor = fields.Integer()
-	operacionesHechas = fields.Integer(readonly=True)
-	nivelOperacion = fields.Selection([('1','1'),('2','2'),('3','3')],required=True)
+	numeroSupervisor = fields.Integer(string="Número Supervisor")
+	operacionesHechas = fields.Integer(readonly=True,string="Operaciones Hechas")
+	nivelOperacion = fields.Selection([('1','1'),('2','2'),('3','3')],required=True, string="Nivel de Operación")
 	
 	_sql_constraints = [
-		('numeroSupervisor_uniq', 'unique(numeroSupervisor)', 'Ese número de supervisor ya existe'),
+		('numeroSupervisor_uniq', 'unique("numeroSupervisor")', 'Ese numero de supervisor ya existe'),
 	]
 	
 	def name_get(self, cr, uid, ids, context=None):
@@ -34,4 +36,11 @@ class certifications_supervisor(models.Model):
 		
 		return res
 	
+	@api.model
+	def name_search(self, name='', args=None, operator='ilike', limit=100):
+		if not args:
+			args = []
+		if name:
+			args += ['|',("nombre", operator, name),("apellido", operator, name)] # domain o client_id o name
+		return super(certifications_supervisor, self).name_search(name, args=args, operator=operator, limit=limit)
 	

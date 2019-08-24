@@ -1,70 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-  <data>
-                    
-    <!-- actions opening views on models -->
-    
-    <record model="ir.actions.act_window" id="geo_certifications.action_window">
-      <field name="name">Certificaciones</field>
-      <field name="res_model">certifications.certification</field>
-      <field name="view_type">form</field>
-      <field name="view_mode">tree,form,graph,pivot</field>
-      <field name="search_view_id" ref="geo_certifications.certifications_search"/> 
-    </record>
-    
-    <record model="ir.actions.act_window" id="geo_certifications.superviros_action_window">
-    	<field name="name">Supervisores</field>
-    	<field name="res_model">certifications.supervisor</field>
-    	<field name="view_mode">tree,form</field>
-    	<field name="search_view_id" ref="geo_certifications.supervisor_list"/>
-    </record>
-    
-    
-    
-    <record model="ir.actions.act_window" id="geo_certifications.tasks_action_window">
-    	<field name="name">Tareas</field>
-    	<field name="res_model">certifications.certification.task</field>
-    	<field name="view_mode">kanban,tree,form</field>
-    	<field name="search_view_id" ref="geo_certifications.task_list"/>
-    </record>
-    
-    
-    <record model="ir.actions.act_window" id="geo_certifications.stages_action_window">
-    	<field name="name">Etapas de kanban de tareas</field>
-    	<field name="res_model">certifications.certification.task.stage</field>
-    	<field name="view_mode">tree,form</field>
-    	<field name="search_view_id" ref="geo_certifications.stage_list"/>
-    </record>
-    
+	<data>
 
-    <!-- Top menu item -->
-    <menuitem name="Certificaciones" id="base.menu_main_cert"
-            groups="group_name_certification_administrator,group_name_certification_user,group_name_certification_user_reader,group_name_certification_user_reader_rrhh"
-            icon="fa-calendar"
-            web_icon="project,static/description/icon.png"
-            sequence="250"
-            action="geo_certifications.action_window"/>
-    
-    <!-- menu categories -->
-    <menuitem name="Certificaciones" id="geo_certifications.left_menu_category" parent="base.menu_main_cert"/>
-    <menuitem name="Lista" id="geo_certifications.left_menu_list" parent="geo_certifications.left_menu_category"
-    		 action="geo_certifications.action_window" groups="group_name_certification_administrator,group_name_certification_user,group_name_certification_user_reader,group_name_certification_user_reader_rrhh"/>
-   	<menuitem name="Supervisores" id="geo_certifications.supervisors_left_menu_list" parent="geo_certifications.left_menu_category"
-   			 action="geo_certifications.superviros_action_window" groups="group_name_certification_administrator,group_name_certification_user,group_name_certification_user_reader"/>
-    
-   	<menuitem name="Tareas" id="geo_certifications.task_left_menu_list" parent="geo_certifications.left_menu_category"
-   			 action="geo_certifications.tasks_action_window" groups="group_name_certification_administrator,group_name_certification_user,group_name_certification_user_reader"/>
-   	<menuitem name="Etapas de kanban de tareas" id="geo_certifications.stage_left_menu_list" parent="geo_certifications.left_menu_category"
-   			 action="geo_certifications.stages_action_window" groups="group_name_certification_administrator"/>
-    
-    <!--
-    -->
-    <!-- actions -->
-    <!--
-    <menuitem name="List" id="geo_certifications.menu_1_list" parent="geo_certifications.menu_1"
-              action="geo_certifications.action_window"/>
-    <menuitem name="Server to list" id="geo_certifications" parent="geo_certifications.menu_2"
-              action="geo_certifications.action_server"/>
-    -->
-  </data>
+		<!-- actions opening views on models -->
+
+		<record model="ir.actions.act_window" id="ceyf_action_window">
+			<field name="name">Certificaciones Cementación</field>
+			<field name="res_model">certifications.certification_ceyf</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form,graph,pivot</field>
+			<field name="search_view_id" ref="certifications_ceyf_search" />
+		</record>
+		<record model="ir.actions.act_window"
+			id="coiled_tubing_action_window">
+			<field name="name">Certificaciones Coiled Tubing</field>
+			<field name="res_model">certifications.certification_coiled_tubing</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form,graph,pivot</field>
+			<field name="search_view_id" ref="certifications_coiled_tubing_search" />
+		</record>
+
+		<record model="ir.actions.act_window"
+			id="geo_certifications.supervisor_action_window">
+			<field name="name">Supervisores</field>
+			<field name="res_model">certifications.supervisor</field>
+			<field name="view_mode">tree,form</field>
+<!-- 			<field name="search_view_id" ref="supervisor_list" /> -->
+		</record>
+
+
+
+<!-- 		<record model="ir.actions.act_window" -->
+<!-- 			id="geo_certifications.tasks_action_window"> -->
+<!-- 			<field name="name">Tareas</field> -->
+<!-- 			<field name="res_model">certifications.certification.task</field> -->
+<!-- 			<field name="view_mode">kanban,tree,form</field> -->
+<!-- 			<field name="search_view_id" ref="task_list" /> -->
+<!-- 		</record> -->
+
+
+<!-- 		<record model="ir.actions.act_window" -->
+<!-- 			id="geo_certifications.stages_action_window"> -->
+<!-- 			<field name="name">Etapas de kanban de tareas</field> -->
+<!-- 			<field name="res_model">certifications.certification.task.stage</field> -->
+<!-- 			<field name="view_mode">tree,form</field> -->
+<!-- 			<field name="search_view_id" ref="stage_list" /> -->
+<!-- 		</record> -->
+
+
+		<!-- Top menu item -->
+		<!-- groups="group_name_certification_administrator,group_name_certification_user,group_name_certification_user_reader,group_name_certification_user_reader_rrhh" -->
+		<menuitem name="Certificaciones"
+			id="base.menu_main_certificaciones" icon="fa-calendar"
+			web_icon="project,static/description/icon.png" 
+			action="geo_certifications.ceyf_action_window" 
+			groups="group_name_certifications_administrator"/>
+
+		<!-- menu categories -->
+		<menuitem name="Certificaciones"
+			id="geo_certifications.left_menu_category"
+			parent="base.menu_main_certificaciones"/>
+		<menuitem name="Cementacion"
+			id="geo_certifications.ceyf_left_menu"
+			parent="geo_certifications.left_menu_category" sequence="1"
+			action="geo_certifications.ceyf_action_window"/>
+		<menuitem name="Coiled Tubing"
+			id="geo_certifications.coiled_tubiung_left_menu"
+			parent="geo_certifications.left_menu_category" sequence="5"
+			action="geo_certifications.coiled_tubing_action_window"/>
+		<menuitem name="Supervisores"
+			id="geo_certifications.supervisors_left_menu_list"
+			parent="geo_certifications.left_menu_category"
+			action="geo_certifications.supervisor_action_window"/>
+
+<!-- 		<menuitem name="Tareas" -->
+<!-- 			id="geo_certifications.task_left_menu_list" -->
+<!-- 			parent="geo_certifications.left_menu_category" -->
+<!-- 			action="geo_certifications.tasks_action_window"/> -->
+<!-- 		<menuitem name="Etapas de kanban de tareas" -->
+<!-- 			id="geo_certifications.stage_left_menu_list" -->
+<!-- 			parent="geo_certifications.left_menu_category" -->
+<!-- 			action="geo_certifications.stages_action_window"/> -->
+
+	</data>
 </openerp>

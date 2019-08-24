@@ -1,128 +1,182 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-  <data>
-    <!-- explicit list view definition -->
-   <record model="ir.ui.view" id="geo_certifications.list">
-      <field name="name">Certificaciones</field>
-      <field name="model">certifications.certification</field>
-      <field name="arch" type="xml">
-        <tree colors="green:state == 'aprobado'">
-          <field name="parte" groups="geo_certifications.group_name_certification_administrator,geo_certifications.group_name_certification_user,geo_certifications.group_name_certification_user_reader"/>
-          <field name="state" groups="geo_certifications.group_name_certification_administrator,geo_certifications.group_name_certification_user,geo_certifications.group_name_certification_user_reader"/>
-          <field name="pozo" />
-		  <field name="operadora" />
-		  <field name="yacimiento"/>
-		  <field name="operacion" string="Operación"/>
-		  <field name="valorservicios" groups="geo_certifications.group_name_certification_user_reader_accounting"/>
-		  <field name="valorproductos" groups="geo_certifications.group_name_certification_user_reader_accounting"/>
-		  <field name="valortotal" groups="geo_certifications.group_name_certification_administrator,geo_certifications.group_name_certification_user,geo_certifications.group_name_certification_user_reader"/>
-		  <field name="valor_a_facturar" groups="geo_certifications.group_name_certification_administrator,geo_certifications.group_name_certification_user,geo_certifications.group_name_certification_user_reader"/>
-		  <field name="fecha_realizacion"/>
-        </tree>
-      </field>
-    </record>
+	<data>
+		<!-- explicit list view definition -->
+		<record model="ir.ui.view" id="geo_certifications.list">
+			<field name="name">Certificaciones</field>
+			<field name="model">certifications.certification</field>
+			<field name="arch" type="xml">
+				<tree colors="green:state == 'facturado'">
+					<field name="operadora_id" />
+					<field name="pozo" />
+					<field name="state"/>
+					<field name="parte" />
+					<field name="yacimiento" />
+					<field name="operacion" />
+					<field name="fecha_realizacion" />
+					<field name="valor_total"/>
+				</tree>
+			</field>
+		</record>
 
-	<record id="certifications_search" model="ir.ui.view">
-		<field name="name">certifications.search</field>
-		<field name="model">certifications.certification</field>
-		<field name="arch" type="xml">
-			<search>
-				<field name="parte" />
-          		<field name="state" />
-          		<field name="pozo" />
-		  		<field name="operadora" />
-		  		<field name="yacimiento"/>
-		  		<field name="operacion" string="Operación"/>
-		  		<field name="fecha_realizacion"/>
-				<group expand="0" string="Agrupar por">
-					<filter string="Mes" domain="[ ]" context="{'group_by': 'fecha_realizacion:month'}" />
-				</group>
-			</search>
-		</field>
-	</record>    
-    <record id="geo_certifications.form" model="ir.ui.view">
-            <field name="name">certifications.certification.form</field>
-            <field name="model">certifications.certification</field>
-            <field name="arch" type="xml">
-                <form string="Certificaciones">
-                <header>
-                	<button name="set_carga" type="object" string="A Carga" states="validado" class="oe_highlight" groups="base.group_user"/>
-                    <button name="set_validado" type="object" string="Validar"  states="carga,operadora" class="oe_highlight" groups="base.group_user"/>
-                    <button name="set_operadora" type="object" string="A Operadora"  states="validado,aprobado" class="oe_highlight" groups="base.group_user"/>
-                    <button name="set_aprobado" type="object" string="Aprobar"  states="operadora" class="oe_highlight" groups="base.group_user"/>
-                	
-                    <field name="state" widget="statusbar" readOnly="True"/>
-                </header>
-                <sheet string="Certificaciones">
- 					<div class="oe_title">
-                        <h1>
-                            <field name="operadora" placeholder="Operadora"/>
-                        </h1>
-                        <div name="options_active">
-                            <div>
-                                <label for="parte" class="oe_inline"/>
-                                <field name="parte" class="oe_inline" string="Parte"/>
-                            </div>
-                        </div>
-                    </div>
-                    <group name="trabajo">
-                                <field name="fecha_realizacion" string="Fecha de Realización" class="oe_inline" widget="date"/>
-                                <field name="pozo" class="oe_inline" string="Pozo"/>
-                                <field name="yacimiento" class="oe_inline" string="Yacimiento"/>
-                                <field name="supervisor" class="oe_inline" string="Supervisor" />
-                                <field name="equipo" class="oe_inline" string="Equipo"/>
-                                <field name="bombeador" class="oe_inline" string="Bombeador"/>
-                    
-                                <field name="operacion" class="oe_inline" string="Operacion"/>
-                                <field name="blscemento" class="oe_inline" string="Bolsas de Cemento" widget="integer"/>
-                 
-                                <field name="valorservicios" class="oe_inline" string="Valor de Servicios" widget="monetary" groups="geo_certifications.group_name_certification_administrator,geo_certifications.group_name_certification_user,geo_certifications.group_name_certification_user_reader"/>
-                                <field name="valorproductos" class="oe_inline" string="Valor de Productos"  widget="monetary" groups="geo_certifications.group_name_certification_administrator,geo_certifications.group_name_certification_user,geo_certifications.group_name_certification_user_reader"/>
-                                <field name="valortotal" class="oe_inline" string="Total" groups="geo_certifications.group_name_certification_administrator,geo_certifications.group_name_certification_user,geo_certifications.group_name_certification_user_reader"/>
-                                <field name="valor_a_facturar" groups="geo_certifications.group_name_certification_administrator,geo_certifications.group_name_certification_user,geo_certifications.group_name_certification_user_reader"/>
-                                <field name="fechacierre" class="oe_inline" string="Fecha de Cierre"  widget="date"/>
+		<record id="certifications_search" model="ir.ui.view">
+			<field name="name">certifications.search</field>
+			<field name="model">certifications.certification</field>
+			<field name="arch" type="xml">
+				<search>
+					<field name="parte" />
+					<field name="state" />
+					<field name="pozo" />
+					<field name="operadora_id" />
+					<field name="yacimiento" />
+					<field name="operacion" string="Operación" />
+					<field name="fecha_realizacion" />
+					<group expand="0" string="Agrupar por">
+						<filter string="Mes" domain="[ ]"
+							context="{'group_by': 'fecha_realizacion:month'}" />
+					</group>
+				</search>
+			</field>
+		</record>
+<!-- 
+		<record model="ir.ui.view" id="certifications_kanban">
+			<field name="name">Certifications.kanban</field>
+			<field name="model">certifications.certification</field>
+			<field name="arch" type="xml">
+				<kanban default_group_by="state" quick_create="false" delete="false" class="o_kanban_small_column">
+				
+					<field name="id" />
+					<field name="operadora_id" />
+					<field name="valor_total" />
+					<field name="fecha_realizacion" />
+					<templates>
+						<t t-name="kanban-box">
+							<div>
+
+								<div class="o_dropdown_kanban dropdown" groups="base.group_user">
+									<a class="dropdown-toggle btn" data-toggle="dropdown" href="#">
+										<span class="fa fa-bars fa-lg" />
+									</a>
+									<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+										<t t-if="widget.editable">
+											<li>
+												<a type="edit">Editar Tarea</a>
+											</li>
+										</t>
+										<t t-if="widget.deletable">
+											<li>
+												<a type="delete">Borrar</a>
+											</li>
+										</t>
+										<li>
+											<ul class="oe_kanban_colorpicker" data-field="id" />
+										</li>
+									</ul>
+								</div><field name="operadora_id" /><field name="fecha_realizacion" />
+								<div style="position: relative">
+									<div class="oe_module_vignette">
+									</div>
+								</div>
+							</div>
+						</t>
+					</templates>
+				</kanban>
+			</field>
+		</record>
+-->
+		<record id="geo_certifications.form" model="ir.ui.view">
+			<field name="name">certifications.certification.form</field>
+			<field name="model">certifications.certification</field>
+			<field name="arch" type="xml">
+				<form string="Certificaciones">
+					<header>
+						<button name="set_carga" type="object" string="A Carga"
+							states="validado" class="oe_highlight" groups="base.group_user" />
+						<button name="set_validado" type="object" string="Validar"
+							states="carga,operadora" class="oe_highlight" groups="base.group_user" />
+						<button name="set_operadora" type="object" string="A Operadora"
+							states="validado,aprobado" class="oe_highlight" groups="base.group_user" />
+						<button name="set_aprobado" type="object" string="Aprobar"
+							states="operadora" class="oe_highlight" groups="base.group_user" />
+
+						<field name="state" widget="statusbar" readOnly="True" />
+					</header>
+					<sheet string="Certificaciones">
+						<div class="oe_title">
+							<h1>
+								<field name="operadora_id" placeholder="Operadora" />
+							</h1>
+							<div name="options_active">
+								<div>
+									<label for="parte" class="oe_inline" />
+									<field name="parte" class="oe_inline" string="Parte" />
+								</div>
+							</div>
+						</div>
+						<group name="trabajo">
+							<field name="fecha_realizacion" string="Fecha de Realización"
+								class="oe_inline" widget="date" />
+							<field name="pozo" class="oe_inline" string="Pozo" />
+							<field name="yacimiento" class="oe_inline" string="Yacimiento" />
+							<field name="supervisor" class="oe_inline" string="Supervisor" />
+							<field name="equipo" class="oe_inline" string="Equipo" />
+							<field name="bombeador" class="oe_inline" string="Bombeador" />
+
+							<field name="operacion" class="oe_inline" string="Operacion" />
+							<field name="blscemento" class="oe_inline" string="Bolsas de Cemento"
+								widget="integer" />
+
+							<field name="valor_servicios" class="oe_inline" string="Valor de Servicios" widget="monetary"/>
+							<field name="valor_productos" class="oe_inline" string="Valor de Productos" widget="monetary"/>
+							<field name="valor_total" class="oe_inline" string="Total"/>
+							<field name="valor_a_facturar" />
+							<field name="fechacierre" class="oe_inline" string="Fecha de Cierre"
+								widget="date" />
                                
                                 <!---->
-                    </group>
-                    <group>
-                    	<group>
-                        	<field name="tipo_confirmacion" class="oe_inline" attrs="{'readonly':[('state','!=','operadora')],'required':[('state','=','aprobado')]}"></field>
-                        </group>
-                        <group col="2">
-                        	<field name="confirmacion" class="oe_inline" string="Confirmación" attrs="{'readonly':[('state','!=','operadora')],'required':[('state','=','aprobado')]}"/>
-                        </group>
-                    </group>
-                </sheet>
-     			  	<div class="oe_chatter">
-                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
-                        <field name="message_ids" widget="mail_thread"/>
-                    </div>
-               </form>
-            </field>
-	</record>
-    
-	<record id="view_certifications_certification_graph" model="ir.ui.view">
-		<field name="name">certifications.certification.graph</field>
-        <field name="model">certifications.certification</field>
-        <field name="arch" type="xml">
-        <graph string="Certificaciones" type="bar">
-        </graph>
-        </field>
-    </record>
+						</group>
+						<group>
+							<group>
+								<field name="tipo_confirmacion" class="oe_inline"
+									attrs="{'readonly':[('state','!=','operadora')],'required':[('state','=','aprobado')]}"></field>
+							</group>
+							<group col="2">
+								<field name="confirmacion" class="oe_inline" string="Confirmación"
+									attrs="{'readonly':[('state','!=','operadora')],'required':[('state','=','aprobado')]}" />
+							</group>
+						</group>
+					</sheet>
+					<div class="oe_chatter">
+						<field name="message_follower_ids" widget="mail_followers"
+							groups="base.group_user" />
+						<field name="message_ids" widget="mail_thread" />
+					</div>
+				</form>
+			</field>
+		</record>
 
-	<record id="view_certifications_certification_pivot" model="ir.ui.view">
-		<field name="name">certifications.certification.pivot</field>
-        <field name="model">certifications.certification</field>
-        <field name="arch" type="xml">
-	        <pivot string="Certificaciones" >
-	        	<field name="fecha_realizacion" type="row"/>
-	        	<field name="operadora" type="col"/>
-	        	<field name="valortotal" type="measure"/>
-	        </pivot>
-        </field>
-    </record>
-    
-    
-    
-  </data>
+		<record id="view_certifications_certification_graph" model="ir.ui.view">
+			<field name="name">certifications.certification.graph</field>
+			<field name="model">certifications.certification</field>
+			<field name="arch" type="xml">
+				<graph string="Certificaciones" type="bar">
+				</graph>
+			</field>
+		</record>
+
+		<record id="view_certifications_certification_pivot" model="ir.ui.view">
+			<field name="name">certifications.certification.pivot</field>
+			<field name="model">certifications.certification</field>
+			<field name="arch" type="xml">
+				<pivot string="Certificaciones">
+					<field name="fecha_realizacion" type="row" />
+					<field name="operadora_id" type="col" />
+					<field name="valor_total" type="measure" />
+				</pivot>
+			</field>
+		</record>
+
+
+
+	</data>
 </openerp>
