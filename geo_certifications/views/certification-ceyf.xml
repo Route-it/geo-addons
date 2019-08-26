@@ -139,14 +139,14 @@
 			</field>
 		</record>
 
-        <record id="view_ceyf_timeline" model="ir.ui.view">
+<!--         <record id="view_ceyf_timeline" model="ir.ui.view"> 
             <field name="name">certifications.certification.timeline</field>
             <field name="model">certifications.certification_ceyf</field>
             <field name="arch" type="xml">
                 <timeline date_stop="fecha_cierre" date_start="fecha_realizacion" progress="100" string="Productions" >
                 </timeline>
             </field>
-         </record>
+          </record> -->
 
 		<record id="certifications_ceyf_graph" model="ir.ui.view">
 			<field name="name">certifications.certification.graph</field>
