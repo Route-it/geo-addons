@@ -136,7 +136,7 @@
 								<field name="valor_productos" widget="monetary" />
 								<field name="valor_servicios" widget="monetary"/>
 								<field name="valor_servicios_pesos" widget="monetary"/>
-								<field name="valor_total" requierd="True" widget="percentpie"/>
+								<field name="valor_total" requierd="True" widget="monetary"/>
 								
 							</group>
 							<group string="Observaciones">
