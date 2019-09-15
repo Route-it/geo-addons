@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+		<!-- actions opening views on models -->
+
+		<record model="ir.actions.act_window"
+			id="exchange_action_window">
+			<field name="name">Cotizacion del dolar</field>
+			<field name="res_model">exchange.cotizacion_dolar_bcra</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form,graph,pivot</field>
+			<field name="context">{
+				'search_default_last_month': 1
+				}
+			</field>
+		</record>
+
+
+		<menuitem name="Cotizacion del dolar BCRA"
+			id="exchange_left_menu_list"
+			parent="geo_certifications.left_menu_category"
+			action="exchange_action_window" />
+
+
+	</data>
+</openerp>

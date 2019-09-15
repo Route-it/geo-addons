@@ -87,8 +87,8 @@ update certifications_certification_ceyf set
 
 
 -- load who is company operator
-update res_partner set is_company_operator = True where id in(5,6,10,14,17,11,25,53);
-update res_partner set is_company_operator = False where id in(57,58,59,60,61,62);
+update res_partner set is_company_operator = True where id in(5,6,10,14,17,11,25);
+update res_partner set is_company_operator = False where id in(53,57,58,59,60,61,62);
 
 
 -- load company_operator_code (quitar esto y colocarlo en res_partner para reconfigurar)
@@ -98,13 +98,13 @@ update res_partner set company_operator_code = 'sinopec' where id in(11);
 update res_partner set company_operator_code = 'tecpetrol' where id in(14);
 update res_partner set company_operator_code = 'capsa' where id in(17);
 update res_partner set company_operator_code = 'enap' where id in(6);
-update res_partner set company_operator_code = 'otros' where id in(25,53);--termap,internergy
+update res_partner set company_operator_code = 'otros' where id in(25);--termap,internergy
 
 --update res_partner set company_operator_code = null where id in(57,58,59,60,61,62);
 
 
 -- desactivando supervisores solicitados en documento 15/08/2019.
-update certifications_supervisor set activo = false
+update certifications_supervisor set active = false
 where id in (12,10,9,15,13,6);
 
 --cambiando el lenguaje a español de españa para que se muestren bien todas las traducciones.
@@ -129,7 +129,7 @@ INSERT INTO certification_invoice(
 	ce.write_date,
 		case when
 		ce.tipo_confirmacion='factura' then ce.confirmacion
-		else ''
+		else null
 		end,
 		valortotal
 	from certifications_certification ce;
@@ -148,16 +148,47 @@ update certifications_certification_ceyf set
 ALTER TABLE certification_invoice
     DROP COLUMN certifications_certification_id;
 
---migrar habilita
+-- migrar DM YPF
+update certifications_certification_ceyf
+set dm = certifications_certification.parte 
+from certifications_certification
+where certifications_certification.operadora_id = 10  
+and not (certifications_certification.parte ~ '^[0-9\.\/\ \;\-]+$') 
+and not (certifications_certification.parte = 'S/N')
+and not (certifications_certification.parte = 'S/D') and not (certifications_certification.parte = 'N/A')
+and certifications_certification_ceyf.id=certifications_certification.id;
+
+update certifications_certification_ceyf
+set parte = ''
+from certifications_certification
+where certifications_certification.operadora_id = 10  
+and not (certifications_certification.parte ~ '^[0-9\.\/\ \;\-]+$') 
+and not (certifications_certification.parte = 'S/N')
+and not (certifications_certification.parte = 'S/D') and not (certifications_certification.parte = 'N/A')
+and certifications_certification_ceyf.id=certifications_certification.id;
+/*
+select * from certifications_certification
+where operadora_id = 10  and ((parte ~ '^[0-9\.\/\ \;\-]+$') or (parte = 'S/N')
+or (parte = 'S/D') or (parte = 'N/A'));
+select * from certifications_certification_ceyf
+where operadora_id = 10  and not (parte ~ '^[0-9\.\/\ \;\-]+$') and not (parte = 'S/N')
+and not (parte = 'S/D') and not (parte = 'N/A');
+*/
 update certifications_certification_ceyf set 
 	habilita = certifications_certification.confirmacion
 	from certifications_certification
-	where certifications_certification.tipo_confirmacion='habilita'
+	where certifications_certification.operadora_id = 10
+	and certifications_certification.tipo_confirmacion='habilita'
+	and certifications_certification.confirmacion ~ '^[0-9\ ]+$'
 	and certifications_certification_ceyf.id = certifications_certification.id;
-
-update certifications_certification set 
-	habilita = confirmacion
-	where tipo_confirmacion='habilita';
+update certifications_certification_ceyf set 
+	dm = certifications_certification.confirmacion
+	from certifications_certification
+	where certifications_certification.operadora_id = 10 
+	and certifications_certification.tipo_confirmacion='habilita'
+	and certifications_certification.confirmacion !~ '^[0-9\.\/\ \;\-]+$'
+	and certifications_certification_ceyf.id = certifications_certification.id;
+	
 
 --migrar hesop
 update certifications_certification_ceyf set 
@@ -167,33 +198,71 @@ update certifications_certification_ceyf set
 	and certifications_certification_ceyf.id = certifications_certification.id;
 
 --migrar facturas y habilita mal cargados.
-select * from certifications_certification where tipo_confirmacion is null;
 
 --> en confirmacion like 'FAC' or 'HAB' ->migrar split con ' ' 
-SELECT SPLIT_PART(confirmacion,' ',2) as dato,SPLIT_PART(confirmacion,' ',1) as tipo FROM certifications_certification
- where tipo_confirmacion is null;
+/*
+SELECT operadora_id,confirmacion,
+	REGEXP_REPLACE(
+		REGEXP_REPLACE(
+			REGEXP_REPLACE(confirmacion,'(~*(A0*)|~*(\ )&!([0-9\ 0-9])+|~*(\.)+|~*(0000)+|~*(N)+|(º)+|~*[A-Za-z])','','gi'),
+		'^(\ )*','','g'),
+	'(/\ |\ )','/','g') as dato2, 
+		case 
+			when operadora_id=5 then 'FACT' 
+			when operadora_id=14 then 'FACT' 
+			when operadora_id=11 then 'FACT' 
+			when operadora_id=17 then 'FACT' 
+			when operadora_id =10 then 'HABILITA' 
+			when confirmacion ~ ('~*(FACT)') then 'FACT' 
+			when SPLIT_PART(confirmacion,' ',1)='FACT' then 'FACT'
+		end, 
+	SPLIT_PART(confirmacion,' ',2) as dato,SPLIT_PART(confirmacion,' ',1) as tipo FROM certifications_certification
+ where tipo_confirmacion is null and confirmacion is not null;
+*/
 
 --migrando habilita mal cargado
 update certifications_certification_ceyf set 
-habilita = replace(replace(SPLIT_PART(certifications_certification.confirmacion,' ',2),'N',''),'ª','')
+habilita = REGEXP_REPLACE(
+		REGEXP_REPLACE(
+			REGEXP_REPLACE(confirmacion,'(~*(A0*)|~*(\ )&!([0-9\ 0-9])+|~*(\.)+|~*(0000)+|~*(N)+|(º)+|~*[A-Za-z])','','gi'),
+		'^(\ )*','','g'),
+	'(/\ |\ )','/','g')
 	from certifications_certification
-	where certifications_certification.tipo_confirmacion is null
-	and certifications_certification_ceyf.id = certifications_certification.id
-	and SPLIT_PART(certifications_certification.confirmacion,' ',1) like upper('%HAB%');
+	where certifications_certification.tipo_confirmacion is null and confirmacion is not null
+	and certifications_certification_ceyf.id = certifications_certification.id 
+	and certifications_certification.operadora_id =10;
+
 
 --migrando nro factura mal cargado
 update certification_invoice set 
-	invoice_number = replace(replace(SPLIT_PART(certifications_certification.confirmacion,' ',2),'N',''),'ª','')
+	invoice_number = 
+	REGEXP_REPLACE(
+		REGEXP_REPLACE(
+			REGEXP_REPLACE(confirmacion,'(~*(A0*)|~*(\ )&!([0-9\ 0-9])+|~*(\.)+|~*(0000)+|~*(N)+|(º)+|~*[A-Za-z])','','g'),
+		'^(\ )*','','g'),
+	'(/\ |\ )','/','g')
 	from certifications_certification
-	where certifications_certification.tipo_confirmacion is null
-	and certifications_certification.invoice_id = certification_invoice.id
-	and SPLIT_PART(certifications_certification.confirmacion,' ',1) like upper('%FAC%');
-
+	where operadora_id != 10
+	and certifications_certification.invoice_id = certification_invoice.id;
 
 -- agregando grupo de seguridad para todos los usuarios.
 insert into res_groups_users_rel 
 select (select id from res_groups where name like '%Administrador de Certificaciones%'),id  from res_users where active = true and id != 1
 
+
+/*
+'^[0-9\.\/\ \;\-]+$'
+		'((\ )|(\/\/)+)','/','g')
+
+select parte, confirmacion, tipo_confirmacion,
+	REGEXP_REPLACE(
+		REGEXP_REPLACE(
+			REGEXP_REPLACE(confirmacion,'(~*(A0*)|~*(\ )&!([0-9\ 0-9])+|~*(\.)+|~*(0000)+|~*(N)+|(º)+|~*[A-Za-z])','','g'),
+		'^(\ )*','','g'),
+	'(/\ |\ )','/','g')
+from certifications_certification where operadora_id != 10
+and parte like '28.24.1'
+*/
 
 
 --borrado de columnas viejas

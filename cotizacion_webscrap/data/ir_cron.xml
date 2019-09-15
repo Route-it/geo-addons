@@ -8,8 +8,8 @@
             <field name='interval_type'>days</field>
             <field name="numbercall">-1</field>
             <field name="active" eval="False"/>
-            <field name="model">cotizacion_webscrap.cron_cotizacion_webscrap</field>
-            <field name="function">get_state_from_cotizacion_webscrap</field>
+            <field name="model">exchange.cron_cotizacion_webscrap</field>
+            <field name="function">get_last_exchange_bcra_webscrap</field>
         </record>
 
     </data>

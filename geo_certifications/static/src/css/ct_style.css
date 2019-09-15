@@ -4,3 +4,6 @@
 	width: 30% !important;
 }
 
+div.user-image > img {
+  max-width:100%;
+}

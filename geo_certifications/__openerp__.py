@@ -17,7 +17,7 @@
     """,
 
     # any module necessary for this one to work correctly
-    'depends': ['mail'],
+    'depends': ['mail','web_m2x_options'],
     # ['project'],
 
     # always loaded
@@ -26,6 +26,7 @@
         'views/certification-ceyf.xml',
         'views/certification-coiled-tubing.xml',
         'views/supervisor.xml',
+        'views/contract.xml',
         'views/task.xml',
         'views/menu.xml',
         'views/res_partner_company_operator.xml',

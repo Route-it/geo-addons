@@ -8,6 +8,7 @@
 			<field name="name">Certificaciones Cementación</field>
 			<field name="res_model">certifications.certification_ceyf</field>
 			<field name="view_type">form</field>
+			<field name="context">{'order':'fecha_realizacion desc'}</field>
 			<field name="view_mode">tree,form,graph,pivot</field>
 			<field name="search_view_id" ref="certifications_ceyf_search" />
 		</record>
@@ -25,7 +26,12 @@
 			<field name="name">Supervisores</field>
 			<field name="res_model">certifications.supervisor</field>
 			<field name="view_mode">tree,form</field>
-<!-- 			<field name="search_view_id" ref="supervisor_list" /> -->
+		</record>
+		<record model="ir.actions.act_window"
+			id="geo_certifications.contract_action_window">
+			<field name="name">Contratos</field>
+			<field name="res_model">certification.contract</field>
+			<field name="view_mode">tree,form</field>
 		</record>
 
 
@@ -72,15 +78,10 @@
 			id="geo_certifications.supervisors_left_menu_list"
 			parent="geo_certifications.left_menu_category"
 			action="geo_certifications.supervisor_action_window"/>
-
-<!-- 		<menuitem name="Tareas" -->
-<!-- 			id="geo_certifications.task_left_menu_list" -->
-<!-- 			parent="geo_certifications.left_menu_category" -->
-<!-- 			action="geo_certifications.tasks_action_window"/> -->
-<!-- 		<menuitem name="Etapas de kanban de tareas" -->
-<!-- 			id="geo_certifications.stage_left_menu_list" -->
-<!-- 			parent="geo_certifications.left_menu_category" -->
-<!-- 			action="geo_certifications.stages_action_window"/> -->
+		<menuitem name="Contratos"
+			id="geo_certifications.contract_left_menu_list"
+			parent="geo_certifications.left_menu_category"
+			action="geo_certifications.contract_action_window"/>
 
 	</data>
 </openerp>

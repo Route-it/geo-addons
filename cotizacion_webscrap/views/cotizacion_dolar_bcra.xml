@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openerp>
+	<data>
+
+
+		<record id="bcra_filter" model="ir.ui.view">
+			<field name="name">cotizacion_dolar_bcra.select</field>
+			<field name="model">exchange.cotizacion_dolar_bcra</field>
+			<field name="arch" type="xml">
+				<search>
+					<filter string="Ultimos 30 dias" name="last_month" domain="[('last_month','=',True)]" />
+					<group expand="0" string="Agrupar por">
+						<filter string="Dia" domain="[ ]" context="{'group_by': 'fecha:day'}" />
+					</group>
+				</search>
+				</field>
+			</record>
+			
+		<record model="ir.ui.view" id="bcra_tree">
+			<field name="name">cotizacion_dolar_bcra.tree</field>
+			<field name="model">exchange.cotizacion_dolar_bcra</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="fecha" />
+					<field name="compra" />
+					<field name="venta" />
+				</tree>
+			</field>
+		</record>
+
+
+		<record model='ir.ui.view' id='bcra_form'>
+			<field name="name">cotizacion_dolar_bcra.form</field>
+			<field name="model">exchange.cotizacion_dolar_bcra</field>
+			<field name="arch" type="xml">
+				<form string="Supervisor">
+					<sheet string="Supervisor">
+
+						<group>
+							<h1>
+								<field name="fecha" />
+							</h1>
+						</group>
+						<group>
+							<group>
+								<field name="compra" />
+							</group>
+							<group>
+								<field name="venta" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="bcra_graph" model="ir.ui.view">
+			<field name="name">cotizacion_dolar_bcra.graph</field>
+			<field name="model">exchange.cotizacion_dolar_bcra</field>
+			<field name="arch" type="xml">
+				<graph string="Certificaciones" type="line">
+					<field name="fecha" type="row" interval="day"/>
+					<field name="compra" type="measure" />
+					<field name="venta" type="measure" />
+				
+				</graph>
+			</field>
+		</record>
+	</data>
+</openerp>

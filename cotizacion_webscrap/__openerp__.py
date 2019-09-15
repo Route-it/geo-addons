@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "cotizacion_webscrap",
+    'name': "Cotizacion Dolar BCRA",
 
     'summary': """
         obtiene la cotizacion del dolar historico""",
@@ -25,7 +25,8 @@
     'data': [
         # 'security/ir.model.access.csv',
         'data/ir_cron.xml',
-        'views/vehicle.xml',
+        'views/cotizacion_dolar_bcra.xml',
+        'views/menu.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

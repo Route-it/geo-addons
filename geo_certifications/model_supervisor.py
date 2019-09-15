@@ -11,8 +11,9 @@ _logger = logging.getLogger(__name__)
 class certifications_supervisor(models.Model):
 	_name = "certifications.supervisor"
 
+	_order = 'nombre asc'
 
-	activo = fields.Boolean(default=True,string="Activo")	
+	active = fields.Boolean(default=True,string="Activo")	
 	nombre = fields.Char(required=True)
 	apellido = fields.Char(required=True)
 	numeroSupervisor = fields.Integer(string="Número Supervisor")

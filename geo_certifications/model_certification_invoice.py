@@ -17,7 +17,7 @@ class certification_invoice(models.Model):
 	invoice_number = fields.Char("Numero de Factura")
 	currency_id = fields.Many2one('res.currency', string='Account Currency',
         help="Forces all moves for this account to have this account currency.")
-	valor_total = fields.Monetary("Valor Total")
+	valor_total = fields.Monetary("Valor Total",track_visibility='onchange')
 
 
 

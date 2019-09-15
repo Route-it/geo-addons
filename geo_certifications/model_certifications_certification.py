@@ -15,12 +15,13 @@ class certifications_certification(models.Model):
 	_description = 'Certificaciones'
 
 	
-	contrato = fields.Char(string="Contrato")
+	contrato = fields.Many2one("certification.contract",domain = [('active','=','True')])
+	
 	#comunes
 	#operadora = fields.Many2one('res.partner',oldname='operadora',domain = [('is_company','=','True')],string="Operadora")
 	operadora_id = fields.Many2one('res.partner',oldname='operadora',domain = [('is_company','=','True')],required=True,string="Operadora")
 	company_operator_code = fields.Char(related='operadora_id.company_operator_code')
-	pozo = fields.Char(string="Pozo")
+	pozo = fields.Char(required=True,string="Pozo",track_visibility='onchange')
 
 
 	state = fields.Selection([("carga","Carga de Datos"),
@@ -29,7 +30,7 @@ class certifications_certification(models.Model):
 							("cobrado","Cobrado")
 							], string="Estado", required=True, readonly=True,default='carga') 
 
-	dm = fields.Char(string="DM")
+	dm = fields.Char(string="DM",track_visibility='onchange')
 	habilita = fields.Char(string="Habilita")
 	invoice_id = fields.Many2one('certification.invoice', string="Factura")
 	
@@ -37,18 +38,27 @@ class certifications_certification(models.Model):
 	invoice_date = fields.Datetime(related="invoice_id.invoice_date")
 	invoice_date_charge = fields.Datetime(related="invoice_id.invoice_date_charge")
 	invoice_number = fields.Char(related='invoice_id.invoice_number')
-	valor_total_factura = fields.Monetary(related='invoice_id.valor_total')
+	valor_total_factura = fields.Monetary(related='invoice_id.valor_total',track_visibility='onchange')
 
-	cotizacion_to_date_charge = fields.Monetary("Cotización  del dólar (1 U$S)")
+	cotizacion_to_date_charge = fields.Monetary("Cotización  del dólar (1 U$S)",
+											default=lambda self: self._get_last_exchange(),track_visibility='onchange'
+											)
 
 	currency_id = fields.Many2one('res.currency', string='Account Currency',
     							help="Forces all moves for this account to have this account currency.")
 
 
-	valor_productos = fields.Monetary(required=True,string="Valor de productos U$S")
-	valor_servicios = fields.Monetary(string="Valor de servicios U$S")
-	valor_servicios_pesos = fields.Monetary(string="Valor de servicios $")
+	valor_productos = fields.Monetary(required=True,string="Valor de productos U$S",track_visibility='onchange')
+	valor_servicios = fields.Monetary(string="Valor de servicios U$S",track_visibility='onchange')
+	valor_servicios_pesos = fields.Monetary(string="Valor de servicios $",track_visibility='onchange')
 	valor_total = fields.Monetary(readonly=True,compute='setTotalValue',store=True,string="Valor total")
+	
+	@api.model
+	def _get_last_exchange(self):
+		try:
+			return self.env['exchange.cotizacion_dolar_bcra'].search([],limit=1).venta
+		except Exception:
+			return
 	
 	@api.one
 	@api.constrains('valor_servicios_pesos')
@@ -108,7 +118,7 @@ class certifications_certification(models.Model):
 			contract = ''
 			invoice_number = ''
 			if record.contrato:
-				contract = '('+record.contrato+')' or ''
+				contract = '('+record.contrato.name+')' or ''
 			if record.invoice_number:
 				invoice_number = '- Fact:'+ record.invoice_number or ''
 			appeler = name + contract +invoice_number
@@ -157,3 +167,16 @@ class certifications_certification(models.Model):
 		return [('message_needaction', '=', True)]
 		#return [('journal_entry_ids', '=', False), ('account_id', '=', False)]
 
+	def fields_get(self, cr, user, allfields=None, context=None, write_access=True, attributes=None):
+		res = super(certifications_certification, self).fields_get( cr, user, allfields, context, write_access, attributes)
+		
+		my_special_keys = ['messa','write_uid','write_date','create_uid','create_date','id','__last_update','company_operator_code','currency_id']
+		for k in res.keys():
+			for i in my_special_keys:
+				if i in k: 
+					res.get(k)['exportable'] = False
+					res.get(k)['searchable'] = False
+					res.get(k)['selectable'] = False
+		
+		return res
+		
