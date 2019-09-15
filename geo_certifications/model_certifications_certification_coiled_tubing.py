@@ -21,15 +21,14 @@ class certifications_certification_coiled_tubing(models.Model):
 				("producto","Producto")]
 	
 	
-	contrato = fields.Char(string="Contrato", required=True)
+	contrato = fields.Many2one(required=True)
 
-	equipo = fields.Selection([('UCT1','UCT1'),
-								('UCT2','UCT2'),
-								('UCT3','UCT3'),
-								('UCT4','UCT4'),
-								('UCT5','UCT5')],required=True,string="Equipo")
+	equipo = fields.Selection([('UCT1','UCT-1'),
+								('UCT2','UCT-2'),
+								('UCT3','UCT-3'),
+								('UCT4','UCT-4'),
+								('UCT5','UCT-5')],required=True,string="Equipo",track_visibility='onchange')
 	
-	pozo = fields.Char(required=True,string="Pozo")
 	fecha_inicio = fields.Date(required=True,string="Fecha de inicio")
 	fecha_fin = fields.Date(required=True,string="Fecha de fin")
 	operacion = fields.Selection(OPERATIONS,required=True,string="Operación")
@@ -46,7 +45,7 @@ class certifications_certification_coiled_tubing(models.Model):
 	def check_fields_for_state(self,fields_to_check,vals):
 		yes = True
 		for it in fields_to_check:
-			yes = (True if vals.get(it)!=None or eval('self.'+it)!=False else False) and yes
+			yes = (True if (vals.get(it)!=None or eval('self.'+it)!=False) and vals.get(it)!=False else False) and yes
 			if not yes: break
 		return yes
 
@@ -84,6 +83,7 @@ class certifications_certification_coiled_tubing(models.Model):
 			if self.check_fields_for_state(self.fields_to_check_cobrado,vals): state = 'cobrado' 
 			vals['state'] = state
 
+		""" comentado a pedido en reunion 10/09/2019
 		else:
 			if vals.get('state') == 'carga':
 				for item in self.fields_to_check_proceso_facturacion + self.fields_to_check_cobrado:
@@ -91,7 +91,7 @@ class certifications_certification_coiled_tubing(models.Model):
 			if vals.get('state') == 'proceso_facturacion':
 				for item in self.fields_to_check_cobrado:
 					vals[item] = False
-			
+		"""
 		
 		
 		return super(certifications_certification_coiled_tubing, self).write(vals)

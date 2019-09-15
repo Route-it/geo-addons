@@ -29,12 +29,11 @@ class certifications_certification_ceyf(models.Model):
 	antique_register = fields.Datetime(string="Registro Antigüo")
 	
 	evento = fields.Char(string="Evento")
-	parte = fields.Char(string="Parte")
+	parte = fields.Char(string="Parte",track_visibility='onchange')
 	fecha_realizacion = fields.Date(required=True,string="Fecha de realización",oldname="fechaRealizacion")
 	yacimiento = fields.Selection([('chubut','Chubut'),('santa cruz','Santa Cruz')],required=True,string="Yacimiento")
 	supervisor_id = fields.Many2one('certifications.supervisor','Supervisor',required=True)
-	pozo = fields.Char(required=True)
-	equipo = fields.Char(required=True,string="Equipo")
+	equipo = fields.Char(required=True,string="Equipo",track_visibility='onchange')
 	bombeador = fields.Char(required=True,string="Bombeador")
 	blscemento = fields.Integer(required=True,string="Bolsas de cemento")
 	
@@ -77,16 +76,18 @@ class certifications_certification_ceyf(models.Model):
 
 	@api.one
 	def name_get(self):
-		
-		name = self.operadora_id.name+' / ('+self.parte+')'
-	
+		try:
+			name = self.operadora_id.name+' / '+self.equipo+' / '+self.pozo
+		except:
+			name = self.operadora_id.name
 		return (self.id,name)
 
 	
 	def check_fields_for_state(self,fields_to_check,vals):
 		yes = True
 		for it in fields_to_check:
-			yes = (True if vals.get(it)!=None or eval('self.'+it)!=False else False) and yes
+			yes = (True if (vals.get(it)!=None or eval('self.'+it)!=False) and vals.get(it)!=False else False) and yes			
+			#yes = (True if vals.get(it)!=None or eval('self.'+it)!=False else False) and yes
 			if not yes: break
 		return yes
 
@@ -104,8 +105,8 @@ class certifications_certification_ceyf(models.Model):
 	
 	"""
 	fields_to_check_carga = ['operadora_id','operacion','equipo','pozo',
-					'fecha_realizacion','parte','bombeador','yacimiento','supervisor_id',
-					'blscemento','valor_servicios','valor_productos']
+					'fecha_realizacion','bombeador','yacimiento','supervisor_id',
+					'blscemento','valor_productos']
 	fields_to_check_carga_confirmacion = ['certop','dm','codigo']
 	fields_to_check_proceso_facturacion = ['hesop','habilita']
 	fields_to_check_facturacion = ['invoice_date','invoice_number','valor_total']
@@ -136,7 +137,7 @@ class certifications_certification_ceyf(models.Model):
 				self.supervisor_id.operacionesHechas+=1
 			vals['state'] = state
 
-
+		""" comentado a pedido en reunion 10/09/2019
 		else:
 			if vals.get('state') == 'carga':
 				for item in self.fields_to_check_proceso_facturacion + self.fields_to_check_facturacion + self.fields_to_check_cobrado:
@@ -147,7 +148,7 @@ class certifications_certification_ceyf(models.Model):
 			if vals.get('state') == 'facturacion':
 		
 				vals['invoice_date_charge'] = False
-			
+		"""
 		
 		
 		return super(certifications_certification_ceyf, self).write(vals)
@@ -156,8 +157,10 @@ class certifications_certification_ceyf(models.Model):
 
 	@api.model
 	def create(self, vals):
-		superv = self.env['certifications.supervisor'].search([('id','=',vals['supervisor_id'])])
-		vals['parte'] = str(superv.numeroSupervisor) + "." + str(superv.operacionesHechas)
+		
+		#No es un dato calculado: Reunion 10/09/2019
+		#superv = self.env['certifications.supervisor'].search([('id','=',vals['supervisor_id'])])
+		#vals['parte'] = str(superv.numeroSupervisor) + "." + str(superv.operacionesHechas)
 		
 		item = super(certifications_certification_ceyf, self).create(vals)
 		#check if state is completed
@@ -169,3 +172,14 @@ class certifications_certification_ceyf(models.Model):
 	def suscribe_specific_partners(self,certif,partner_ids=[]):
 		partner_ids = self.env['res.users'].search([('active','=',True)]).mapped('partner_id').ids
 		super(certifications_certification_ceyf, self).suscribe_specific_partners(certif,partner_ids)
+
+
+
+
+	def read_group(self, cr, uid, domain, fields, groupby, offset=0, limit=None, context=None, orderby=False, lazy=True):
+		if not orderby:
+			return super(certifications_certification_ceyf, self).read_group(cr, uid, domain, fields, groupby, offset, limit, context, "fecha_realizacion desc", lazy)
+		return super(certifications_certification_ceyf, self).read_group(cr, uid, domain, fields, groupby, offset, limit, context, orderby, lazy)
+	
+	
+	

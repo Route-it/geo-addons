@@ -11,6 +11,7 @@
 					<field name="pozo" />
 					<field name="state"/>
 					<field name="parte"/>
+					<field name="dm"/>
 					<field name="yacimiento" />
 					<field name="operacion"/>
 					<field name="fecha_realizacion" />
@@ -38,7 +39,8 @@
 					<filter string="Registros Nuevos" name="antique_register" domain="[('antique_register','=',False)]" />
 					
 					<group expand="0" string="Agrupar por">
-						<filter string="Mes" domain="[ ]" context="{'group_by': 'fecha_realizacion:month'}" />
+					<!-- el order by en grupos se realiza por codigo. Habria que extender el objeto model para soportarlo,'order_by':'fecha_realizacion,desc' -->
+						<filter string="Mes" domain="[ ]" context="{'group_by': 'fecha_realizacion'}"/>
 						<filter string="Operadora" domain="[ ]" context="{'group_by': 'operadora_id'}" />
 					</group>
 				</search>
@@ -59,7 +61,7 @@
 							<h1>
 								<field name="id" invisible="1"/>
 								<label for="operadora_id" />
-								
+								<br/>
 								<!-- 
 						<field name="delivery_photos_ids" widget="many2many_kanban" 
 							context="{'default_res_model':'delsol.delivery','default_res_id':id,'default_res_name':name,'form_view_ref':'entregas_photos.view_attachment_delivery_form','tree_view_ref':'entregas_photos.view_attachment_delivery_tree'}" 
@@ -77,18 +79,20 @@
 						<group >
 							<group string="Trabajo" attrs="{'readonly':[('state','not in',('carga'))]}">
 							<!-- obligatorio solo si es ypf -->
-								<field name="contrato"  attrs="{'readonly':[('state','not in',('carga'))],'required': [('company_operator_code', '=', 'ypf')], 'invisible': [('company_operator_code', '!=', 'ypf')]}"/> 		<!--  -->						
+								<field name="contrato" domain="[('active','=',True)]" attrs="{'readonly':[('state','not in',('carga'))],'required': [('company_operator_code', '=', 'ypf')], 'invisible': [('company_operator_code', '!=', 'ypf')]}"/> 		<!--  -->						
 								<field name="fecha_realizacion" string="Fecha de Realización"
 									class="oe_inline" widget="date"  attrs="{'readonly':[('state','not in',('carga'))]}"/>
 								<field name="operacion" string="Operación"  attrs="{'readonly':[('state','not in',('carga'))]}"/>
-								<field name="parte" readonly="True" attrs="{'invisible': [('id','=',False)]}"/>
+								<field name="parte"/>
+								<!-- Comentado reunion 10-09-2019
+								field name="parte" readonly="True" attrs="{'invisible': [('id','=',False)]}"/-->
 							<!-- obligatorio solo si es ypf o pae -->
 								<field name="evento"  attrs="{'required': ['|','&amp;',('company_operator_code', '=', 'ypf'),('company_operator_code', '=', 'pae'),('operacion', '=', 'patagoniano')],
 															  'invisible': ['&amp;','|',('company_operator_code', '!=', 'pae'),('company_operator_code', '!=', 'ypf'),('operacion', '!=', 'patagoniano')],
 															  'readonly':[('state','not in',('carga'))]}" />
 							</group>
 							<group string="Detalle">
-								<field name="supervisor_id" domain="[('activo','=',True)]" attrs="{'readonly':[('state','not in',('carga'))]}" options="{'limit': 15}"/>
+								<field name="supervisor_id" domain="[('active','=',True)]" attrs="{'readonly':[('state','not in',('carga'))]}" options="{'limit': 15}"/>
 								<field name="pozo" attrs="{'readonly':[('state','not in',('carga'))]}"/>
 								<field name="yacimiento" attrs="{'readonly':[('state','not in',('carga'))]}"/>
 								<field name="equipo" attrs="{'readonly':[('state','not in',('carga'))]}"/>
@@ -107,9 +111,9 @@
 							</group>
 
 							<group string="Confirmación" attrs="{'invisible': [('company_operator_code', '!=', 'ypf'),('company_operator_code', '!=', 'pae'),('company_operator_code', '!=', 'sinopec'),('company_operator_code', '!=', 'tecpetrol')]}">
-								<field name="dm"  attrs="{'required': [('company_operator_code', '=', 'ypf')], 'invisible': [('company_operator_code', '!=', 'ypf')]}"/>
+								<field name="dm"  attrs="{'required': [('company_operator_code', '=', 'ypf'),('state','in',('proceso_facturacion','facturacion','cobrado'))], 'invisible': [('company_operator_code', '!=', 'ypf')]}"/>
 								<field name="habilita"   attrs="{'required': [('company_operator_code', '=', 'ypf'),('state','in',('proceso_facturacion','facturacion','cobrado'))],'invisible': [('company_operator_code', '!=', 'ypf')]}"/> 
-								<field name="certop" attrs="{'required': [('company_operator_code', '=', 'pae')],'invisible': [('company_operator_code', '!=', 'pae')]}"/> 
+								<field name="certop" attrs="{'invisible': [('company_operator_code', '!=', 'pae')]}"/> 
 								<field name="hesop" attrs="{'required': [('company_operator_code', '=', 'pae'),('state','in',('proceso_facturacion','facturacion','cobrado'))],'invisible': [('company_operator_code', '!=', 'pae')]}"/> 
 								<field name="codigo" attrs="{'required': [('company_operator_code', '=', 'sinopec')],'invisible': [('company_operator_code', '!=', 'sinopec')]}"/> 
 								<field name="hoja_de_servicio" attrs="{'invisible': [('company_operator_code', '!=', 'tecpetrol')]}"/> 

@@ -30,7 +30,7 @@
                     		<field name="numeroSupervisor"/>
                           	<field name="operacionesHechas" />
                           	<field name="nivelOperacion" />
-                          	<field name="activo" widget="toggle_button"/>
+                          	<field name="active" widget="toggle_button"/>
                     </group>
                  </sheet>
             	</form>

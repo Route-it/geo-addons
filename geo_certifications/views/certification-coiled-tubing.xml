@@ -33,7 +33,7 @@
 					<field name="fecha_inicio" />
 					<filter string="Pendientes por facturar" name="invoice_pending" domain="[('state','in',('carga','proceso_facturacion'))]" />
 					<group expand="0" string="Agrupar por">
-						<filter string="Mes" domain="[ ]" context="{'group_by': 'fecha_inicio:month'}" />
+						<filter string="Mes" domain="[ ]" context="{'group_by': 'fecha_inicio'}" />
 						<filter string="Operadora" domain="[ ]" context="{'group_by': 'operadora_id'}" />
 						<filter string="Equipo" domain="[ ]" context="{'group_by': 'equipo'}" />
 					</group>
@@ -109,6 +109,7 @@
 						<div class="oe_title">
 							<h1>
 								<label for="operadora_id" />
+								<br/>
 								<field name="operadora_id" placeholder="Operadora" domain="[('is_company_operator','=',True),('is_company','=',True),]"
 														context="{'default_is_company_operator':True,'default_is_company':True,'form_view_ref':'geo_certifications.res_partner_company_operator_form'}"
 														 attrs="{'readonly':[('state','in',('proceso_facturacion','facturacion','cobrado'))]}"/> 
@@ -117,7 +118,7 @@
 						</div>
 						<group >
 							<group string="Trabajo" rowspan="2">
-								<field name="contrato" requierd="True"  attrs="{'readonly':[('state','in',('proceso_facturacion','facturacion','cobrado'))]}"/> 							
+								<field name="contrato" requierd="True" domain="[('active','=',True)]" attrs="{'readonly':[('state','in',('proceso_facturacion','facturacion','cobrado'))]}"/> 							
 								<field name="equipo" requierd="True"  attrs="{'readonly':[('state','in',('proceso_facturacion','facturacion','cobrado'))]}"/>
 								<field name="pozo"  requierd="True"  attrs="{'readonly':[('state','in',('proceso_facturacion','facturacion','cobrado'))]}"/>
 								<field name="fecha_inicio" widget="date"  requierd="True"  attrs="{'readonly':[('state','in',('proceso_facturacion','facturacion','cobrado'))]}"/>

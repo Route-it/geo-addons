@@ -17,6 +17,7 @@ _logger = logging.getLogger(__name__)
 class company_operator(models.Model):
     
     _inherit = 'res.partner'
+    _order = 'id asc'
     
     @api.model
     def default_get(self, fields):
