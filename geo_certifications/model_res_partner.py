@@ -44,5 +44,16 @@ class company_operator(models.Model):
         
         return res
 
-    
+    @api.one
+    @api.constrains('name')
+    def check_unique_name(self):
+        records = self.env['res.partner'].search([('name','=',self.name)])
+        if len(records)>0:
+            for record in records: 
+                if (record.company_operator_code):
+                    raise ValidationError("Ya existe un registro con ese nombre")
+
+                   
+                   
+
     

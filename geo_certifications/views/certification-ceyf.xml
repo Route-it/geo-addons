@@ -54,7 +54,9 @@
 				<form string="Certificaciones">
 					<header>
 
-						<field name="state" widget="statusbar" clickable="True" />
+						<field name="state" widget="statusbar" clickable="True" attrs="{'invisible': [('id','=',False)]}"/>
+
+						
 					</header>
 					<sheet string="Certificaciones CEYF">
 						<div class="oe_title">
@@ -71,35 +73,38 @@
 								<field name="operadora_id" 
 														placeholder="Operadora" domain="[('is_company_operator','=',True),('is_company','=',True),]"
 														context="{'default_is_company_operator':True,'default_is_company':True,'default_company_operator_code':'otros','form_view_ref':'geo_certifications.res_partner_company_operator_form'}"
-														options="{'no_create_edit':True}"
-														attrs="{'readonly':[('state','not in',('carga'))]}"/>
+														options="{'no_create_edit':True,'no_create':True,'no_open':True}"/>
+														<!--attrs="{'readonly':[('state','not in',('carga'))]}"-->
+
 								<field name="company_operator_code" invisible="1"/>
 							</h1>
 						</div>
 						<group >
-							<group string="Trabajo" attrs="{'readonly':[('state','not in',('carga'))]}">
+						<!--attrs="{'readonly':[('state','not in',('carga'))]}"-->
+							<group string="Trabajo" >
 							<!-- obligatorio solo si es ypf -->
-								<field name="contrato" domain="[('active','=',True)]" attrs="{'readonly':[('state','not in',('carga'))],'required': [('company_operator_code', '=', 'ypf')], 'invisible': [('company_operator_code', '!=', 'ypf')]}"/> 		<!--  -->						
+								<field name="contrato" domain="[('active','=',True)]" attrs="{'required': [('company_operator_code', '=', 'ypf')], 'invisible': [('company_operator_code', '!=', 'ypf')]}"/> 		<!--  -->						
 								<field name="fecha_realizacion" string="Fecha de Realización"
-									class="oe_inline" widget="date"  attrs="{'readonly':[('state','not in',('carga'))]}"/>
-								<field name="operacion" string="Operación"  attrs="{'readonly':[('state','not in',('carga'))]}"/>
+									class="oe_inline" widget="date"/>
+								<field name="operacion" string="Operación"/>
 								<field name="parte"/>
 								<!-- Comentado reunion 10-09-2019
 								field name="parte" readonly="True" attrs="{'invisible': [('id','=',False)]}"/-->
 							<!-- obligatorio solo si es ypf o pae -->
 								<field name="evento"  attrs="{'required': ['|','&amp;',('company_operator_code', '=', 'ypf'),('company_operator_code', '=', 'pae'),('operacion', '=', 'patagoniano')],
-															  'invisible': ['&amp;','|',('company_operator_code', '!=', 'pae'),('company_operator_code', '!=', 'ypf'),('operacion', '!=', 'patagoniano')],
-															  'readonly':[('state','not in',('carga'))]}" />
+															  'invisible': ['&amp;','|',('company_operator_code', '!=', 'pae'),('company_operator_code', '!=', 'ypf'),('operacion', '!=', 'patagoniano')]}" />
+															  <!--,'readonly':[('state','not in',('carga'))]-->
 							</group>
-							<group string="Detalle">
-								<field name="supervisor_id" domain="[('active','=',True)]" attrs="{'readonly':[('state','not in',('carga'))]}" options="{'limit': 15}"/>
-								<field name="pozo" attrs="{'readonly':[('state','not in',('carga'))]}"/>
-								<field name="yacimiento" attrs="{'readonly':[('state','not in',('carga'))]}"/>
-								<field name="equipo" attrs="{'readonly':[('state','not in',('carga'))]}"/>
-								<field name="bombeador" attrs="{'readonly':[('state','not in',('carga'))]}"/>
+							<group string="Detalle"> <!--attrs="{'readonly':[('state','not in',('carga'))]}"-->
+								<field name="supervisor_id" domain="[('active','=',True)]"  options="{'limit': 15,'no_create':True,'no_open':True}"/>
+								<field name="pozo" />
+								<field name="yacimiento" />
+								<field name="equipo" />
+								<field name="bombeador" />
 	
+								<!--attrs="{'readonly':[('state','not in',('carga'))]}"-->
 								<field name="blscemento"
-									widget="integer" attrs="{'readonly':[('state','not in',('carga'))]}"/>
+									widget="integer" />
 							</group>
 						</group>
 						<group>
@@ -123,11 +128,11 @@
 							<group string="Facturación" attrs="{'invisible': [('id','=',False)]}">
 								<field name="invoice_id" invisible="1"/>
 								
-								<field name="invoice_date" attrs="{'required': [('state','in',('facturacion','cobrado'))]}" />
+								<field name="invoice_date" attrs="{'required': [('state','in',('facturacion','cobrado'))]}" widget="date"/>
 								<field name="invoice_number" attrs="{'required': [('state','in',('facturacion','cobrado'))]}"/>
 								<field name="valor_total_factura" attrs="{'required': [('state','in',('facturacion','cobrado'))]}"/>
 
-								<field name="invoice_date_charge" attrs="{'required': [('state','in',('cobrado'))]}"/>
+								<field name="invoice_date_charge" attrs="{'required': [('state','in',('cobrado'))]}" widget="date"/>
 							</group>
 							<group string="Cotización">
 								<field name="cotizacion_to_date_charge" attrs="{'required': [('state','in',('facturacion','cobrado'))]}"/>

@@ -102,7 +102,7 @@
 				<form string="Certificaciones">
 					<header>
 
-						<field name="state" widget="statusbar" clickable="True" />
+						<field name="state" widget="statusbar" clickable="True" attrs="{'invisible': [('id','=',False)]}"/>
 					</header>
 					<sheet string="Certificaciones CEYF">
 						<field name="id" invisible="1"/>
@@ -112,26 +112,27 @@
 								<br/>
 								<field name="operadora_id" placeholder="Operadora" domain="[('is_company_operator','=',True),('is_company','=',True),]"
 														context="{'default_is_company_operator':True,'default_is_company':True,'form_view_ref':'geo_certifications.res_partner_company_operator_form'}"
-														 attrs="{'readonly':[('state','in',('proceso_facturacion','facturacion','cobrado'))]}"/> 
+														/> 
+														<!-- attrs="{'readonly':[('state','in',('proceso_facturacion','facturacion','cobrado'))]}"-->														
 								<field name="company_operator_code" invisible="1"/>
 							</h1>
 						</div>
 						<group >
-							<group string="Trabajo" rowspan="2">
-								<field name="contrato" requierd="True" domain="[('active','=',True)]" attrs="{'readonly':[('state','in',('proceso_facturacion','facturacion','cobrado'))]}"/> 							
-								<field name="equipo" requierd="True"  attrs="{'readonly':[('state','in',('proceso_facturacion','facturacion','cobrado'))]}"/>
-								<field name="pozo"  requierd="True"  attrs="{'readonly':[('state','in',('proceso_facturacion','facturacion','cobrado'))]}"/>
-								<field name="fecha_inicio" widget="date"  requierd="True"  attrs="{'readonly':[('state','in',('proceso_facturacion','facturacion','cobrado'))]}"/>
-								<field name="fecha_fin" widget="date" requierd="True"  attrs="{'readonly':[('state','in',('proceso_facturacion','facturacion','cobrado'))]}"/>
-								<field name="operacion"  requierd="True"  attrs="{'readonly':[('state','in',('proceso_facturacion','facturacion','cobrado'))]}"/>
-								<field name="regional"  requierd="True" attrs="{'readonly':[('state','in',('proceso_facturacion','facturacion','cobrado'))]}" />
+							<group string="Trabajo" rowspan="2"><!--attrs="{'readonly':[('state','in',('proceso_facturacion','facturacion','cobrado'))]}"-->
+								<field name="contrato" requierd="True" domain="[('active','=',True)]" />  							
+								<field name="equipo" requierd="True"  /> 
+								<field name="pozo"  requierd="True"  /> 
+								<field name="fecha_inicio" widget="date"  requierd="True" /> 
+								<field name="fecha_fin" widget="date" requierd="True" /> 
+								<field name="operacion"  requierd="True" /> 
+								<field name="regional"  requierd="True"  /> 
 							</group>
 							<group string="Confirmacion" attrs="{'invisible': [('company_operator_code', '!=', 'ypf')]}">
 <!-- 									<field name="dm"  attrs="{'required': [('company_operator_code', '=', 'ypf')], 'invisible': [('company_operator_code', '!=', 'ypf')]}"/> -->
 <!-- 									<field name="habilita"   attrs="{'required': [('company_operator_code', '=', 'ypf'),('state','in',('proceso_facturacion','facturacion','cobrado'))],'invisible': [('company_operator_code', '!=', 'ypf')]}"/>  -->
-							
-									<field name="dm"  attrs="{'required': ['&amp;',('state', 'in', ('proceso_facturacion','facturacion','cobrado')),('company_operator_code', '=', 'ypf')], 'readonly':[('state','in',('facturacion','cobrado'))], 'invisible': [('company_operator_code', '!=', 'ypf')]}"/>
-									<field name="habilita"   attrs="{'required': ['&amp;',('state', 'in', ('proceso_facturacion','facturacion','cobrado')),('company_operator_code', '=', 'ypf')], 'readonly':[('state','in',('facturacion','cobrado'))], 'invisible': [('company_operator_code', '!=', 'ypf')]}"/> 
+							 			<!--'readonly':[('state','in',('facturacion','cobrado'))],-->
+									<field name="dm"  attrs="{'required': ['&amp;',('state', 'in', ('proceso_facturacion','facturacion','cobrado')),('company_operator_code', '=', 'ypf')], 'invisible': [('company_operator_code', '!=', 'ypf')]}"/>
+									<field name="habilita"   attrs="{'required': ['&amp;',('state', 'in', ('proceso_facturacion','facturacion','cobrado')),('company_operator_code', '=', 'ypf')], 'invisible': [('company_operator_code', '!=', 'ypf')]}"/> 
 							</group>
 							<group string="Valores" >
 								<field name="valor_productos" widget="monetary" />

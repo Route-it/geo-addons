@@ -26,4 +26,9 @@ class certification_contract(models.Model):
 
 	
 	
-	
+	@api.one
+	@api.constrains('name')
+	def check_unique_name(self):
+		records = self.env['certification.contract'].search([('name','=',self.name)])
+		if len(records)>0:
+			raise ValidationError("Ya existe un registro con ese nombre, verifique que este activo")

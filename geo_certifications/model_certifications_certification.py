@@ -35,10 +35,10 @@ class certifications_certification(models.Model):
 	invoice_id = fields.Many2one('certification.invoice', string="Factura")
 	
 	#related
-	invoice_date = fields.Datetime(related="invoice_id.invoice_date")
-	invoice_date_charge = fields.Datetime(related="invoice_id.invoice_date_charge")
+	invoice_date = fields.Date(related="invoice_id.invoice_date")
+	invoice_date_charge = fields.Date(related="invoice_id.invoice_date_charge")
 	invoice_number = fields.Char(related='invoice_id.invoice_number')
-	valor_total_factura = fields.Monetary(related='invoice_id.valor_total',track_visibility='onchange')
+	valor_total_factura = fields.Monetary(related='invoice_id.valor_total')
 
 	cotizacion_to_date_charge = fields.Monetary("Cotización  del dólar (1 U$S)",
 											default=lambda self: self._get_last_exchange(),track_visibility='onchange'

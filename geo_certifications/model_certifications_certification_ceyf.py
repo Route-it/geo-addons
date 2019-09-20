@@ -37,7 +37,7 @@ class certifications_certification_ceyf(models.Model):
 	bombeador = fields.Char(required=True,string="Bombeador")
 	blscemento = fields.Integer(required=True,string="Bolsas de cemento")
 	
-	fecha_cierre = fields.Datetime(readonly=True,string="Fecha de cierre")
+	fecha_cierre = fields.Date(readonly=True,string="Fecha de cierre")
 	
 
 	
@@ -119,18 +119,23 @@ class certifications_certification_ceyf(models.Model):
 		
 		if vals.get('state') is None:
 			state = 'carga'
-			if self.check_fields_for_state(self.fields_to_check_carga,vals): state = 'proceso_facturacion' 
-			#if self.check_fields_for_state(self.fields_to_check_proceso_facturacion,vals): state = 'facturacion' 
-			if ((self.hesop != False or vals.get('hesop') != None) and (self.company_operator_code == 'pae')):
-					state = 'facturacion'
+			if self.check_fields_for_state(self.fields_to_check_carga,vals): 
+				state = 'proceso_facturacion' 
+			#if self.check_fields_for_state(self.fields_to_check_proceso_facturacion,vals): state = 'facturacion'
 			else:
-				if ((self.habilita!= False or vals.get('habilita') != None)  and (self.company_operator_code == 'ypf')):
+				if (self.company_operator_code == 'pae'):
+					if (vals.get('hesop')!=None or eval('self.hesop')!=False) and vals.get('hesop')!=False:
 						state = 'facturacion'
 				else:
-					if ((self.codigo!= False or vals.get('codigo') != None)  and (self.company_operator_code == 'sinopec')):state = 'facturacion'
-					else:
-						if not (self.company_operator_code in ('pae','ypf','sinopec')):
+					if (self.company_operator_code == 'ypf'):
+						if (vals.get('habilita')!=None or eval('self.habilita')!=False) and vals.get('habilita')!=False:
 							state = 'facturacion'
+					else:
+						if (vals.get('codigo')!=None or eval('self.codigo')!=False) and vals.get('codigo')!=False:
+							state = 'facturacion'
+						else:
+							if not (self.company_operator_code in ('pae','ypf','sinopec')):
+								state = 'facturacion'
 			
 			if self.check_fields_for_state(self.fields_to_check_cobrado,vals): 
 				state = 'cobrado' 

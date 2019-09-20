@@ -13,6 +13,9 @@ class certifications_supervisor(models.Model):
 
 	_order = 'nombre asc'
 
+
+	_rec_name = "nombre"
+
 	active = fields.Boolean(default=True,string="Activo")	
 	nombre = fields.Char(required=True)
 	apellido = fields.Char(required=True)
