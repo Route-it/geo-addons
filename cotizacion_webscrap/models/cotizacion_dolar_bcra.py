@@ -30,8 +30,6 @@ class cotizacion_dolar_bcra(models.Model):
                                 help="Forces all moves for this account to have this account currency.")
     
 
-    contacted_in_x_days = fields.Boolean("Para filtro",compute="is_contacted_x_days",store=True)
-
     last_month = fields.Boolean(compute='is_last_month',store=True)
 
     
