@@ -1,3 +1,12 @@
+/*
+
+Parche para Contrato y Evento.
+
+correccion de operadora duplicada
+
+*/
+
+
 INSERT INTO certification_contract(
 	 create_uid, create_date, description, write_uid, write_date, active, name)
 	VALUES ( 1, now(), 'Sin Contrato', 1, now(), false,'Sin Contrato');

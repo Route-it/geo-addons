@@ -26,7 +26,7 @@ class certifications_certification(models.Model):
 
 	state = fields.Selection([("carga","Carga de Datos"),
 							("proceso_facturacion","Proceso de Facturacion"),
-							("facturacion","Facturacion"),
+							("facturacion","Facturado"),
 							("cobrado","Cobrado")
 							], string="Estado", required=True, readonly=True,default='carga') 
 
@@ -35,10 +35,10 @@ class certifications_certification(models.Model):
 	invoice_id = fields.Many2one('certification.invoice', string="Factura")
 	
 	#related
-	invoice_date = fields.Date(related="invoice_id.invoice_date")
+	invoice_date = fields.Date(related="invoice_id.invoice_date",help="Campo requerido para pasar a facturado. Se debe completar tambien el nro de factura y el valor total")
+	invoice_number = fields.Char(related='invoice_id.invoice_number',help="Campo requerido para pasar a facturado. Se debe completar tambien la fecha de factura y el valor total")
+	valor_total_factura = fields.Monetary(related='invoice_id.valor_total',help="Campo requerido para pasar a facturado. Se debe completar tambien el nro de factura y la fecha de factura")
 	invoice_date_charge = fields.Date(related="invoice_id.invoice_date_charge")
-	invoice_number = fields.Char(related='invoice_id.invoice_number')
-	valor_total_factura = fields.Monetary(related='invoice_id.valor_total')
 
 	cotizacion_to_date_charge = fields.Monetary("Cotización  del dólar (1 U$S)",
 											default=lambda self: self._get_last_exchange(),track_visibility='onchange'

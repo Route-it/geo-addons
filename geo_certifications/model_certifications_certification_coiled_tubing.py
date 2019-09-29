@@ -52,8 +52,9 @@ class certifications_certification_coiled_tubing(models.Model):
 	fields_to_check_carga = ['operadora_id','contrato','equipo','pozo',
 					'fecha_inicio','fecha_fin','operacion',
 					'regional','valor_total']
-	fields_to_check_proceso_facturacion = ['dm','habilita']
-	fields_to_check_cobrado = ['invoice_date','invoice_number','valor_total_factura','invoice_date_charge']
+	#fields_to_check_proceso_facturacion = ['dm','habilita']
+	fields_to_check_proceso_facturacion = ['invoice_date','invoice_number','valor_total_factura']
+	fields_to_check_cobrado = ['invoice_date_charge']
 	
 	
 	@api.onchange('operadora_id')
@@ -76,10 +77,10 @@ class certifications_certification_coiled_tubing(models.Model):
 			if self.check_fields_for_state(self.fields_to_check_carga,vals): state = 'proceso_facturacion' 
 			
 			#solo si es ypf
-			if self.company_operator_code == 'ypf':
-				if self.check_fields_for_state(self.fields_to_check_proceso_facturacion,vals): state = 'facturacion' 
-			else:
-				state = 'facturacion'
+			#if self.company_operator_code == 'ypf':
+			if self.check_fields_for_state(self.fields_to_check_proceso_facturacion,vals): state = 'facturacion' 
+			#else:
+			#	state = 'facturacion'
 			if self.check_fields_for_state(self.fields_to_check_cobrado,vals): state = 'cobrado' 
 			vals['state'] = state
 

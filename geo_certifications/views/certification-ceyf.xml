@@ -25,10 +25,10 @@
 			<field name="model">certifications.certification_ceyf</field>
 			<field name="arch" type="xml">
 				<search>
+					<field name="pozo" />
 					<field name="operadora_id" />
 					<field name="parte" />
 					<field name="state" />
-					<field name="pozo" />
 					<field name="yacimiento" />
 					<field name="operacion" string="Operación" />
 					<field name="fecha_realizacion" />
@@ -56,19 +56,13 @@
 
 						<field name="state" widget="statusbar" clickable="True" attrs="{'invisible': [('id','=',False)]}"/>
 
-						
 					</header>
 					<sheet string="Certificaciones CEYF">
-						<div class="oe_title">
+						<div class="oe_title" >
 							<h1>
 								<field name="id" invisible="1"/>
 								<label for="operadora_id" />
 								<br/>
-								<!-- 
-						<field name="delivery_photos_ids" widget="many2many_kanban" 
-							context="{'default_res_model':'delsol.delivery','default_res_id':id,'default_res_name':name,'form_view_ref':'entregas_photos.view_attachment_delivery_form','tree_view_ref':'entregas_photos.view_attachment_delivery_tree'}" 
-							domain="[('res_model','=','delsol.delivery'),('res_id','=',id)]" attrs="{'readonly': [('delivery_images_sended', '=', True)]}">
- -->								
 								
 								<field name="operadora_id" 
 														placeholder="Operadora" domain="[('is_company_operator','=',True),('is_company','=',True),]"
@@ -109,13 +103,13 @@
 						</group>
 						<group>
 							<group string="Valores" >
-								<field name="valor_productos" widget="monetary" />
 								<field name="valor_servicios" widget="monetary"/>
 								<field name="valor_servicios_pesos" widget="monetary"/>
+								<field name="valor_productos" widget="monetary" />
 								<field name="valor_total" string="Total"/>
 							</group>
 
-							<group string="Confirmación" attrs="{'invisible': [('company_operator_code', '!=', 'ypf'),('company_operator_code', '!=', 'pae'),('company_operator_code', '!=', 'sinopec'),('company_operator_code', '!=', 'tecpetrol')]}">
+							<group string="Documentos" attrs="{'invisible': [('company_operator_code', '!=', 'ypf'),('company_operator_code', '!=', 'pae'),('company_operator_code', '!=', 'sinopec'),('company_operator_code', '!=', 'tecpetrol')]}">
 								<field name="dm"  attrs="{'required': [('company_operator_code', '=', 'ypf'),('state','in',('proceso_facturacion','facturacion','cobrado'))], 'invisible': [('company_operator_code', '!=', 'ypf')]}"/>
 								<field name="habilita"   attrs="{'required': [('company_operator_code', '=', 'ypf'),('state','in',('proceso_facturacion','facturacion','cobrado'))],'invisible': [('company_operator_code', '!=', 'ypf')]}"/> 
 								<field name="certop" attrs="{'invisible': [('company_operator_code', '!=', 'pae')]}"/> 
@@ -126,7 +120,7 @@
 						</group>						
 						<group>
 							<group string="Facturación" attrs="{'invisible': [('id','=',False)]}">
-								<field name="invoice_id" invisible="1"/>
+								<field name="invoice_id" invisible="1" />
 								
 								<field name="invoice_date" attrs="{'required': [('state','in',('facturacion','cobrado'))]}" widget="date"/>
 								<field name="invoice_number" attrs="{'required': [('state','in',('facturacion','cobrado'))]}"/>
@@ -147,6 +141,28 @@
 				</form>
 			</field>
 		</record>
+<!--
+		<record model="ir.ui.view" id="certification_ceyf_edit_form">
+			<field name="name">certifications.certification_ceyf_edit.form</field>
+			<field name="model">certifications.certification_ceyf</field>
+			<field name="inherit_id" ref="certifications_ceyf_form" />
+
+			<field name="arch" type="xml">
+				<field name="state"  position="before"> 
+					<field name="antique_register" invisible="True"></field>
+				</field>
+				<field name="state"  position="attributes">
+					<attribute name="attrs">{'readonly':[('state','in',('facturacion','cobrado'))]}</attribute>
+				</field>
+			
+				<xpath expr='//form' position='attributes'>
+						<attribute name="edit">false</attribute>
+				</xpath>				
+					
+			</field>
+          </record>
+-->
+
 
 <!--         <record id="view_ceyf_timeline" model="ir.ui.view"> 
             <field name="name">certifications.certification.timeline</field>

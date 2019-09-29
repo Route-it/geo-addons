@@ -1,3 +1,10 @@
+/*
+
+Parche  para corregir el estado como "facturacion" si es que tiene la fecha de factura. 
+
+*/
+
+
 select * from certifications_certification_ceyf ce inner join certification_invoice inv on ce.invoice_id = inv.id
 where ce.state in ('carga','proceso_facturacion')
 and ce.antique_register is not null

@@ -56,7 +56,14 @@ class certifications_certification_ceyf(models.Model):
 	codigo = fields.Char(string="CODIGO")
 	hoja_de_servicio = fields.Char(string="Hoja de servicio")
 
-
+	@api.one
+	@api.constrains('blscemento')
+	def validate_blscemento(self):
+		if self.blscemento < 0:
+			raise ValidationError("El Valor bolsas de cemento debe ser mayor que 0")
+			return
+		return
+	
 
 	@api.onchange('operadora_id')
 	@api.one
@@ -106,37 +113,54 @@ class certifications_certification_ceyf(models.Model):
 	"""
 	fields_to_check_carga = ['operadora_id','operacion','equipo','pozo',
 					'fecha_realizacion','bombeador','yacimiento','supervisor_id',
-					'blscemento','valor_productos']
+					'valor_productos']
 	fields_to_check_carga_confirmacion = ['certop','dm','codigo']
 	fields_to_check_proceso_facturacion = ['hesop','habilita']
-	fields_to_check_facturacion = ['invoice_date','invoice_number','valor_total']
+	fields_to_check_facturacion = ['invoice_date','invoice_number','valor_total_factura']
 	fields_to_check_cobrado = ['invoice_date_charge']
 	
 	
 	@api.multi
 	def write(self, vals):
-		#determine state
+		"""
+		Esta condicion funciona pero no la dejamos habilitada ya que impide corregir errores de carga de facturas sobre registros 
+		viejos. 
+		Se habilitará la funcion para que queden readonly solo cuando los registros viejos ya esten TODOS facturados.
+		
+		if not ((vals.get('invoice_date_charge')!=None) and (vals.get('invoice_date_charge')!=False) and (self.state == 'facturacion')):
+			if (self.state in ('facturacion','cobrado') and self.antique_register != False):
+				self.env.user.notify_info('No está permitido editar un registro antigüo ya facturado')
+				return False
+		"""	
+		
 		
 		if vals.get('state') is None:
 			state = 'carga'
 			if self.check_fields_for_state(self.fields_to_check_carga,vals): 
 				state = 'proceso_facturacion' 
 			#if self.check_fields_for_state(self.fields_to_check_proceso_facturacion,vals): state = 'facturacion'
+			#else:
+			"""if (self.company_operator_code == 'pae'):
+				if (vals.get('hesop')!=None or eval('self.hesop')!=False) and vals.get('hesop')!=False:
+					state = 'facturacion'
 			else:
-				if (self.company_operator_code == 'pae'):
-					if (vals.get('hesop')!=None or eval('self.hesop')!=False) and vals.get('hesop')!=False:
+				if (self.company_operator_code == 'ypf'):
+					if (vals.get('habilita')!=None or eval('self.habilita')!=False) and vals.get('habilita')!=False:
 						state = 'facturacion'
 				else:
-					if (self.company_operator_code == 'ypf'):
-						if (vals.get('habilita')!=None or eval('self.habilita')!=False) and vals.get('habilita')!=False:
-							state = 'facturacion'
+					if (vals.get('codigo')!=None or eval('self.codigo')!=False) and vals.get('codigo')!=False:
+						state = 'facturacion'
 					else:
-						if (vals.get('codigo')!=None or eval('self.codigo')!=False) and vals.get('codigo')!=False:
+						if not (self.company_operator_code in ('pae','ypf','sinopec')):
 							state = 'facturacion'
-						else:
-							if not (self.company_operator_code in ('pae','ypf','sinopec')):
-								state = 'facturacion'
-			
+			"""
+			if self.check_fields_for_state(self.fields_to_check_facturacion,vals): 
+				if (vals.get('valor_total_factura')!=None and vals.get('valor_total_factura')!=False and vals.get('valor_total_factura')>0) or (self.valor_total_factura!=False and self.valor_total_factura>0): 
+					state = 'facturacion' 
+				else:
+					mensaje = 'El valor total de factura debe ser mayor que 0'
+					self.message_post(body=mensaje)
+					self.env.user.notify_info(mensaje)
 			if self.check_fields_for_state(self.fields_to_check_cobrado,vals): 
 				state = 'cobrado' 
 				self.supervisor_id.operacionesHechas+=1
@@ -158,7 +182,20 @@ class certifications_certification_ceyf(models.Model):
 		
 		return super(certifications_certification_ceyf, self).write(vals)
 		
-	
+	"""
+	#Sirve para modificar la vista
+	@api.model
+	def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
+		res = super(certifications_certification_ceyf, self).fields_view_get(view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=False)
+		context = self._context or {}
+
+		if bool(view_type) & (view_type == 'form'):
+			#res['arch'] = res['arch'].replace('<form string="Certificaciones">','<form string="Certificaciones" edit="false">',1)
+			for field in res['fields']:
+				res['fields'][field]['readonly'] = True
+			#		res['fields'][field].update({'defaults': context.get('delivery_id')})
+		return res
+	"""
 
 	@api.model
 	def create(self, vals):
