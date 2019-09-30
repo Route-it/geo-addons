@@ -11,8 +11,8 @@ and certifications_certification_ceyf.id in(1794,1763)
 --actualizando "todo lo que tiene confirmacion -> facturacion." son 1718 registros
 update certifications_certification_ceyf 
 set state = 'facturacion'
---select * 
-from certifications_certification, certification_invoice   --, certifications_certification_ceyf 
+select * 
+from certifications_certification, certification_invoice, certifications_certification_ceyf 
 where
 certifications_certification.id = certifications_certification_ceyf.id
 and certifications_certification_ceyf.invoice_id = certification_invoice.id
@@ -23,7 +23,7 @@ and certifications_certification_ceyf.antique_register is not null
 --Ningún registro viejo puede estar en estado cobrado.
 -- pasar todos los registros cobrados como "facturacion". Asumiste que todos los "cobrados estaban bien migrados"
 update certifications_certification_ceyf set state = 'facturacion'
---select * from certifications_certification_ceyf 
+select * from certifications_certification_ceyf 
 where state = 'cobrado'
 and antique_register is not null
 
@@ -44,6 +44,11 @@ and certifications_certification_ceyf.fecha_realizacion = certification_invoice.
 and certifications_certification_ceyf.id not in(1794,1763)
 and certifications_certification_ceyf.dm = 'RORTYS0CENZG0002'
 
+select * from certifications_certification, certifications_certification_ceyf, certification_invoice
+where 
+certifications_certification_ceyf.invoice_id = certification_invoice.id
+AND certifications_certification.id = certifications_certification_ceyf.id
+and Certifications_certification.PARTE = 'B9MMQO3KATA80007'
 
 
 
@@ -52,7 +57,7 @@ and certifications_certification_ceyf.dm = 'RORTYS0CENZG0002'
 update certifications_certification_ceyf 
 set state = 'proceso_facturacion'
 --select * 
-from certifications_certification, certification_invoice--, certifications_certification_ceyf
+from certifications_certification, certification_invoice--,certifications_certification_ceyf
 where
 certifications_certification_ceyf.id = certifications_certification.id
 and certifications_certification_ceyf.invoice_id = certification_invoice.id
