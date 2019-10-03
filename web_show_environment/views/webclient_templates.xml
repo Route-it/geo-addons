@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+                
+        <template id="assets_backend_web_menu_hide_9" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+            	<link rel="stylesheet" href="/web_show_environment/static/src/css/base.css"/>
+            </xpath>
+        </template>
+        
+        <template id="webclient_bootstrap_web_show_environment" inherit_id="web.webclient_bootstrap">
+            <xpath expr="//nav[@id='oe_main_menu_navbar']" position="before">
+                <div class="oe_environment_text">
+                        <span class="oe_menu_text" style="background:yellow">Atención: Usted está utilizando el ambiente de Pruebas</span>
+                </div>
+            </xpath>
+        </template>
+        
+    </data>
+</openerp>
