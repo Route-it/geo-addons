@@ -112,8 +112,7 @@ class certifications_certification_ceyf(models.Model):
 	
 	"""
 	fields_to_check_carga = ['operadora_id','operacion','equipo','pozo',
-					'fecha_realizacion','bombeador','yacimiento','supervisor_id',
-					'valor_productos']
+					'fecha_realizacion','bombeador','yacimiento','supervisor_id']
 	fields_to_check_carga_confirmacion = ['certop','dm','codigo']
 	fields_to_check_proceso_facturacion = ['hesop','habilita']
 	fields_to_check_facturacion = ['invoice_date','invoice_number','valor_total_factura']
@@ -132,12 +131,14 @@ class certifications_certification_ceyf(models.Model):
 				self.env.user.notify_info('No está permitido editar un registro antigüo ya facturado')
 				return False
 		"""	
-		
+		res = super(certifications_certification_ceyf, self).write(vals)
 		
 		if vals.get('state') is None:
 			state = 'carga'
-			if self.check_fields_for_state(self.fields_to_check_carga,vals): 
-				state = 'proceso_facturacion' 
+			if self.check_fields_for_state(self.fields_to_check_carga,vals):
+				if (vals.get('valor_total')!=None and vals.get('valor_total')!=False and vals.get('valor_total')>0) \
+					or (self.valor_total!=False and self.valor_total>0): 
+						state = 'proceso_facturacion' 
 			#if self.check_fields_for_state(self.fields_to_check_proceso_facturacion,vals): state = 'facturacion'
 			#else:
 			"""if (self.company_operator_code == 'pae'):
@@ -164,7 +165,7 @@ class certifications_certification_ceyf(models.Model):
 			if self.check_fields_for_state(self.fields_to_check_cobrado,vals): 
 				state = 'cobrado' 
 				self.supervisor_id.operacionesHechas+=1
-			vals['state'] = state
+			self.state = state
 
 		""" comentado a pedido en reunion 10/09/2019
 		else:
@@ -180,7 +181,7 @@ class certifications_certification_ceyf(models.Model):
 		"""
 		
 		
-		return super(certifications_certification_ceyf, self).write(vals)
+		return res
 		
 	"""
 	#Sirve para modificar la vista
@@ -206,8 +207,8 @@ class certifications_certification_ceyf(models.Model):
 		
 		item = super(certifications_certification_ceyf, self).create(vals)
 		#check if state is completed
-		if self.check_fields_for_state(self.fields_to_check_carga,vals): 
-			item.state = 'proceso_facturacion'  
+		#if self.check_fields_for_state(self.fields_to_check_carga,vals): 
+		#	item.state = 'proceso_facturacion'  
 
 		return item 
 

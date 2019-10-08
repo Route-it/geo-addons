@@ -31,7 +31,7 @@ class certifications_coiled_tubing_time_losed(models.Model):
 	
 		res = []
 		for record in self.browse(cr, uid, ids, context=context):
-			name = record.motivo + ' ' + str(record.time_losed_quantity)
+			name = record.reason + ' > ' + str(record.time_losed_quantity) +'hs'
 			res.append((record.id, name))
 		
 		return res

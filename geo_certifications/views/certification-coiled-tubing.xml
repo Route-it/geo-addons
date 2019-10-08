@@ -12,7 +12,7 @@
 					<field name="fecha_fin" />
 					<field name="operacion" />
 					<field name="equipo" />
-					<field name="valor_total" />
+					<field name="valor_total_list_view" />
 					<field name="dm" />
 					<field name="habilita" />
 					<field name="observaciones"/>
@@ -85,7 +85,8 @@
 								</div>
 								<div style="position: relative">
 									<div class="oe_module_vignette">
-										<field name="valor_total" widget="gauge"  style="width:160px;height:120px;cursor:pointer"></field>
+										<field name="valor_total"></field>
+										<!--field name="valor_total" widget="gauge"  style="width:160px;height:120px;cursor:pointer"></field-->
 									</div>
 								</div>
 							</div>
@@ -94,13 +95,23 @@
 				</kanban>
 			</field>
 		</record>
+<!--
+        <record model="ir.actions.server" id="exchange_update_ct">
+            <field name="name">Exchange Update CT</field>
+            <field name="model_name" ref="certifications.certification_coiled_tubing"/>
+            <field name="code">
+                self.exchange_update()
+            </field>
+        </record>
 -->
+		
 		<record id="certifications_coiled_tubing_form" model="ir.ui.view">
 			<field name="name">certifications.certification_coiled_tubing.form</field>
 			<field name="model">certifications.certification_coiled_tubing</field>
 			<field name="arch" type="xml">
 				<form string="Certificaciones">
 					<header>
+						<field name="manual_exchange" invisible="1" />
 
 						<field name="state" widget="statusbar" clickable="True" attrs="{'invisible': [('id','=',False)]}"/>
 					</header>
@@ -150,10 +161,21 @@
 							<group string="Facturación"  attrs="{'invisible':[('id','=',False)]}">
 								<field name="invoice_date"  attrs="{'required': [('state', 'in', ('facturacion','cobrado'))]}"/>
 								<field name="invoice_number"  attrs="{'required': [('state', 'in', ('facturacion','cobrado'))]}"/>
+								<field name="valor_total_pesos_factura"/>
 								<field name="valor_total_factura"  attrs="{'required': [('state', 'in', ('facturacion','cobrado'))]}"/>
+								<field name="valor_total_factura_computed" readonly="1"/>
 								<field name="invoice_date_charge" attrs="{'required': [('state', '=', 'cobrado')]}"/>
 							</group>
 							<group string="Cotización">
+								
+								<label for="manual_exchange" attrs="{'invisible': [('manual_exchange','=',False)]}" 
+								colspan="2" string="La cotización está cargada manualmente." style="width:100%;background:yellow;text-align:center;font-weight: bold;"/>
+<!--	
+					            <button type="action" name="(exchange_update_ct)d" class="btn btn-default" 
+					            		id="button_export_excel" string="Actualizar Cotizacion" 
+					            		attrs="{'invisible':[('company_operator_code','!=','ypf')]}"/>
+	-->						
+								<field name="cotizacion_to_date_charge_date"/>
 								<field name="cotizacion_to_date_charge" attrs="{'required': [('state','in',('facturacion','cobrado'))]}"/>
 							</group>                               
 						</group>	
@@ -187,7 +209,10 @@
 			<field name="name">certifications.certification_coiled_tubing.graph</field>
 			<field name="model">certifications.certification_coiled_tubing</field>
 			<field name="arch" type="xml">
-				<graph string="Certificaciones" type="bar">
+				<graph string="Certificaciones" type="bar" stacked="False">
+					<field name="valor_total_list_view" type="measure" />
+					<field name="operadora_id" type="row" />
+					<field name="fecha_realizacion" type="col" />
 				</graph>
 			</field>
 		</record>
@@ -199,7 +224,7 @@
 				<pivot string="Certificaciones">
 					<field name="fecha_inicio" type="row" />
 					<field name="operadora_id" type="col" />
-					<field name="valor_total" type="measure" />
+					<field name="valor_total_list_view" type="measure" />
 				</pivot>
 			</field>
 		</record>

@@ -14,14 +14,32 @@ class certification_invoice(models.Model):
 	_name = 'certification.invoice'
 	_order = 'id'
 	
-	invoice_date = fields.Date("Fecha de Factura")
+	invoice_date = fields.Date("Fecha de Factura",track_visibility='onchange')
 	invoice_date_charge = fields.Date("Fecha de Cobro")
 	invoice_number = fields.Char("Numero de Factura")
 	currency_id = fields.Many2one('res.currency', string='Account Currency',
         help="Forces all moves for this account to have this account currency.")
-	valor_total = fields.Monetary("Valor Total",track_visibility='onchange')
+	valor_total_pesos = fields.Monetary("Valor Pesos",track_visibility='onchange')
+	valor_total = fields.Monetary("Valor U$S",track_visibility='onchange')
 
 
+
+	@api.one
+	@api.constrains('valor_total_pesos')
+	def _check_valor_total_pesos(self):
+		if self.valor_total_pesos < 0:
+			raise ValidationError("El valor total en pesos debe ser mayor que 0")
+			return
+		return
+	
+	
+	@api.one
+	@api.constrains('valor_total')
+	def _check_valor_total(self):
+		if self.valor_total < 0:
+			raise ValidationError("El valor total debe ser mayor que 0")
+			return
+		return
 
 	@api.one
 	@api.constrains('invoice_date_charge','invoice_date')

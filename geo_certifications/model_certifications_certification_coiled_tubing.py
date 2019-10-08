@@ -38,7 +38,7 @@ class certifications_certification_coiled_tubing(models.Model):
 		
 	operating_hours = fields.Integer("Horas Operativas")
 	
-	time_losed_ids = fields.One2many("certifications.coiled_tubing_time_losed","certification_coiled_tubing_id",string ="Horas Perdidas")
+	time_losed_ids = fields.One2many("certifications.coiled_tubing_time_losed","certification_coiled_tubing_id",string ="Horas Perdidas", ondelete='cascade')
 	
 	
 
@@ -51,7 +51,7 @@ class certifications_certification_coiled_tubing(models.Model):
 
 	fields_to_check_carga = ['operadora_id','contrato','equipo','pozo',
 					'fecha_inicio','fecha_fin','operacion',
-					'regional','valor_total']
+					'regional']
 	#fields_to_check_proceso_facturacion = ['dm','habilita']
 	fields_to_check_proceso_facturacion = ['invoice_date','invoice_number','valor_total_factura']
 	fields_to_check_cobrado = ['invoice_date_charge']
@@ -71,18 +71,29 @@ class certifications_certification_coiled_tubing(models.Model):
 	def write(self, vals):
 		#determine state
 		
+		res = super(certifications_certification_coiled_tubing, self).write(vals)
+		
 		if vals.get('state') is None:
 		
 			state = 'carga'
-			if self.check_fields_for_state(self.fields_to_check_carga,vals): state = 'proceso_facturacion' 
+			if self.check_fields_for_state(self.fields_to_check_carga,vals): 
+				if (vals.get('valor_total')!=None and vals.get('valor_total')!=False and vals.get('valor_total')>0) \
+					or (self.valor_total!=False and self.valor_total>0): 
+						state = 'proceso_facturacion' 
 			
 			#solo si es ypf
 			#if self.company_operator_code == 'ypf':
-			if self.check_fields_for_state(self.fields_to_check_proceso_facturacion,vals): state = 'facturacion' 
+			if self.check_fields_for_state(self.fields_to_check_proceso_facturacion,vals): 
+				if (vals.get('valor_total_factura')!=None and vals.get('valor_total_factura')!=False and vals.get('valor_total_factura')>0) or (self.valor_total_factura!=False and self.valor_total_factura>0): 
+					state = 'facturacion' 
+				else:
+					mensaje = 'El valor total de factura debe ser mayor que 0'
+					self.message_post(body=mensaje)
+					self.env.user.notify_info(mensaje)
 			#else:
 			#	state = 'facturacion'
 			if self.check_fields_for_state(self.fields_to_check_cobrado,vals): state = 'cobrado' 
-			vals['state'] = state
+			self.state = state
 
 		""" comentado a pedido en reunion 10/09/2019
 		else:
@@ -95,7 +106,7 @@ class certifications_certification_coiled_tubing(models.Model):
 		"""
 		
 		
-		return super(certifications_certification_coiled_tubing, self).write(vals)
+		return res
 		
 	@api.model
 	def create(self, vals):
@@ -108,8 +119,8 @@ class certifications_certification_coiled_tubing(models.Model):
 		item = super(certifications_certification_coiled_tubing, self).create(vals)
 		
 		#check if state is completed
-		if self.check_fields_for_state(self.fields_to_check_carga,vals): 
-			item.state = 'proceso_facturacion'  
+		#if self.check_fields_for_state(self.fields_to_check_carga,vals): 
+		#	item.state = 'proceso_facturacion'  
 
 		
 		return item  

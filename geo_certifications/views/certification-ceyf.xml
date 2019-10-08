@@ -15,7 +15,7 @@
 					<field name="yacimiento" />
 					<field name="operacion"/>
 					<field name="fecha_realizacion" />
-					<field name="valor_total"/>
+					<field name="valor_total_list_view"/>
 				</tree>
 			</field>
 		</record>
@@ -46,13 +46,23 @@
 				</search>
 			</field>
 		</record>
-
+		
+		<!--
+        <record model="ir.actions.server" id="exchange_update_ceyf">
+            <field name="name">Exchange Update CEYF</field>
+            <field name="model_name" ref="certifications.certification_ceyf"/>
+            <field name="code">
+                self.exchange_update()
+            </field>
+        </record>		
+-->
 		<record id="certifications_ceyf_form" model="ir.ui.view">
 			<field name="name">certifications.certification_ceyf.form</field>
 			<field name="model">certifications.certification_ceyf</field>
 			<field name="arch" type="xml">
 				<form string="Certificaciones">
 					<header>
+						<field name="manual_exchange" invisible="1" />
 
 						<field name="state" widget="statusbar" clickable="True" attrs="{'invisible': [('id','=',False)]}"/>
 
@@ -106,7 +116,7 @@
 								<field name="valor_servicios" widget="monetary"/>
 								<field name="valor_servicios_pesos" widget="monetary"/>
 								<field name="valor_productos" widget="monetary" />
-								<field name="valor_total" string="Total"/>
+								<field name="valor_total" requierd="True" string="Total" readonly="1"/>
 							</group>
 
 							<group string="Documentos" attrs="{'invisible': [('company_operator_code', '!=', 'ypf'),('company_operator_code', '!=', 'pae'),('company_operator_code', '!=', 'sinopec'),('company_operator_code', '!=', 'tecpetrol')]}">
@@ -124,11 +134,23 @@
 								
 								<field name="invoice_date" attrs="{'required': [('state','in',('facturacion','cobrado'))]}" widget="date"/>
 								<field name="invoice_number" attrs="{'required': [('state','in',('facturacion','cobrado'))]}"/>
+								
+								<field name="valor_total_pesos_factura"/>
 								<field name="valor_total_factura" attrs="{'required': [('state','in',('facturacion','cobrado'))]}"/>
-
+								<field name="valor_total_factura_computed" readonly="1"/>
 								<field name="invoice_date_charge" attrs="{'required': [('state','in',('cobrado'))]}" widget="date"/>
 							</group>
 							<group string="Cotización">
+								<label for="manual_exchange" attrs="{'invisible': [('manual_exchange','=',False)]}" 
+								colspan="2" string="La cotización está cargada manualmente." style="width:100%;background:yellow;text-align:center;font-weight: bold;"/>
+					            <!--
+					            	
+					            <button type="action" name="(exchange_update_ceyf)d" class="btn btn-default" 
+					            		id="button_exchange_update" string="Actualizar Cotizacion" 
+					            		attrs="{'invisible':[('company_operator_code','!=','ypf')]}"/>
+								<field name="create_date" string="Fecha Creacion" attrs="{'invisible': [('id','=',False)]}"/>
+							-->
+								<field name="cotizacion_to_date_charge_date"/>
 								<field name="cotizacion_to_date_charge" attrs="{'required': [('state','in',('facturacion','cobrado'))]}"/>
 							</group>
 						</group>
@@ -177,7 +199,10 @@
 			<field name="name">certifications.certification.graph</field>
 			<field name="model">certifications.certification_ceyf</field>
 			<field name="arch" type="xml">
-				<graph string="Certificaciones" type="bar">
+				<graph string="Certificaciones" type="bar" stacked="False">
+					<field name="valor_total_list_view" type="measure" />
+					<field name="operadora_id" type="row" />
+					<field name="fecha_realizacion" type="col" />
 				</graph>
 			</field>
 		</record>
@@ -189,7 +214,7 @@
 				<pivot string="Certificaciones">
 					<field name="fecha_realizacion" type="row" />
 					<field name="operadora_id" type="col" />
-					<field name="valor_total" type="measure" />
+					<field name="valor_total_list_view" type="measure" />
 				</pivot>
 			</field>
 		</record>
