@@ -30,13 +30,14 @@ class certifications_certification_ceyf(models.Model):
 	
 	evento = fields.Char(string="Evento")
 	parte = fields.Char(string="Parte",track_visibility='onchange')
-	fecha_realizacion = fields.Date(required=True,string="Fecha de realización",oldname="fechaRealizacion")
+	fecha_realizacion = fields.Date(required=True,string="Fecha",oldname="fechaRealizacion")
 	yacimiento = fields.Selection([('chubut','Chubut'),('santa cruz','Santa Cruz')],required=True,string="Yacimiento")
 	supervisor_id = fields.Many2one('certifications.supervisor','Supervisor',required=True)
 	equipo = fields.Char(required=True,string="Equipo",track_visibility='onchange')
 	bombeador = fields.Char(required=True,string="Bombeador")
 	blscemento = fields.Integer(required=True,string="Bolsas de cemento")
 	
+	#este campo dejo de usarse
 	fecha_cierre = fields.Date(readonly=True,string="Fecha de cierre")
 	
 
@@ -55,6 +56,13 @@ class certifications_certification_ceyf(models.Model):
 	certop = fields.Char(string="CERTOP")
 	codigo = fields.Char(string="CODIGO")
 	hoja_de_servicio = fields.Char(string="Hoja de servicio")
+
+
+
+	def is_antique_register(self):
+		return self.antique_register
+
+
 
 	@api.one
 	@api.constrains('blscemento')

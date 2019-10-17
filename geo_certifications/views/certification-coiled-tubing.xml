@@ -212,7 +212,7 @@
 				<graph string="Certificaciones" type="bar" stacked="False">
 					<field name="valor_total_list_view" type="measure" />
 					<field name="operadora_id" type="row" />
-					<field name="fecha_realizacion" type="col" />
+					<field name="fecha_inicio" type="col" />
 				</graph>
 			</field>
 		</record>

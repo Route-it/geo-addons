@@ -14,14 +14,15 @@ class certifications_certification(models.Model):
 	
 	_description = 'Certificaciones'
 
-
+	def is_antique_register(self):
+		return False
 
 	@api.model
 	def _get_last_exchange_date(self):
 		try:
 			if bool(self.cotizacion_to_date_charge): 
 				if (self.cotizacion_to_date_charge > 0): 
-					if (not bool(self.antique_register)): 
+					if (not bool(self.is_antique_register())): 
 						cotiz = self.env['exchange.cotizacion_dolar_bcra'].search(['&',('venta','>=',str(self.cotizacion_to_date_charge)+'0'),('venta','<=',str(self.cotizacion_to_date_charge)+'9')],limit=1)
 						return cotiz.fecha
 		except Exception:
@@ -86,7 +87,7 @@ class certifications_certification(models.Model):
 												compute='set_valor_total_factura_computed',
 												help="Valor total de factura calculado con la cotizacion manual o de la fecha de factura")
 	
-	valor_total_list_view = fields.Monetary(readonly=True,compute='set_total_value_state',store=True,string="Valor Parcial/Final")
+	valor_total_list_view = fields.Monetary(readonly=True,compute='set_total_value_state',store=True,string="Valor [USD]")
 	
 	@api.depends('cotizacion_to_date_charge','invoice_id.valor_total','invoice_id.invoice_date','invoice_id.valor_total_pesos',
 				'valor_total_factura','valor_total_pesos_factura','invoice_date')
@@ -221,14 +222,14 @@ class certifications_certification(models.Model):
 		cotiz_register = self.env['exchange.cotizacion_dolar_bcra'].search(['&',('venta','>=',str(self.cotizacion_to_date_charge)+'0'),('venta','<=',str(self.cotizacion_to_date_charge)+'9')],limit=1)
 		if (not cotiz_register):
 			#is manual value!
-			if not bool(self.antique_register):
+			if not bool(self.is_antique_register()):
 				vals['manual_exchange'] = True
 				if not bool(self.cotizacion_to_date_charge_date):
 					vals['cotizacion_to_date_charge_date'] = self.create_date
 					#date.today()
 					self.message_post(body='La cotización ahora es un valor introducido manualmente:'+str(self.cotizacion_to_date_charge))
 		else:
-			if ((not bool(self.antique_register))&(not bool(self.cotizacion_to_date_charge_date))):
+			if ((not bool(self.is_antique_register()))&(not bool(self.cotizacion_to_date_charge_date))):
 				vals['cotizacion_to_date_charge_date'] = cotiz_register.fecha
 			
 		res = super(certifications_certification, self).write(vals)

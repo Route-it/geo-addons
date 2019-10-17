@@ -16,6 +16,7 @@
     'data': [
         'view/web_export_view.xml',
     ],
+    'qweb': ['static/src/xml/web_export_view.xml'],
     'installable': True,
     'auto_install': False,
 }
