@@ -36,12 +36,34 @@ class certifications_certification(models.Model):
 		except Exception:
 			return
 
+
+	@api.one
+	def _is_administracion_read_only(self):
+		rw = self.env.user.has_group('geo_certifications.group_name_certifications_ingenieria') or \
+				self.env.user.has_group('geo_certifications.group_name_certifications_administrator') or \
+					self.env.user.has_group('base.user_root')
+				
+		
+		ro = self.env.user.has_group('geo_certifications.group_name_certifications_administracion') or \
+				self.env.user.has_group('geo_certifications.group_name_solo_lectura')
+		
+		
+		if rw: 
+			self.is_administracion_read_only = False
+			return
+		
+		self.is_administracion_read_only = ro
+		
+		
 	
 	contrato = fields.Many2one("certification.contract",domain = [('active','=','True')])
 	
 	#comunes
 	#operadora = fields.Many2one('res.partner',oldname='operadora',domain = [('is_company','=','True')],string="Operadora")
 	operadora_id = fields.Many2one('res.partner',oldname='operadora',domain = [('is_company','=','True')],required=True,string="Operadora")
+								#groups='geo_certifications.group_name_certifications_administrator')
+	is_administracion_read_only = fields.Boolean(compute="_is_administracion_read_only",readonly=True)
+								
 	company_operator_code = fields.Char(related='operadora_id.company_operator_code')
 	pozo = fields.Char(required=True,string="Pozo",track_visibility='onchange')
 
@@ -128,8 +150,8 @@ class certifications_certification(models.Model):
 			raise ValidationError("La cotizacion debe ser mayor que 0")
 
 		#self.valor_total_factura = res
-
-		self.valor_total = res
+		if self.valor_total != res:
+			self.valor_total = res
 		return self.valor_total
 		
 	@api.depends('valor_total_factura_computed','valor_total','state')

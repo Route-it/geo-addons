@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+		<record model="ir.module.category" id="module_certifications_category">
+            <field name="name">Certificaciones</field>
+            <field name="description">Módulo de administración de certificaciones</field>
+            <field name="sequence">16</field>
+        </record>
+		<record model="ir.module.category" id="module_certifications_menu_category">
+            <field name="name">Menu de Certificaciones</field>
+            <field name="description">Accesos al menu de administración de certificaciones</field>
+            <field name="sequence">16</field>
+        </record>
+		<record model="ir.module.category" id="module_certifications_profiles_category">
+            <field name="name">Perfiles de Certificaciones</field>
+            <field name="description">Perfiles para la administración de certificaciones</field>
+            <field name="sequence">16</field>
+        </record>
+        
+	</data>
+</openerp>

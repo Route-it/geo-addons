@@ -22,7 +22,9 @@
 
     # always loaded
     'data': [
-        'security/certifications_security.xml',
+        'security/base_security.xml',
+        'security/menu_security.xml',
+        'security/profiles_security.xml',
         'views/certification-ceyf.xml',
         'views/certification-coiled-tubing.xml',
         'views/supervisor.xml',

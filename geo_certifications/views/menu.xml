@@ -60,7 +60,7 @@
 			id="base.menu_main_certificaciones" icon="fa-calendar"
 			web_icon="project,static/description/icon.png" 
 			action="geo_certifications.ceyf_action_window" 
-			groups="group_name_certifications_administrator"/>
+			groups="group_name_certifications_administrator,group_name_certifications_ingenieria,group_name_certifications_administracion,group_name_menu_certifications"/>
 
 		<!-- menu categories -->
 		<menuitem name="Certificaciones"

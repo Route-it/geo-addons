@@ -111,32 +111,34 @@
 			<field name="arch" type="xml">
 				<form string="Certificaciones">
 					<header>
-						<field name="manual_exchange" invisible="1" />
 
 						<field name="state" widget="statusbar" clickable="True" attrs="{'invisible': [('id','=',False)]}"/>
 					</header>
 					<sheet string="Certificaciones CEYF">
 						<field name="id" invisible="1"/>
+						<field name="is_administracion_read_only" invisible="1"/>
+						<field name="manual_exchange" invisible="1" />
+						
 						<div class="oe_title">
 							<h1>
 								<label for="operadora_id" />
 								<br/>
 								<field name="operadora_id" placeholder="Operadora" domain="[('is_company_operator','=',True),('is_company','=',True),]"
 														context="{'default_is_company_operator':True,'default_is_company':True,'form_view_ref':'geo_certifications.res_partner_company_operator_form'}"
-														/> 
+														 attrs="{'readonly': [('is_administracion_read_only','=',True)]}"/> 
 														<!-- attrs="{'readonly':[('state','in',('proceso_facturacion','facturacion','cobrado'))]}"-->														
 								<field name="company_operator_code" invisible="1"/>
 							</h1>
 						</div>
 						<group >
 							<group string="Trabajo" rowspan="2"><!--attrs="{'readonly':[('state','in',('proceso_facturacion','facturacion','cobrado'))]}"-->
-								<field name="contrato" requierd="True" domain="[('active','=',True)]" />  							
-								<field name="equipo" requierd="True"  /> 
-								<field name="pozo"  requierd="True"  /> 
-								<field name="fecha_inicio" widget="date"  requierd="True" /> 
-								<field name="fecha_fin" widget="date" requierd="True" /> 
-								<field name="operacion"  requierd="True" /> 
-								<field name="regional"  requierd="True"  /> 
+								<field name="contrato" requierd="True" domain="[('active','=',True)]"  attrs="{'readonly': [('is_administracion_read_only','=',True)]}"/>  							
+								<field name="equipo" requierd="True"   attrs="{'readonly': [('is_administracion_read_only','=',True)]}"/> 
+								<field name="pozo"  requierd="True"   attrs="{'readonly': [('is_administracion_read_only','=',True)]}"/> 
+								<field name="fecha_inicio" widget="date"  requierd="True"  attrs="{'readonly': [('is_administracion_read_only','=',True)]}"/> 
+								<field name="fecha_fin" widget="date" requierd="True"  attrs="{'readonly': [('is_administracion_read_only','=',True)]}"/> 
+								<field name="operacion"  requierd="True"  attrs="{'readonly': [('is_administracion_read_only','=',True)]}"/> 
+								<field name="regional"  requierd="True"   attrs="{'readonly': [('is_administracion_read_only','=',True)]}"/> 
 							</group>
 							<group string="Documentos" attrs="{'invisible': [('company_operator_code', '!=', 'ypf')]}">
 <!-- 									<field name="dm"  attrs="{'required': [('company_operator_code', '=', 'ypf')], 'invisible': [('company_operator_code', '!=', 'ypf')]}"/> -->
@@ -146,15 +148,15 @@
 									<field name="habilita"   attrs="{'required': ['&amp;',('state', 'in', ('proceso_facturacion','facturacion','cobrado')),('company_operator_code', '=', 'ypf')], 'invisible': [('company_operator_code', '!=', 'ypf')]}"/> 
 							</group>
 							<group string="Valores" >
-								<field name="valor_servicios" widget="monetary"/>
-								<field name="valor_servicios_pesos" widget="monetary"/>
-								<field name="valor_productos" widget="monetary" />
-								<field name="valor_total" requierd="True" widget="monetary"/>
+								<field name="valor_servicios" widget="monetary" attrs="{'readonly': [('is_administracion_read_only','=',True)]}"/>
+								<field name="valor_servicios_pesos" widget="monetary" attrs="{'readonly': [('is_administracion_read_only','=',True)]}"/>
+								<field name="valor_productos" widget="monetary"  attrs="{'readonly': [('is_administracion_read_only','=',True)]}"/>
+								<field name="valor_total" widget="monetary" readonly="1"/>
 								
 							</group>
 							<group string="Observaciones">
 							
-								<field name="observaciones" nolabel="1"/>
+								<field name="observaciones" nolabel="1" attrs="{'readonly': [('is_administracion_read_only','=',True)]}"/>
 							</group>
 						</group>						
 						<group>
@@ -182,8 +184,8 @@
 						
 						<group attrs="{'invisible':['|',('id','=',False),('operacion','!=','servicio_ct')]}">
 							<group>
-									<field name="operating_hours"/>
-									<field name="time_losed_ids" context="{'default_certification_coiled_tubing_id':id}">
+									<field name="operating_hours" attrs="{'readonly': [('is_administracion_read_only','=',True)]}"/>
+									<field name="time_losed_ids" context="{'default_certification_coiled_tubing_id':id}" attrs="{'readonly': [('is_administracion_read_only','=',True)]}">
 										<tree limit="5" editable="bottom" create="1" delete="1">
 											<field name="time_losed_quantity" />
 											<field name="reason" />

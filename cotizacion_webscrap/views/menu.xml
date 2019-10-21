@@ -20,7 +20,7 @@
 		<menuitem name="Cotizacion del dolar BCRA"
 			id="exchange_left_menu_list"
 			parent="geo_certifications.left_menu_category"
-			action="exchange_action_window" />
+			action="exchange_action_window" groups="group_name_menu_exchange" />
 
 
 	</data>

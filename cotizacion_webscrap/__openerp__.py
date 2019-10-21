@@ -23,7 +23,10 @@
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/base_security.xml',
+        'security/menu_security.xml',
+        'security/profiles_security.xml',
+        'security/ir.model.access.csv',
         'data/ir_cron.xml',
         'views/cotizacion_dolar_bcra.xml',
         'views/menu.xml',

@@ -62,23 +62,24 @@
 			<field name="arch" type="xml">
 				<form string="Certificaciones">
 					<header>
-						<field name="manual_exchange" invisible="1" />
 
 						<field name="state" widget="statusbar" clickable="True" attrs="{'invisible': [('id','=',False)]}"/>
 
 					</header>
 					<sheet string="Certificaciones CEYF">
+						<field name="id" invisible="1"/>
+						<field name="manual_exchange" invisible="1" />
+						<field name="is_administracion_read_only" invisible="1"/>
 						<div class="oe_title" >
 							<h1>
-								<field name="id" invisible="1"/>
 								<label for="operadora_id" />
 								<br/>
 								
 								<field name="operadora_id" 
 														placeholder="Operadora" domain="[('is_company_operator','=',True),('is_company','=',True),]"
 														context="{'default_is_company_operator':True,'default_is_company':True,'default_company_operator_code':'otros','form_view_ref':'geo_certifications.res_partner_company_operator_form'}"
-														options="{'no_create_edit':True,'no_create':True,'no_open':True}"/>
-														<!--attrs="{'readonly':[('state','not in',('carga'))]}"-->
+														options="{'no_create_edit':True,'no_create':True,'no_open':True}"
+														attrs="{'readonly': [('is_administracion_read_only','=',True)]}"/>
 
 								<field name="company_operator_code" invisible="1"/>
 							</h1>
@@ -87,35 +88,36 @@
 						<!--attrs="{'readonly':[('state','not in',('carga'))]}"-->
 							<group string="Trabajo" >
 							<!-- obligatorio solo si es ypf -->
-								<field name="contrato" domain="[('active','=',True)]" attrs="{'required': [('company_operator_code', '=', 'ypf')], 'invisible': [('company_operator_code', '!=', 'ypf')]}"/> 		<!--  -->						
-								<field name="fecha_realizacion" string="Fecha de Realización"
+								<field name="contrato" domain="[('active','=',True)]" attrs="{'required': [('company_operator_code', '=', 'ypf')], 'invisible': [('company_operator_code', '!=', 'ypf')], 'readonly': [('is_administracion_read_only','=',True)]}"/>				
+								<field name="fecha_realizacion" string="Fecha de Realización" attrs="{'readonly': [('is_administracion_read_only','=',True)]}"
 									class="oe_inline" widget="date"/>
-								<field name="operacion" string="Operación"/>
-								<field name="parte"/>
+								<field name="operacion" string="Operación" attrs="{'readonly': [('is_administracion_read_only','=',True)]}"/>
+								<field name="parte" attrs="{'readonly': [('is_administracion_read_only','=',True)]}"/>
 								<!-- Comentado reunion 10-09-2019
 								field name="parte" readonly="True" attrs="{'invisible': [('id','=',False)]}"/-->
 							<!-- obligatorio solo si es ypf o pae -->
 								<field name="evento"  attrs="{'required': ['|','&amp;',('company_operator_code', '=', 'ypf'),('company_operator_code', '=', 'pae'),('operacion', '=', 'patagoniano')],
-															  'invisible': ['&amp;','|',('company_operator_code', '!=', 'pae'),('company_operator_code', '!=', 'ypf'),('operacion', '!=', 'patagoniano')]}" />
+															  'invisible': ['&amp;','|',('company_operator_code', '!=', 'pae'),('company_operator_code', '!=', 'ypf'),('operacion', '!=', 'patagoniano')], 
+															  'readonly': [('is_administracion_read_only','=',True)]}" />
 															  <!--,'readonly':[('state','not in',('carga'))]-->
 							</group>
 							<group string="Detalle"> <!--attrs="{'readonly':[('state','not in',('carga'))]}"-->
-								<field name="supervisor_id" domain="[('active','=',True)]"  options="{'limit': 15,'no_create':True,'no_open':True}"/>
-								<field name="pozo" />
-								<field name="yacimiento" />
-								<field name="equipo" />
-								<field name="bombeador" />
+								<field name="supervisor_id" domain="[('active','=',True)]"  options="{'limit': 15,'no_create':True,'no_open':True}" attrs="{'readonly': [('is_administracion_read_only','=',True)]}"/>
+								<field name="pozo"  attrs="{'readonly': [('is_administracion_read_only','=',True)]}"/>
+								<field name="yacimiento"  attrs="{'readonly': [('is_administracion_read_only','=',True)]}"/>
+								<field name="equipo"  attrs="{'readonly': [('is_administracion_read_only','=',True)]}"/>
+								<field name="bombeador"  attrs="{'readonly': [('is_administracion_read_only','=',True)]}"/>
 	
 								<!--attrs="{'readonly':[('state','not in',('carga'))]}"-->
-								<field name="blscemento"
+								<field name="blscemento" attrs="{'readonly': [('is_administracion_read_only','=',True)]}"
 									widget="integer" />
 							</group>
 						</group>
 						<group>
-							<group string="Valores" >
-								<field name="valor_servicios" widget="monetary"/>
-								<field name="valor_servicios_pesos" widget="monetary"/>
-								<field name="valor_productos" widget="monetary" />
+							<group string="Valores">
+								<field name="valor_servicios" widget="monetary" attrs="{'readonly': [('is_administracion_read_only','=',True)]}"/>
+								<field name="valor_servicios_pesos" widget="monetary" attrs="{'readonly': [('is_administracion_read_only','=',True)]}"/>
+								<field name="valor_productos" widget="monetary"  attrs="{'readonly': [('is_administracion_read_only','=',True)]}"/>
 								<field name="valor_total" requierd="True" string="Total" readonly="1"/>
 							</group>
 
