@@ -10,10 +10,27 @@ _logger = logging.getLogger(__name__)
 
 class certifications_coiled_tubing_time_losed(models.Model):
 	_name = "certifications.coiled_tubing_time_losed"
+
 	
+	time_losed_quantity = fields.Integer("Horas Perdidas", required=True)
+	reason = fields.Selection(string="Motivo de NPT",[
+						("falla_operativa","Falla Operativa"),
+						("falta_habilitacion","Falta habilitación"),
+						("rotura_equipo","Rotura de equipo / Mtto campo"),
+						("fuerza_mayor","Fuerza mayor"),
+						("problemas_geodata","Problemas Geodata"),
+						("falta_personal","Falta de personal"),
+						("accidente_personal","Accidente personal"),
+						("exceso_horas","Exceso de horas de Mtto"),
+						("exceso_dias","Exceso de días de IND"),
+						("sindicato","Sindicato"),
+						("problemas_bop","Problemas con BOP"),
+						("exceso_frague","Exceso de fragüe"),
+						("corte_pinchadura","Corte de caño/Pinchadura"),
+						("otro","Otros")
+						])
+
 	
-	time_losed_quantity = fields.Integer("Horas Perdidas")
-	reason = fields.Char("Motivo")
 	comments = fields.Text("Comentarios")
 	monetary_losed = fields.Monetary("Perdida (USD)")
 

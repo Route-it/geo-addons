@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+
+    <data noupdate="1">
+
+        <record id="UCT1" model="certification.plant">
+            <field name="name">UCT1</field>
+            <field name="description">UCT-1</field>
+          <!-- <field name="type">24</field> -->
+            <field name="active">True</field>
+        </record>
+        <record id="UCT2" model="certification.plant">
+            <field name="name">UCT2</field>
+            <field name="description">UCT-2</field>
+          <!-- <field name="type">24</field> -->
+            <field name="active">True</field>
+        </record>
+        <record id="UCT3" model="certification.plant">
+            <field name="name">UCT3</field>
+            <field name="description">UCT-3</field>
+          <!-- <field name="type">24</field> -->
+            <field name="active">True</field>
+        </record>
+        <record id="UCT4" model="certification.plant">
+            <field name="name">UCT4</field>
+            <field name="description">UCT-4</field>
+          <!-- <field name="type">24</field> -->
+            <field name="active">True</field>
+        </record>
+        <record id="UCT5" model="certification.plant">
+            <field name="name">UCT5</field>
+            <field name="description">UCT-5</field>
+          <!-- <field name="type">24</field> -->
+            <field name="active">True</field>
+        </record>
+
+
+    </data>
+</openerp>

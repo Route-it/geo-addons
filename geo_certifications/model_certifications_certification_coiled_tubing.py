@@ -22,12 +22,16 @@ class certifications_certification_coiled_tubing(models.Model):
 	
 	
 	contrato = fields.Many2one(required=True)
-
+	
+	"""
 	equipo = fields.Selection([('UCT1','UCT-1'),
 								('UCT2','UCT-2'),
 								('UCT3','UCT-3'),
 								('UCT4','UCT-4'),
 								('UCT5','UCT-5')],required=True,string="Equipo",track_visibility='onchange')
+	"""
+	equipo = fields.Many2one(string="Equipo","certification.plant",required=True,string="Equipo",track_visibility='onchange')		
+
 	
 	fecha_inicio = fields.Date(required=True,string="Fecha de inicio")
 	fecha_fin = fields.Date(required=True,string="Fecha de fin")
