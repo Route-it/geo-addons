@@ -25,20 +25,19 @@ from cStringIO import StringIO
 from xlwt import *
 
 
-
-try:
-    import json
-except ImportError:
-    import simplejson as json
-
-
-
-
 #from openerp.addons.web.controllers.main import ExcelExport
 try:
     import json
 except ImportError:
     import simplejson as json
+
+
+
+def is_hidden_field(fieldname):
+    if ((type(fieldname) == unicode) or (type(fieldname) == basestring)):
+            return (fieldname.lower() in ('estado','parte'))
+
+    
 
 class ExportGeoPdf(Export):
     fmt = {
@@ -115,7 +114,16 @@ class GeoPdfExport(ExportGeoPdf):
         uid = data.get('uid', False)
         model = data.get('model', False)
         Model = request.session.model(model)
-        return req.make_response(self.from_data(uid, data.get('headers', []), data.get('rows', []),
+        
+        headers_fields =  data.get('headers', [])
+        headers_to_remove = []
+        for field_name in headers_fields:
+            if is_hidden_field(field_name['header_name']):
+                print field_name['header_name'] + ' si' 
+                field_name.pop('header_data_id',False)
+
+
+        return req.make_response(self.from_data(uid, headers_fields, data.get('rows', []),
                                                 data.get('company_name','')),
                                  headers=[('Content-Disposition',
                                            'attachment; filename=%s' %self.filename(model)),
@@ -130,23 +138,72 @@ class ExcelExportView(ExcelExport):
             raise AttributeError()
         return super(ExcelExportView, self).__getattribute__(name)
     """    
+
+
+    def _get_aggregated_line(self, children, field_names, my_group):
+        line = []
+        group_array_ag = my_group.split(",")
+        if len(group_array_ag) > 1:
+            line.append(group_array_ag[1]+" ("+str(children[my_group]['datagroup']['length'])+")")
+        else:
+            line.append(my_group)
+        for f in field_names:
+            if f != 'Grupo':
+                ag = children[my_group]['datagroup']['aggregates']
+                key_ag = ag.keys()[0]
+                if f == key_ag:
+                    total = ag.get(ag.keys()[0])
+                    line.append(total)
+                else:
+                    line.append('')
+        
+        return line
+
+    def _get_lines_aggregatted(self, children, field_names, Model, context, order):
+        rows = []
+        for my_group in children:
+            if my_group == 'null':
+                ids = children[my_group]['dataset']['ids']
+                my_domain = children[my_group]['dataset']['domain']
+                field_names.pop(0)
+                ids = Model.search(my_domain, offset=0, limit=False, order=order, context=context)
+                lines = Model.export_data(ids, field_names, self.raw_data, context=context).get('datas', [])
+                for l in lines:
+                    l.insert(0,'')                
+                rows.extend(lines)
+                field_names.insert(0,'Grupo')
+
+            else:    
+                if (len(children[my_group]['children']) > 0):
+                    print "muestra total y registros"
+                    rows.append(self._get_aggregated_line(children, field_names, my_group))
+                    rows.extend(self._get_lines_aggregatted(children[my_group]['children'], field_names, Model, context, order))
+                elif (children[my_group]['records']['length'] > 0):
+                    agg_domain = children[my_group]['datagroup']['domain']
+                    ids = Model.search(agg_domain, offset=0, limit=False, order=order, context=context)
+                    field_names.pop(0)
+                    lines = Model.export_data(ids, field_names, self.raw_data, context=context).get('datas', [])
+                    for l in lines:
+                        l.insert(0,'')
+                    rows.extend(lines)
+                    field_names.insert(0,'Grupo')
+                    print "muestra registros"
+                else:
+                    rows.append(self._get_aggregated_line(children, field_names, my_group))
+                    print "muestra totales"
+        
+        return rows
+
     @http.route('/web/export/geo_xls_export', type='http', auth='user')
     def export_xls_view(self, data, token):
         params = json.loads(data)
         
         #params.get('context').get('group_by') ultimo nivel de agrupamiento
         
-        model, fields, ids, domain, import_compat = \
+        model, fields, ids, domain, grouped, group_by, children = \
             operator.itemgetter('model', 'fields', 'ids', 'domain',
-                                'import_compat')(
+                                'grouped','group_by','children')(
                 params)
-                            
-        Model = request.session.model(model)
-        context = dict(request.context or {}, **params.get('context', {}))
-        order = context.get('order',False)
-        if (len(ids)>0):
-            domain.append(['id','in',ids])
-        ids = Model.search(domain, offset=0, limit=False, order=order, context=context)
 
         try:
             columns_headers = [val['label'].strip() for val in fields]
@@ -154,8 +211,30 @@ class ExcelExportView(ExcelExport):
         except:
             columns_headers = params.get('headers', [])
             field_names = fields
-        rows = Model.export_data(ids, field_names, self.raw_data, context=context).get('datas',[]) 
-        #data.get('rows', [])
+                            
+        Model = request.session.model(model)
+        context = dict(request.context or {}, **params.get('context', {}))
+        order = context.get('order',False)
+
+        
+        if bool(grouped):
+            #(self, cr, uid, domain, fields, groupby, offset=0, limit=None, context=None, orderby=False, lazy=True):
+            columns_headers.insert(0,'Grupo')
+            field_names.insert(0,'Grupo')
+            #groups = Model.read_group(domain, field_names, group_by, offset=0, limit=False, orderby=order, context=context,lazy=False)
+            #extraer funcion recursiva llamandose con children para soportar grupos anidados.? 
+            rows = self._get_lines_aggregatted( children, field_names, Model, context, order)
+            
+            field_names.pop(0)
+            
+        else:        
+            if (len(ids)>0):
+                domain.append(['id','in',ids])
+        
+            ids = Model.search(domain, offset=0, limit=False, order=order, context=context)
+
+            rows = Model.export_data(ids, field_names, self.raw_data, context=context).get('datas',[]) 
+
         return request.make_response(
             self.from_data_geo_xls(columns_headers, rows),
             headers=[
@@ -193,11 +272,6 @@ class ExcelExportView(ExcelExport):
                     res[fieldname] = length
         
         return res
-    
-    
-    def is_hidden_field(self, fieldname):
-        if ((type(fieldname) == unicode) or (type(fieldname) == basestring)):
-                return (fieldname.lower() in ('estado','parte'))
     
     
     def from_data_geo_xls(self, fields, rows):
@@ -240,7 +314,7 @@ class ExcelExportView(ExcelExport):
                 
         for i, fieldname in enumerate(fields):
             worksheet.write(0, i, fieldname, bold_style)
-            if self.is_hidden_field(fieldname):
+            if is_hidden_field(fieldname):
                 worksheet.col(i).width = 0 
             else:
                 worksheet.col(i).width = fields_width_dict.get(fieldname) * 300 #8000 # around 220 pixels
