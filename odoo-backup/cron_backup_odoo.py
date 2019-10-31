@@ -44,13 +44,13 @@ def download_database(pw, db,srv,p,d,f):
 
             filename = r.headers.get('Content-Disposition',"asd''acceso_denegado.txt").split("'")[2]
             #if r.ok & (r.headers['Content-Encoding']=='gzip'): 
-            with open("d:/"+filename,'wb') as f: 
+            with open(d+"/"+filename,'wb') as f: 
                     f.write(r.content) 
 
         except Exception as e:
-            raise Warning("Error: Intente nuevamente mas tarde\\n"+e.message)
+            raise Warning("Error: Intente nuevamente mas tarde\\n"+e)
         finally:
-            print 'Done'
+            print ("Done")
 
 
 
