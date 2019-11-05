@@ -15,7 +15,20 @@ class certification_plant(models.Model):
 	name = fields.Char("Nombre")
 	description = fields.Text("Descripción")
 	type = fields.Selection(string="Tipo (hs por dia)",[("24","24hs"),("12","12hs")])
-	active = fields.Boolean("Activo",default=True)
+	
+	# asigna un valor al inicio y luego no se toca a menos que sea modificado en la vista.
+	default=lambda self: self._get_last_exchange_date()
+	
+	# computa el valor cada vez, no permite modificacion 
+	#compute='set_total_value'	
+
+	# computa el valor cada vez ¿permite modificacion? 
+	#compute='set_total_value'	+ store= true
+	
+	automatic_calculation_hours_by_month =  fields.Boolean("Calcular horas por mes autmaticamente",default=True)
+	
+	hours_by_month = fields.Integer(string="Tipo (hs por dia)",compute='set_hours_by_month')
+	
 
 	@api.one
 	@api.constrains('name')
