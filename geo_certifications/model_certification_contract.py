@@ -19,7 +19,7 @@ class certification_contract(models.Model):
 
 	@api.one
 	@api.constrains('name')
-	def validate_dates(self):
+	def validate_name(self):
 		if not (bool(self.name) & (len(self.name)>3)):
 			raise ValidationError("El nombre debe tener al menos 3 caracteres")
 			
@@ -30,5 +30,5 @@ class certification_contract(models.Model):
 	@api.constrains('name')
 	def check_unique_name(self):
 		records = self.env['certification.contract'].search([('name','=',self.name)])
-		if len(records)>0:
+		if len(records)>1:
 			raise ValidationError("Ya existe un registro con ese nombre, verifique que este activo")
