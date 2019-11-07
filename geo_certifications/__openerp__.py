@@ -25,13 +25,15 @@
         'security/certifications_security.xml',
         'views/certification-ceyf.xml',
         'views/certification-coiled-tubing.xml',
+        'views/coiled-tubing-time-losed.xml',
         'views/supervisor.xml',
         'views/contract.xml',
+        'views/plant.xml',
         'views/task.xml',
         'views/menu.xml',
         'views/res_partner_company_operator.xml',
         'views/web_ct_style.xml',
-        'security/ir.model.access.csv'
+        'security/ir.model.access.csv',
         'data/plants.xml'
     ],
     # only loaded in demonstration mode

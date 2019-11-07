@@ -17,6 +17,7 @@
 					<field name="habilita" />
 					<field name="observaciones"/>
 					<field name="state" invisible="1"/>
+					<field name="time_losed_ids"/>
 				</tree>
 			</field>
 		</record>
@@ -183,12 +184,12 @@
 						<group attrs="{'invisible':['|',('id','=',False),('operacion','!=','servicio_ct')]}">
 							<group>
 									<field name="operating_hours"/>
-									<field name="time_losed_ids" context="{'default_certification_coiled_tubing_id':id}">
+									<field name="time_losed_ids" context="{'default_certification_coiled_tubing_id':id}" >
 										<tree limit="5" editable="bottom" create="1" delete="1">
-											<field name="time_losed_quantity" />
-											<field name="reason" />
-											<field name="comments" />
-											<field name="monetary_losed" />
+												<field name="time_losed_quantity" />
+												<field name="reason" />
+												<field name="comments" />
+												<field name="monetary_losed" />
 										</tree>
 									</field>
 							</group>
@@ -204,7 +205,7 @@
 				</form>
 			</field>
 		</record>
-
+		
 		<record id="certifications_coiled_tubing_graph" model="ir.ui.view">
 			<field name="name">certifications.certification_coiled_tubing.graph</field>
 			<field name="model">certifications.certification_coiled_tubing</field>

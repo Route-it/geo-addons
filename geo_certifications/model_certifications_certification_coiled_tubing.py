@@ -30,7 +30,7 @@ class certifications_certification_coiled_tubing(models.Model):
 								('UCT4','UCT-4'),
 								('UCT5','UCT-5')],required=True,string="Equipo",track_visibility='onchange')
 	"""
-	equipo = fields.Many2one(string="Equipo","certification.plant",required=True,string="Equipo",track_visibility='onchange')		
+	equipo = fields.Many2one("certification.plant",required=True,track_visibility='onchange',string="Equipo")		
 
 	
 	fecha_inicio = fields.Date(required=True,string="Fecha de inicio")
@@ -41,8 +41,8 @@ class certifications_certification_coiled_tubing(models.Model):
 	observaciones = fields.Text(string="Observaciones",help="Destinado a clarificar detalles. No incluir eventos, valores, vencimientos, fechas, etc.")
 		
 	operating_hours = fields.Integer("Horas Operativas")
-	
-	time_losed_ids = fields.One2many("certifications.coiled_tubing_time_losed","certification_coiled_tubing_id",string ="Horas Perdidas", ondelete='cascade')
+
+	time_losed_ids = fields.One2many(comodel_name="certifications.coiled_tubing_time_losed",inverse_name="certification_coiled_tubing_id",string ="Horas Perdidas", ondelete='cascade', domain=[('time_losed_quantity','!=',0)])
 	
 	
 
@@ -126,6 +126,11 @@ class certifications_certification_coiled_tubing(models.Model):
 		#if self.check_fields_for_state(self.fields_to_check_carga,vals): 
 		#	item.state = 'proceso_facturacion'  
 
+		
+
+		id_time_l = self.env['certifications.coiled_tubing_time_losed'].create({'certification_coiled_tubing_id': item.id,
+																			'time_losed_quantity':0})
+		
 		
 		return item  
 

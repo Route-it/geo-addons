@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+    <record model="ir.ui.view" id="geo_certifications.plant_list">
+    	<field name="name">Equipos</field>
+    	<field name="model">certification.plant</field>
+    	<field name="arch" type="xml">
+    		<tree>
+    			<field name="name"/>
+    			<field name="description"/>
+    		</tree>
+		</field>
+    </record>
+    
+    
+	<record id="geo_certifications.plant_form" model="ir.ui.view">
+            <field name="name">certification.plant.form</field>
+            <field name="model">certification.plant</field>
+            <field name="arch" type="xml">
+                <form string="Equipo">
+                <sheet string="Equipo">
+                        <h1>
+                			<label for="name" string="Nombre"/>
+                            <field name="name" placeholder="Nombre" class="oe_inline"/>
+                        </h1>
+                    <group >
+                    		<field name="description"/>
+                          	<field name="type"/>
+                          	<field name="automatic_calculation_hours_by_month"/>
+                          	<field name="hours_by_month" attrs="{'readonly':[('automatic_calculation_hours_by_month','=',True)]}"/>
+
+                    </group>
+                 </sheet>
+            	</form>
+			</field>
+	</record>
+                    
+  </data>
+</openerp>
