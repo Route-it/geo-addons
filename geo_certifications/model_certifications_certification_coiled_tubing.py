@@ -57,7 +57,7 @@ class certifications_certification_coiled_tubing(models.Model):
 					'fecha_inicio','fecha_fin','operacion',
 					'regional']
 	#fields_to_check_proceso_facturacion = ['dm','habilita']
-	fields_to_check_proceso_facturacion = ['invoice_date','invoice_number','valor_total_factura']
+	fields_to_check_proceso_facturacion = ['invoice_date','invoice_number','valor_total_factura_computed']
 	fields_to_check_cobrado = ['invoice_date_charge']
 	
 	
@@ -88,7 +88,7 @@ class certifications_certification_coiled_tubing(models.Model):
 			#solo si es ypf
 			#if self.company_operator_code == 'ypf':
 			if self.check_fields_for_state(self.fields_to_check_proceso_facturacion,vals): 
-				if (vals.get('valor_total_factura')!=None and vals.get('valor_total_factura')!=False and vals.get('valor_total_factura')>0) or (self.valor_total_factura!=False and self.valor_total_factura>0): 
+				if (vals.get('valor_total_factura_computed')!=None and vals.get('valor_total_factura_computed')!=False and vals.get('valor_total_factura_computed')>0) or (self.valor_total_factura_computed!=False and self.valor_total_factura_computed>0): 
 					state = 'facturacion' 
 				else:
 					mensaje = 'El valor total de factura debe ser mayor que 0'
@@ -125,8 +125,6 @@ class certifications_certification_coiled_tubing(models.Model):
 		#check if state is completed
 		#if self.check_fields_for_state(self.fields_to_check_carga,vals): 
 		#	item.state = 'proceso_facturacion'  
-
-		
 
 		id_time_l = self.env['certifications.coiled_tubing_time_losed'].create({'certification_coiled_tubing_id': item.id,
 																			'time_losed_quantity':0})

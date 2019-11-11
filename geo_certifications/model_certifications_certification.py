@@ -20,11 +20,9 @@ class certifications_certification(models.Model):
 	@api.model
 	def _get_last_exchange_date(self):
 		try:
-			if bool(self.cotizacion_to_date_charge): 
-				if (self.cotizacion_to_date_charge > 0): 
+			if (not bool(self.cotizacion_to_date_charge)) or (bool(self.cotizacion_to_date_charge) and (self.cotizacion_to_date_charge > 0)): 
 					if (not bool(self.is_antique_register())): 
-						cotiz = self.env['exchange.cotizacion_dolar_bcra'].search(['&',('venta','>=',str(self.cotizacion_to_date_charge)+'0'),('venta','<=',str(self.cotizacion_to_date_charge)+'9')],limit=1)
-						return cotiz.fecha
+						return self.env['exchange.cotizacion_dolar_bcra'].search([],limit=1).fecha
 		except Exception:
 			return
 		return False
@@ -219,7 +217,7 @@ class certifications_certification(models.Model):
 		self.env['exchange.cotizacion_dolar_bcra'].search(('venta','=',self.cotizacion_to_date_charge)],limit=1)
 		pero odoo no ecuentra igual cuando el valor guardado es 54.886 y el buscado es 54.88
 		"""
-		cotiz_register = self.env['exchange.cotizacion_dolar_bcra'].search(['&',('venta','>=',str(self.cotizacion_to_date_charge)+'0'),('venta','<=',str(self.cotizacion_to_date_charge)+'9')],limit=1)
+		cotiz_register = self.env['exchange.cotizacion_dolar_bcra'].search(['&',('venta','>=',self.cotizacion_to_date_charge-0.01),('venta','<=',self.cotizacion_to_date_charge+0.01)],limit=1)
 		if (not cotiz_register):
 			#is manual value!
 			if not bool(self.is_antique_register()):

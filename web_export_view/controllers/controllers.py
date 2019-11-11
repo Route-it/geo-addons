@@ -25,7 +25,6 @@ from cStringIO import StringIO
 from xlwt import *
 
 
-#from openerp.addons.web.controllers.main import ExcelExport
 try:
     import json
 except ImportError:

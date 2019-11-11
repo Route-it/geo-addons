@@ -123,7 +123,7 @@ class certifications_certification_ceyf(models.Model):
 					'fecha_realizacion','bombeador','yacimiento','supervisor_id']
 	fields_to_check_carga_confirmacion = ['certop','dm','codigo']
 	fields_to_check_proceso_facturacion = ['hesop','habilita']
-	fields_to_check_facturacion = ['invoice_date','invoice_number','valor_total_factura']
+	fields_to_check_facturacion = ['invoice_date','invoice_number','valor_total_factura_computed']
 	fields_to_check_cobrado = ['invoice_date_charge']
 	
 	
@@ -164,7 +164,7 @@ class certifications_certification_ceyf(models.Model):
 							state = 'facturacion'
 			"""
 			if self.check_fields_for_state(self.fields_to_check_facturacion,vals): 
-				if (vals.get('valor_total_factura')!=None and vals.get('valor_total_factura')!=False and vals.get('valor_total_factura')>0) or (self.valor_total_factura!=False and self.valor_total_factura>0): 
+				if (vals.get('valor_total_factura_computed')!=None and vals.get('valor_total_factura_computed')!=False and vals.get('valor_total_factura_computed')>0) or (self.valor_total_factura_computed!=False and self.valor_total_factura_computed>0): 
 					state = 'facturacion' 
 				else:
 					mensaje = 'El valor total de factura debe ser mayor que 0'
