@@ -9,7 +9,8 @@ _logger = logging.getLogger(__name__)
 	
 class certification_contract(models.Model):
 	_name = 'certification.contract'
-	_order = 'id'
+	_order = 'name'
+	_description = 'Contratos'
 	
 	name = fields.Char("Nombre")
 	description = fields.Text("Descripcion")
@@ -32,3 +33,4 @@ class certification_contract(models.Model):
 		records = self.env['certification.contract'].search([('name','=',self.name)])
 		if len(records)>1:
 			raise ValidationError("Ya existe un registro con ese nombre, verifique que este activo")
+

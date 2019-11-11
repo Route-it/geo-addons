@@ -191,13 +191,13 @@ class certifications_certification(models.Model):
 		res = []
 		for record in self.browse(cr, uid, ids, context=context):
 			name = record.operadora_id.name
-			contract = ''
+			pozo = ''
 			invoice_number = ''
-			if record.contrato:
-				contract = '('+record.contrato.name+')' or ''
+			if record.pozo:
+				pozo = '('+record.pozo+')' or ''
 			if record.invoice_number:
 				invoice_number = '- Fact:'+ record.invoice_number or ''
-			appeler = name + contract +invoice_number
+			appeler = name + pozo + invoice_number
 			
 			res.append((record.id, appeler))
 		

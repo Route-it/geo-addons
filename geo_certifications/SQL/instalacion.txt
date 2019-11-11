@@ -1,18 +1,4 @@
-1) Actualizar infraestructura (con traducciones al español completas) OK!
-1.1) copiar addons actualizadas. OK!
-
-2) instalar sql de columnas de res_partner OK!
-2.1) actualizar la tabla supervisor  OK!
-3) activar modo desarrollador y actualizar lista de aplicaciones. OK!
-4) correr los scripts de migracion de datos. OK!
-
-5) instalar web_m2x_options OK
-
-6) Utilizar la nueva VM V2 con idiomas actualizados  OK
-
-7) Desinstalar Ventas, y web print screen y eliminar el menu "sales" OK
-
-8) instalar tablero de comando, web menu hide, OK
-
-9) instalar y Activar el cron cotizacion BCRA OK!
-
+Copiar addons
+Actualizar gro_certification
+desinstalar Web-Printscreen
+Instalar web export view 

@@ -25,7 +25,7 @@ from cStringIO import StringIO
 from xlwt import *
 
 
-#from openerp.addons.web.controllers.main import ExcelExport
+
 try:
     import json
 except ImportError:
@@ -150,9 +150,9 @@ class ExcelExportView(ExcelExport):
         for f in field_names:
             if f != 'Grupo':
                 ag = children[my_group]['datagroup']['aggregates']
-                key_ag = ag.keys()[0]
-                if f == key_ag:
-                    total = ag.get(ag.keys()[0])
+                #key_ag = ag.keys()[0]
+                if f in ag.keys():
+                    total = ag.get(f)
                     line.append(total)
                 else:
                     line.append('')
@@ -200,9 +200,9 @@ class ExcelExportView(ExcelExport):
         
         #params.get('context').get('group_by') ultimo nivel de agrupamiento
         
-        model, fields, ids, domain, grouped, group_by, children = \
+        model, fields, ids, domain, grouped, group_by, children,footer_eles = \
             operator.itemgetter('model', 'fields', 'ids', 'domain',
-                                'grouped','group_by','children')(
+                                'grouped','group_by','children','footer_eles')(
                 params)
 
         try:
@@ -234,6 +234,14 @@ class ExcelExportView(ExcelExport):
             ids = Model.search(domain, offset=0, limit=False, order=order, context=context)
 
             rows = Model.export_data(ids, field_names, self.raw_data, context=context).get('datas',[]) 
+        
+        if len(footer_eles) >= 1:
+            line = []
+            for l in footer_eles:
+                    if l.get('number'):
+                        line.append(l.get('data'))                
+            rows.append(line)
+            print "con totales"
 
         return request.make_response(
             self.from_data_geo_xls(columns_headers, rows),
@@ -346,6 +354,8 @@ class ExcelExportView(ExcelExport):
                     cell_style.num_format_str = 'DD/MM/YYYY'
                 elif isinstance(cell_value, float):
                     cell_style.num_format_str = '#,##0.00'
+                elif isinstance(cell_value, int):
+                    cell_style.num_format_str = '#0'
                 worksheet.write(row_index + 1, cell_index, cell_value, cell_style)
 
         fp = StringIO()

@@ -15,7 +15,7 @@
 					<field name="yacimiento" />
 					<field name="operacion"/>
 					<field name="fecha_realizacion" />
-					<field name="valor_total_list_view"/>
+					<field name="valor_total_list_view" sum="Valor USD"/>
 				</tree>
 			</field>
 		</record>
