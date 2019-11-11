@@ -138,3 +138,29 @@ class certifications_certification_coiled_tubing(models.Model):
 	def suscribe_specific_partners(self,certif,partner_ids=[]):
 		partner_ids = self.env['res.users'].search([('active','=',True)]).mapped('partner_id').ids
 		super(certifications_certification_coiled_tubing, self).suscribe_specific_partners(certif,partner_ids)
+
+
+	def name_get(self, cr, uid, ids, context=None):
+		if context is None:
+			context = {}
+		if isinstance(ids, (int, long)):
+			ids = [ids]
+	
+		res = []
+		for record in self.browse(cr, uid, ids, context=context):
+			name = record.operadora_id.name
+			pozo = ''
+			equipo = ''
+			invoice_number = ''
+			if record.pozo:
+				pozo = '(pzo:'+record.pozo+')' or ''
+			if record.equipo:
+				equipo = '('+record.equipo.name+')' or ''
+			if record.invoice_number:
+				invoice_number = '- Fact:'+ record.invoice_number or ''
+			appeler = name + pozo + equipo + invoice_number
+			
+			res.append((record.id, appeler))
+
+		return res
+

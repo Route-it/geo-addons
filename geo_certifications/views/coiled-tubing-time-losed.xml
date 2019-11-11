@@ -22,29 +22,37 @@
 		</field>
     </record>
     
-    <!--
-	<record id="geo_certifications.plant_form" model="ir.ui.view">
+    
+	<record id="geo_certifications.coiled_tubing_time_losed_form" model="ir.ui.view">
             <field name="name">certifications.coiled_tubing_time_losed.form</field>
             <field name="model">certifications.coiled_tubing_time_losed</field>
             <field name="arch" type="xml">
                 <form string="Equipo">
                 <sheet string="Equipo">
-                        <h1>
-                			<label for="name" string="Nombre"/>
-                            <field name="name" placeholder="Nombre" class="oe_inline"/>
-                        </h1>
                     <group >
-                    		<field name="description"/>
-                          	<field name="type"/>
-                          	<field name="automatic_calculation_hours_by_month"/>
-                          	<field name="hours_by_month" attrs="{'readonly':[('automatic_calculation_hours_by_month','=',True)]}"/>
-
+                    
+                    
+                    		<field name="time_losed_quantity"/>
+                    		<field name="reason"/>
+                    		<field name="comments"/>
+                    		<field name="monetary_losed"/>
+                    
+                    </group>
+                    <group>
+                    		<field name="certification_coiled_tubing_id" readonly="1"/>
+                    		<field name="operating_hours" readonly="1"/>
+                    		<field name="pozo" readonly="1"/>
+                    		<field name="equipo" readonly="1"/>
+                    		<field name="mes" readonly="1"/>
+                    		<field name="fecha_inicio" readonly="1"/>
+                    		<field name="fecha_fin" readonly="1"/>
+                    		<field name="valor_total_list_view" readonly="1"/>
                     </group>
                  </sheet>
             	</form>
 			</field>
 	</record>
-    -->
+    
                     
   </data>
 </openerp>

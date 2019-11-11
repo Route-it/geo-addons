@@ -33,3 +33,4 @@ class certification_contract(models.Model):
 		records = self.env['certification.contract'].search([('name','=',self.name)])
 		if len(records)>1:
 			raise ValidationError("Ya existe un registro con ese nombre, verifique que este activo")
+

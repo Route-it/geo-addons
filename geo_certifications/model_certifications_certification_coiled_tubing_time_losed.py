@@ -13,7 +13,7 @@ _logger = logging.getLogger(__name__)
 class certifications_coiled_tubing_time_losed(models.Model):
 	_name = "certifications.coiled_tubing_time_losed"
 
-	_order = 'fecha_inicio_related desc, pozo'
+	_order = 'fecha_inicio_related desc, pozo, time_losed_quantity'
 
 	@api.depends('certification_coiled_tubing_id.fecha_inicio','certification_coiled_tubing_id.fecha_fin','certification_coiled_tubing_id.valor_total_list_view','certification_coiled_tubing_id.operating_hours','certification_coiled_tubing_id')
 	@api.one
@@ -63,13 +63,8 @@ class certifications_coiled_tubing_time_losed(models.Model):
 					compute="_get_month",store=True)
 	
 	fecha_inicio_related = fields.Date(related="certification_coiled_tubing_id.fecha_fin",store=True)
-	"""
-	fecha_inicio = fields.Date(related="certification_coiled_tubing_id.fecha_fin",store=True)
-	fecha_fin = fields.Date(related="certification_coiled_tubing_id.fecha_fin",store=True)
-	
-	valor_total_list_view = fields.Monetary(related="certification_coiled_tubing_id.valor_total_list_view",store=True,group_operator="sum")
-	operating_hours = fields.Integer(related="certification_coiled_tubing_id.operating_hours",store=True,group_operator="sum")
-	"""
+
+
 	
 	fecha_inicio = fields.Date(string="Fecha Inicio", compute="_get_month",store=True)
 	fecha_fin = fields.Date(string="Fecha Fin",  compute="_get_month",store=True)
@@ -85,7 +80,7 @@ class certifications_coiled_tubing_time_losed(models.Model):
 	#@api.model
 	#def read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
 	#	return super(certifications_coiled_tubing_time_losed, self).read_group(domain, fields, groupby, offset=offset, limit=limit, orderby=orderby, lazy=False)
-   	
+
 	def name_get(self, cr, uid, ids, context=None):
 		if context is None:
 			context = {}
@@ -93,9 +88,11 @@ class certifications_coiled_tubing_time_losed(models.Model):
 			ids = [ids]
 	
 		res = []
+		name = ''
 		for record in self.browse(cr, uid, ids, context=context):
 			if (record.reason):
-				name = record.reason + ' (' + str(record.time_losed_quantity) +'hs)'
+				reason = [item[1] for item in record._fields.get('reason')._column_selection if record.reason in item]
+				name = reason[0] + ' (' + str(record.time_losed_quantity) +'hs)'
 			else:
 				name = 'Operativas' + ' (' + str(record.operating_hours) +'hs)'
 			res.append((record.id, name))

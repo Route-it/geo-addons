@@ -34,7 +34,7 @@
 			<field name="view_mode">tree,form</field>
 		</record>
 		<record model="ir.actions.act_window" id="coiled_tubing_time_losed_action_window">
-			<field name="name">time losed</field>
+			<field name="name">Indicadores CT</field>
 			<field name="res_model">certifications.coiled_tubing_time_losed</field>
 			<field name="context">{'group_by':['equipo']}</field>
 			<field name="view_mode">tree,form</field>
