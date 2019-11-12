@@ -11,5 +11,6 @@ import model_certification_task
 import model_certification_task_type
 import model_res_partner
 import model_company
+import cron_automatic_calculation_hours_by_month_for_plant
 
 

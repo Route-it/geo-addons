@@ -143,8 +143,8 @@
 <!-- 									<field name="dm"  attrs="{'required': [('company_operator_code', '=', 'ypf')], 'invisible': [('company_operator_code', '!=', 'ypf')]}"/> -->
 <!-- 									<field name="habilita"   attrs="{'required': [('company_operator_code', '=', 'ypf'),('state','in',('proceso_facturacion','facturacion','cobrado'))],'invisible': [('company_operator_code', '!=', 'ypf')]}"/>  -->
 							 			<!--'readonly':[('state','in',('facturacion','cobrado'))],-->
-									<field name="dm"  attrs="{'required': ['&amp;',('state', 'in', ('proceso_facturacion','facturacion','cobrado')),('company_operator_code', '=', 'ypf')], 'invisible': [('company_operator_code', '!=', 'ypf')]}"/>
-									<field name="habilita"   attrs="{'required': ['&amp;',('state', 'in', ('proceso_facturacion','facturacion','cobrado')),('company_operator_code', '=', 'ypf')], 'invisible': [('company_operator_code', '!=', 'ypf')]}"/> 
+									<field name="dm"  attrs="{'required': ['&amp;',('state', 'in', ('facturacion','cobrado')),('company_operator_code', '=', 'ypf')], 'invisible': [('company_operator_code', '!=', 'ypf')]}"/>
+									<field name="habilita"   attrs="{'required': ['&amp;',('state', 'in', ('facturacion','cobrado')),('company_operator_code', '=', 'ypf')], 'invisible': [('company_operator_code', '!=', 'ypf')]}"/> 
 							</group>
 							<group string="Valores" >
 								<field name="valor_servicios" widget="monetary"/>

@@ -34,7 +34,8 @@
         'views/res_partner_company_operator.xml',
         'views/web_ct_style.xml',
         'security/ir.model.access.csv',
-        'data/plants.xml'
+        'data/plants.xml',
+        'data/ir_cron.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

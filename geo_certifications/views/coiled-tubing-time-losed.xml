@@ -2,10 +2,10 @@
 <openerp>
   <data>
     <record model="ir.ui.view" id="geo_certifications.coiled_tubing_time_losed_list">
-    	<field name="name">time_losed</field>
+    	<field name="name">certifications.coiled_tubing_time_losed.list</field>
     	<field name="model">certifications.coiled_tubing_time_losed</field>
     	<field name="arch" type="xml">
-    		<tree 
+    		<tree create="false"
     			decoration-info="mes in ('Enero','Marzo','Mayo','Julio','Septiembre','Noviembre')"
     			decoration-warning="mes in ('Febrero','Abril','Junio','Agosto','Octubre','Diciembre')" >
     			<field name="pozo"/>
@@ -23,22 +23,40 @@
     </record>
     
     
+    
+	<record id="geo_certifications.coiled_tubing_time_losed_search" model="ir.ui.view">
+		<field name="name">certifications.coiled_tubing_time_losed..search</field>
+		<field name="model">certifications.coiled_tubing_time_losed</field>
+		<field name="arch" type="xml">
+			<search>
+				<field name="equipo" />
+				<field name="mes" />
+				<field name="pozo" />
+				<field name="reason" />
+				<filter string="Ultimos 6 meses" name="this_month" domain="[('fecha_inicio_related','&gt;',(context_today()-relativedelta(months=6)).strftime('%Y-%m-01'))]"/>
+
+				<group expand="0" string="Agrupar por">
+					<filter string="Equipo" name="group_plant" domain="[ ]" context="{'group_by': 'equipo'}" />
+					<filter string="Mes" name="group_month" domain="[ ]" context="{'group_by': 'mes'}" />
+				</group>
+			</search>
+		</field>
+	</record>
+    
 	<record id="geo_certifications.coiled_tubing_time_losed_form" model="ir.ui.view">
             <field name="name">certifications.coiled_tubing_time_losed.form</field>
             <field name="model">certifications.coiled_tubing_time_losed</field>
             <field name="arch" type="xml">
-                <form string="Equipo">
+                <form string="Equipo" create="false">
                 <sheet string="Equipo">
-                    <group >
-                    
-                    
+                    <group string="Datos para indicador">
                     		<field name="time_losed_quantity"/>
                     		<field name="reason"/>
                     		<field name="comments"/>
                     		<field name="monetary_losed"/>
                     
                     </group>
-                    <group>
+                    <group string="Certificacion">
                     		<field name="certification_coiled_tubing_id" readonly="1"/>
                     		<field name="operating_hours" readonly="1"/>
                     		<field name="pozo" readonly="1"/>
@@ -53,6 +71,5 @@
 			</field>
 	</record>
     
-                    
   </data>
 </openerp>

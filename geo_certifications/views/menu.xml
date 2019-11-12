@@ -37,10 +37,26 @@
 			</field>			
 			<field name="view_mode">tree,form</field>
 		</record>
+		
+		<record model="ir.actions.act_window"
+			id="geo_certifications.plant_action_window">
+			<field name="name">Equipos CT</field>
+			<field name="res_model">certification.plant</field>
+			<field name="context">{
+				'search_default_all': 1
+				}
+			</field>			
+			<field name="view_mode">kanban,tree,form</field>
+		</record>
+		
 		<record model="ir.actions.act_window" id="coiled_tubing_time_losed_action_window">
 			<field name="name">Indicadores CT</field>
 			<field name="res_model">certifications.coiled_tubing_time_losed</field>
-			<field name="context">{'group_by':['equipo']}</field>
+			<field name="context">{
+				'search_default_group_plant': 1,
+				'search_default_this_month': 1
+				}
+			</field>			
 			<field name="view_mode">tree,form</field>
 		</record>
 
@@ -73,9 +89,13 @@
 			id="geo_certifications.contract_left_menu_list"
 			parent="geo_certifications.left_menu_category"
 			action="geo_certifications.contract_action_window"/>
-		<menuitem name="time_losed"
+		<menuitem name="Equipos CT"
+			id="geo_certifications.plant_left_menu_list"
+			parent="geo_certifications.left_menu_category" sequence="7"
+			action="geo_certifications.plant_action_window"/>
+		<menuitem name="Indicadores CT"
 			id="geo_certifications.coiled_tubing_time_losed_left_menu_list"
-			parent="geo_certifications.left_menu_category"
+			parent="geo_certifications.left_menu_category" sequence="6"
 			action="geo_certifications.coiled_tubing_time_losed_action_window"/>
 
 	</data>

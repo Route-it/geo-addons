@@ -13,7 +13,7 @@ _logger = logging.getLogger(__name__)
 class certifications_coiled_tubing_time_losed(models.Model):
 	_name = "certifications.coiled_tubing_time_losed"
 
-	_order = 'fecha_inicio_related desc, pozo, time_losed_quantity'
+	_order = 'equipo, fecha_inicio_related desc, pozo, time_losed_quantity'
 
 	@api.depends('certification_coiled_tubing_id.fecha_inicio','certification_coiled_tubing_id.fecha_fin','certification_coiled_tubing_id.valor_total_list_view','certification_coiled_tubing_id.operating_hours','certification_coiled_tubing_id')
 	@api.one
@@ -92,7 +92,11 @@ class certifications_coiled_tubing_time_losed(models.Model):
 		for record in self.browse(cr, uid, ids, context=context):
 			if (record.reason):
 				reason = [item[1] for item in record._fields.get('reason')._column_selection if record.reason in item]
-				name = reason[0] + ' (' + str(record.time_losed_quantity) +'hs)'
+				if len(reason)>0:
+					name = reason[0] + ' (' + str(record.time_losed_quantity) +'hs)'
+				else:
+					name = 'Sin Razon (' + str(record.time_losed_quantity) +'hs)'
+				
 			else:
 				name = 'Operativas' + ' (' + str(record.operating_hours) +'hs)'
 			res.append((record.id, name))
