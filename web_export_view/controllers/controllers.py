@@ -356,8 +356,9 @@ class ExcelExportView(ExcelExport):
                 elif isinstance(cell_value, int):
                     cell_style.num_format_str = '#0'
 
-                if str(cell_value).lower() == 'false':
-                    cell_value = ''       
+                if not isinstance(cell_value, unicode):
+                    if str(cell_value).lower() == 'false':
+                        cell_value = ''       
                 worksheet.write(row_index + 1, cell_index, cell_value, cell_style)
 
         fp = StringIO()
