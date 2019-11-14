@@ -71,12 +71,10 @@ class certifications_coiled_tubing_time_losed(models.Model):
 	
 	valor_total_list_view = fields.Monetary(string="Valor [USD]", compute="_get_month",store=True)
 	operating_hours = fields.Integer(string="Horas operativas", compute="_get_month",store=True)
-	
-	
-	currency_id = fields.Many2one('res.currency', string='Account Currency',
-    							help="Forces all moves for this account to have this account currency.")
-	
-	
+
+	company_id = fields.Many2one('res.company', 'Company',default=lambda self:self.env.user.company_id, index=1)
+	currency_id = fields.Many2one('res.currency', 'Currency', default=lambda self:self.env.user.company_id.currency_id,required=True)	 
+
 	#@api.model
 	#def read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
 	#	return super(certifications_coiled_tubing_time_losed, self).read_group(domain, fields, groupby, offset=offset, limit=limit, orderby=orderby, lazy=False)

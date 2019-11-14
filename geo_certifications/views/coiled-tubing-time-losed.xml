@@ -13,7 +13,7 @@
     			<field name="mes"/>
     			<field name="fecha_inicio"/>
     			<field name="fecha_fin"/>
-    			<field name="valor_total_list_view" sum="Valor USD"/>
+    			<field name="valor_total_list_view" sum="Valor USD" widget="monetary" />
     			<field name="operating_hours"  sum="Operativas"/>
     			<field name="time_losed_quantity"  sum="Perdidas"/>
     			<field name="reason"/>
@@ -25,7 +25,7 @@
     
     
 	<record id="geo_certifications.coiled_tubing_time_losed_search" model="ir.ui.view">
-		<field name="name">certifications.coiled_tubing_time_losed..search</field>
+		<field name="name">certifications.coiled_tubing_time_losed.search</field>
 		<field name="model">certifications.coiled_tubing_time_losed</field>
 		<field name="arch" type="xml">
 			<search>

@@ -23,8 +23,13 @@ class certification_plant(models.Model):
 	type = fields.Selection([("24","24hs"),("12","12hs")],string="Horas por dia",default="12")
 	
 	
-	eficiencia = fields.Float(string="Eficiencia",compute="_set_eficiencia")
-	
+	eficiencia1 = fields.Float(compute="_set_eficiencia")
+	eficiencia2 = fields.Float(compute="_set_eficiencia")
+	eficiencia3 = fields.Float(compute="_set_eficiencia")
+	eficiencia4 = fields.Float(compute="_set_eficiencia")
+	eficiencia5 = fields.Float(compute="_set_eficiencia") 
+	eficiencia6 = fields.Float(compute="_set_eficiencia")
+		
 	#data.append({'label': _('Past'), 'value':0.0, 'type': 'past'})
 	@api.one
 	def _kanban_dashboard_graph(self):
@@ -33,8 +38,7 @@ class certification_plant(models.Model):
 		now = datetime.now()
 		for i in range(6):
 			my_month = now - relativedelta(months=i)
-			mes = my_month.strftime('%B').capitalize()
-			eficiencia_mes = self._get_eficiencia_by_month(mes)
+			mes, eficiencia_mes = self._get_eficiencia_by_month(my_month)
 			data.append({'label':mes,'value':eficiencia_mes})
 		
 		self.kanban_dashboard_graph = json.dumps([{'values': data}])
@@ -45,7 +49,9 @@ class certification_plant(models.Model):
 	kanban_dashboard_graph = fields.Text(compute='_kanban_dashboard_graph')
 	
 	
-	def _get_eficiencia_by_month(self,mes):
+	def _get_eficiencia_by_month(self,my_month):
+		mes = my_month.strftime('%B').capitalize()
+
 		coiled_tubing_time_losed_ids = self.env['certifications.coiled_tubing_time_losed'].search([('mes','=',mes),('equipo','=',self.id)])
 		
 		eficiencia = 0
@@ -56,27 +62,30 @@ class certification_plant(models.Model):
 			horas_operativas = horas_operativas + ct_tl.operating_hours
 			horas_perdidas = horas_perdidas + ct_tl.time_losed_quantity
 		
-		if ((horas_operativas-horas_perdidas)>0) & bool(self.hours_by_month):
-			eficiencia = round(((horas_operativas-horas_perdidas)/(self.hours_by_month*1.0))*100,2)
-		return eficiencia
+		
+		hours_by_month = self._get_hours_by_month_for_month(my_month)
+		if ((horas_operativas-horas_perdidas)>0) & bool(hours_by_month):
+			eficiencia = round(((horas_operativas-horas_perdidas)/(hours_by_month*1.0))*100,2)
+		return mes, eficiencia
 	
 	#@api.depends('equipo','operating_hours','certification_coiled_tubing_id.operating_hours','certification_coiled_tubing_id','time_losed_quantity')
 	@api.depends('type','hours_by_month','automatic_calculation_hours_by_month')
 	@api.one
 	def _set_eficiencia(self):
-		eficiencia = 0
 		now = datetime.now()
+		switcher = {}
 		for i in range(6):
 			my_month = now - relativedelta(months=i)
-			mes = my_month.strftime('%B').capitalize()
-			eficiencia_mes = self._get_eficiencia_by_month(mes)
-			eficiencia = eficiencia + eficiencia_mes
+			switcher[i] = self._get_eficiencia_by_month(my_month)
 
-		self.eficiencia = round((eficiencia/6*1.0),2)
-		
-		return self.eficiencia
-		
+		self.eficiencia1 = switcher.get(0,0)[1]
+		self.eficiencia2 = switcher.get(1,0)[1]
+		self.eficiencia3 = switcher.get(2,0)[1]
+		self.eficiencia4 = switcher.get(3,0)[1]
+		self.eficiencia5 = switcher.get(4,0)[1]
+		self.eficiencia6 = switcher.get(5,0)[1]
 	
+
 	# asigna un valor al inicio y luego no se toca a menos que sea modificado en la vista.
 	# default=lambda self: self._get_last_exchange_date()
 	
@@ -85,16 +94,21 @@ class certification_plant(models.Model):
 
 	# computa el valor cada vez ¿permite modificacion? 
 	#compute='set_total_value'	+ store= true
-	
+	def _get_hours_by_month_for_month(self,date_param,type_param=None):
+		hours_by_month = False
+		if self.automatic_calculation_hours_by_month:
+			weekday, days_in_month = monthrange(date_param.year, date_param.month)
+			my_type = type_param if type_param is not None else self.type
+			hours_by_month = int(my_type) * days_in_month if (my_type) else 0
+		if not bool(hours_by_month): 
+			return self.hours_by_month
+		return hours_by_month
+		
 	@api.onchange('type','automatic_calculation_hours_by_month')
 	@api.one
-	def _set_hours_by_month(self):
-		if self.automatic_calculation_hours_by_month:
-			weekday, days_in_month = monthrange(date.today().year, date.today().month)
-			
-			
-			self.hours_by_month = int(self.type) * days_in_month if (self.type) else 0
-		return self.hours_by_month
+	def _set_hours_by_month(self,type=None):
+		self.hours_by_month = self._get_hours_by_month_for_month(date.today(),type)
+		return self.hours_by_month 
 		
 	automatic_calculation_hours_by_month =  fields.Boolean("Calcular horas por mes automaticamente",default=True)
 	
@@ -119,7 +133,7 @@ class certification_plant(models.Model):
 	@api.multi
 	def write(self, vals):
 		if vals.get('hours_by_month') is None:
-			vals['hours_by_month'] = self._set_hours_by_month()[0] 
+			vals['hours_by_month'] = self._set_hours_by_month(vals.get('type',None))[0] 
 		
 		res = super(certification_plant, self).write(vals)
 		

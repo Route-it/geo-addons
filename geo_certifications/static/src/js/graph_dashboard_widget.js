@@ -83,6 +83,64 @@ var DashboardGraph = kanban_widgets.AbstractField.extend({
                 // classList doesn't work with phantomJS & addClass doesn't work with a SVG element
                 $(v).attr('class', $(v).attr('class') + ' ' + bar_classes[k]);
             });
+            $('.o_kanban_graph_section > .o_graph_barchart .nv-barsWrap g:nth-child(n) > rect').mouseover(function(e,k){
+            		//buscar graficos de gauge y desplazarlos al mes del clic
+            		//mes .o_kanban_graph_section > o_graph_barchart > svg .nv-x.nv-axis.nvd3-svg > g > g > g:nth-child(n) > text
+					
+					//element clicked
+					//e.currentTarget.parentNode
+					//kanban_record clicked
+					//e.target.nearestViewportElement.parentNode.offsetParent
+					
+					
+					$(e.target.nearestViewportElement.parentNode.offsetParent).find('.o_kanban_graph_section > div.oe_gauge').each(function() {
+																										  $( this ).css("transform","translate(0,2000px)")
+																										  .css('position', 'absolute');
+						$(e.target.nearestViewportElement.parentNode.offsetParent).find('.o_kanban_graph_section > div.oe_gauge:nth-child('+($(e.currentTarget.parentNode).index()+1)+')').each(function() {
+																										  $( this ).css("transform","translate(0,0)")
+																										  .css('position', 'relative');
+																									});
+																									});
+					
+																									
+					//nombre del mes
+					//div.o_kanban_graph_section > div.o_graph_barchart > svg > g > g > g.nv-x.nv-axis.nvd3-svg > g > g > g:nth-child(1) > text
+					//Titulo de gauge
+					//div.o_kanban_graph_section > div.oe_gauge:nth-child(1) > svg > text:nth-child(5) > tspan
+					
+					/*
+					//indice del mes clickeado
+					
+					indexOfRectClicked = e.currentTarget.parentNode.parentNode.children.indexOf(e.currentTarget.parentNode);
+					//indexOfRectClicked = Array.indexOf(,);
+					indexOfKanbanRecord = Array.prototype.indexOf(
+							e.target.nearestViewportElement.parentNode.offsetParent.parentNode, 
+							e.target.nearestViewportElement.parentNode.offsetParent);
+
+					$('.o_kanban_record:nth-child('+indexOfKanbanRecord+')')
+							.find('.o_kanban_graph_section > div:nth-child(n)').each(function() {
+																										  $( this ).hide();
+																									});
+					$('.o_kanban_record:nth-child('+indexOfKanbanRecord+')')
+							.find('.o_kanban_graph_section > div:nth-child('+indexOfRectClicked+')').show();
+
+					*/
+					//ocultar todos los graficos
+					//mostrar solo el grafico del index					
+            		
+        	});     
+        	$('.o_kanban_graph_section > div.oe_gauge:not(first-child)').each(function() {
+																				 $( this ).css("transform","translate(0,2000px)");
+																				 $( this ).css('position', 'absolute');
+        	});
+        	$('.o_kanban_graph_section > div.oe_gauge:first-child').each(function() {
+																				 $( this ).css("transform","translate(0,0)");
+																				 $( this ).css('position', 'relative');
+        	});
+        	$('div.o_kanban_graph_section > div.o_graph_barchart > svg > g > g > g.nv-x.nv-axis.nvd3-svg > g > g > g:nth-child(n) > text').each(function(i,elem) {
+        												
+																				 $('div.o_kanban_graph_section > div.oe_gauge:nth-child('+(i+1)+') > svg > text:nth-child(5) > tspan').html($( this ).html());
+																		});        
         }
     },
 
