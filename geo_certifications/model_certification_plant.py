@@ -21,7 +21,12 @@ class certification_plant(models.Model):
 	name = fields.Char("Nombre")
 	description = fields.Text("Descripcion")
 	type = fields.Selection([("24","24hs"),("12","12hs")],string="Horas por dia",default="12")
+
+	automatic_calculation_hours_by_month =  fields.Boolean("Calcular horas por mes automaticamente",default=True)
 	
+	hours_by_month = fields.Integer(string="Horas por mes",default=lambda self: self._set_hours_by_month())
+	
+	kanban_dashboard_graph = fields.Text(compute='_kanban_dashboard_graph')
 	
 	eficiencia1 = fields.Float(compute="_set_eficiencia")
 	eficiencia2 = fields.Float(compute="_set_eficiencia")
@@ -46,9 +51,6 @@ class certification_plant(models.Model):
 		return self.kanban_dashboard_graph
 
 
-	kanban_dashboard_graph = fields.Text(compute='_kanban_dashboard_graph')
-	
-	
 	def _get_eficiencia_by_month(self,my_month):
 		mes = my_month.strftime('%B').capitalize()
 
@@ -110,9 +112,6 @@ class certification_plant(models.Model):
 		self.hours_by_month = self._get_hours_by_month_for_month(date.today(),type)
 		return self.hours_by_month 
 		
-	automatic_calculation_hours_by_month =  fields.Boolean("Calcular horas por mes automaticamente",default=True)
-	
-	hours_by_month = fields.Integer(string="Horas por mes",default=lambda self: self._set_hours_by_month())
 	
 
 	@api.one

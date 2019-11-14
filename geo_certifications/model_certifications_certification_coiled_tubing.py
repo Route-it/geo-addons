@@ -4,6 +4,8 @@ from openerp import models, fields, api
 from openerp.exceptions import ValidationError
 
 import logging
+import datetime
+from dateutil.relativedelta import relativedelta
 
 _logger = logging.getLogger(__name__)
 
@@ -45,6 +47,44 @@ class certifications_certification_coiled_tubing(models.Model):
 	time_losed_ids = fields.One2many(comodel_name="certifications.coiled_tubing_time_losed",inverse_name="certification_coiled_tubing_id",string ="Horas Perdidas", ondelete='cascade', domain=[('time_losed_quantity','!=',0)])
 	
 	
+	@api.constrains('fecha_inicio','fecha_fin','operacion')
+	def check_servicio_ct_in_month(self):
+		if self.operacion == 'servicio_ct':
+			f_inicio = datetime.datetime.strptime(self.fecha_inicio, '%Y-%m-%d')
+			f_fin = datetime.datetime.strptime(self.fecha_fin, '%Y-%m-%d')
+			if (f_inicio.year != f_fin.year) or  (f_inicio.month != f_fin.month):
+				raise ValidationError('Las fecha de inicio y la fecha de fin deben estar en el mismo mes para operaciones "SERVICIO CT"')
+
+				
+
+	@api.constrains('operating_hours','time_losed_ids','equipo')
+	def check_max_plant_work(self):
+		if self.operacion == 'servicio_ct':
+			f_inicio = datetime.datetime.strptime(self.fecha_inicio, '%Y-%m-%d')
+			first_day_of_month = datetime.datetime(f_inicio.year, f_inicio.month, 1)
+			last_date_of_month = datetime.datetime(f_inicio.year, f_inicio.month, 1) + relativedelta(months=1, days=-1)
+			last_date_of_month = last_date_of_month.replace(minute=59, hour=23, second=59, microsecond=0)
+
+			operaciones = self.env['certifications.certification_coiled_tubing'].search([
+											('equipo','=',self.equipo.id),
+											('operacion','=','servicio_ct'),
+											('fecha_inicio','<',last_date_of_month),
+											('fecha_inicio','>',first_day_of_month),
+											])
+			
+			hours_by_month = self.equipo._get_hours_by_month_for_month(f_inicio)
+			hours_losed = 0
+			hours_operated = 0
+			for op in operaciones:
+				hours_operated = hours_operated + op.operating_hours 
+				for tli in op.time_losed_ids:
+					hours_losed = hours_losed + tli.time_losed_quantity
+		
+			real_oper_hours = hours_operated - hours_losed
+
+			if hours_by_month<real_oper_hours:
+				mes = f_inicio.strftime('%B').capitalize()
+				raise ValidationError('Las horas operativas de todos las operaciones, son '+str(real_oper_hours-hours_by_month)+' mayores a las permitidas por el equipo para el mes de '+mes)
 
 	def check_fields_for_state(self,fields_to_check,vals):
 		yes = True
