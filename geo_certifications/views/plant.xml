@@ -74,15 +74,33 @@
 									<div class="oe_partner_heading">
 									<field name="name" />
 									</div>
-									<field name="hours_by_month" />
+									<div class="hsxmes">Horas por mes:</div>
+									<div class="oe_hours_by_month">
+										<field name="hours_by_month6" />
+									</div>
+									<div class="oe_hours_by_month">
+										<field name="hours_by_month5" />
+									</div>
+									<div class="oe_hours_by_month">
+										<field name="hours_by_month4" />
+									</div>
+									<div class="oe_hours_by_month">
+										<field name="hours_by_month3" />
+									</div>
+									<div class="oe_hours_by_month">
+										<field name="hours_by_month2" />
+									</div>
+									<div class="oe_hours_by_month">
+										<field name="hours_by_month" />
+									</div>
 								</div>
 	                        	<div class="o_kanban_graph_section">	
-										<field name="eficiencia1"  widget="gauge" style="width:100%;"/>
-										<field name="eficiencia2"  widget="gauge" style="width:100%;"/>
-										<field name="eficiencia3"  widget="gauge" style="width:100%;"/>
-										<field name="eficiencia4"  widget="gauge" style="width:100%;"/>
-										<field name="eficiencia5"  widget="gauge" style="width:100%;"/>
-										<field name="eficiencia6"  widget="gauge" style="width:100%;"/>
+										<field name="eficiencia6"  widget="gauge" style="width:100%;" options="{'levelcolors':['#d1cf06']}"/>
+										<field name="eficiencia5"  widget="gauge" style="width:100%;" options="{'levelcolors':['#d1cf06']}"/>
+										<field name="eficiencia4"  widget="gauge" style="width:100%;" options="{'levelcolors':['#d1cf06']}"/>
+										<field name="eficiencia3"  widget="gauge" style="width:100%;" options="{'levelcolors':['#d1cf06']}"/>
+										<field name="eficiencia2"  widget="gauge" style="width:100%;" options="{'levelcolors':['#d1cf06']}"/>
+										<field name="eficiencia1"  widget="gauge" style="width:100%;" options="{'levelcolors':['#d1cf06']}"/>
 										<field name="kanban_dashboard_graph" graph_type="bar" widget="dashboard_graph"/>										
 								</div>
 							</div>

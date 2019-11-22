@@ -34,7 +34,7 @@ except ImportError:
 
 def is_hidden_field(fieldname):
     if ((type(fieldname) == unicode) or (type(fieldname) == basestring)):
-            return (fieldname.lower() in ('estado','parte'))
+            return (fieldname.lower() in ('estado','parte','horas perdidas'))
 
     
 
@@ -324,7 +324,7 @@ class ExcelExportView(ExcelExport):
             if is_hidden_field(fieldname):
                 worksheet.col(i).width = 0 
             else:
-                worksheet.col(i).width = fields_width_dict.get(fieldname) * 300 #8000 # around 220 pixels
+                worksheet.col(i).width = fields_width_dict.get(fieldname) * 310 #8000 # around 220 pixels
 
         base_style = xlwt.easyxf('align: wrap yes;font: colour black;')
         borders_cell = xlwt.Borders()
@@ -359,7 +359,26 @@ class ExcelExportView(ExcelExport):
                 if not isinstance(cell_value, unicode):
                     if str(cell_value).lower() == 'false':
                         cell_value = ''       
-                worksheet.write(row_index + 1, cell_index, cell_value, cell_style)
+
+                
+                if len(rows)==(row_index+1):
+                    bottom_style = xlwt.easyxf('font: bold on;')
+                    borders_bottom_cell = xlwt.Borders()
+                    borders_bottom_cell.left = Borders.THICK
+                    borders_bottom_cell.bottom = Borders.THICK
+                    borders_bottom_cell.right = Borders.THICK
+                    bottom_style.borders = borders_bottom_cell
+                    bottom_style.alignment = aligment
+                    if isinstance(cell_value, float):
+                        bottom_style.num_format_str = '#,##0.00'
+                    elif isinstance(cell_value, int):
+                        bottom_style.num_format_str = '#0'
+
+                    worksheet.write(row_index + 1, cell_index, cell_value, bottom_style)
+                else:
+                    worksheet.write(row_index + 1, cell_index, cell_value, cell_style)
+
+
 
         fp = StringIO()
         workbook.save(fp)

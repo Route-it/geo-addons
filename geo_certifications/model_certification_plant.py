@@ -28,6 +28,12 @@ class certification_plant(models.Model):
 	
 	kanban_dashboard_graph = fields.Text(compute='_kanban_dashboard_graph')
 	
+	hours_by_month2 = fields.Integer(compute="_set_hours_by_month")
+	hours_by_month3 = fields.Integer(compute="_set_hours_by_month")
+	hours_by_month4 = fields.Integer(compute="_set_hours_by_month")
+	hours_by_month5 = fields.Integer(compute="_set_hours_by_month")
+	hours_by_month6 = fields.Integer(compute="_set_hours_by_month")
+	
 	eficiencia1 = fields.Float(compute="_set_eficiencia")
 	eficiencia2 = fields.Float(compute="_set_eficiencia")
 	eficiencia3 = fields.Float(compute="_set_eficiencia")
@@ -41,7 +47,7 @@ class certification_plant(models.Model):
 		data = []
 		
 		now = datetime.now()
-		for i in range(6):
+		for i in range(5,-1,-1):
 			my_month = now - relativedelta(months=i)
 			mes, eficiencia_mes = self._get_eficiencia_by_month(my_month)
 			data.append({'label':mes,'value':eficiencia_mes})
@@ -67,7 +73,7 @@ class certification_plant(models.Model):
 		
 		hours_by_month = self._get_hours_by_month_for_month(my_month)
 		if ((horas_operativas-horas_perdidas)>0) & bool(hours_by_month):
-			eficiencia = round(((horas_operativas-horas_perdidas)/(hours_by_month*1.0))*100,2)
+			eficiencia = round(((horas_operativas-horas_perdidas)/(hours_by_month*1.0))*100,1)
 		return mes, eficiencia
 	
 	#@api.depends('equipo','operating_hours','certification_coiled_tubing_id.operating_hours','certification_coiled_tubing_id','time_losed_quantity')
@@ -109,7 +115,13 @@ class certification_plant(models.Model):
 	@api.onchange('type','automatic_calculation_hours_by_month')
 	@api.one
 	def _set_hours_by_month(self,type=None):
-		self.hours_by_month = self._get_hours_by_month_for_month(date.today(),type)
+		now = date.today()
+		self.hours_by_month = self._get_hours_by_month_for_month(now,type)
+		self.hours_by_month2 = self._get_hours_by_month_for_month(now - relativedelta(months=1),type)
+		self.hours_by_month3 = self._get_hours_by_month_for_month(now - relativedelta(months=2),type)
+		self.hours_by_month4 = self._get_hours_by_month_for_month(now - relativedelta(months=3),type)
+		self.hours_by_month5 = self._get_hours_by_month_for_month(now - relativedelta(months=4),type)
+		self.hours_by_month6 = self._get_hours_by_month_for_month(now - relativedelta(months=5),type)
 		return self.hours_by_month 
 		
 	

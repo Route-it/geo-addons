@@ -12,7 +12,7 @@
 					<field name="fecha_fin" />
 					<field name="operacion" />
 					<field name="equipo" />
-					<field name="valor_total_list_view" />
+					<field name="valor_total_list_view" sum="Valor USD" widget="monetary"/>
 					<field name="dm" />
 					<field name="habilita" />
 					<field name="observaciones"/>

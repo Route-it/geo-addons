@@ -53,12 +53,12 @@
 			<field name="name">Indicadores CT</field>
 			<field name="res_model">certifications.coiled_tubing_time_losed</field>
 			<field name="context">{
-				'search_default_group_plant': 1,
 				'search_default_this_month': 1
 				}
 			</field>			
 			<field name="view_mode">tree,form</field>
 		</record>
+				<!--'search_default_group_plant': 1, -->
 
 
 		<!-- Top menu item -->

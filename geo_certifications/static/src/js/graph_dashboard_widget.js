@@ -93,10 +93,10 @@ var DashboardGraph = kanban_widgets.AbstractField.extend({
 					//e.target.nearestViewportElement.parentNode.offsetParent
 					
 					
-					$(e.target.nearestViewportElement.parentNode.offsetParent).find('.o_kanban_graph_section > div.oe_gauge').each(function() {
+					$(e.target.nearestViewportElement.parentNode.offsetParent).find('.o_kanban_graph_section > div.oe_gauge,div.oe_hours_by_month').each(function() {
 																										  $( this ).css("transform","translate(0,2000px)")
 																										  .css('position', 'absolute');
-						$(e.target.nearestViewportElement.parentNode.offsetParent).find('.o_kanban_graph_section > div.oe_gauge:nth-child('+($(e.currentTarget.parentNode).index()+1)+')').each(function() {
+						$(e.target.nearestViewportElement.parentNode.offsetParent).find('.o_kanban_graph_section > div.oe_gauge:nth-child('+($(e.currentTarget.parentNode).index()+1)+'),div.oe_hours_by_month:nth-child('+($(e.currentTarget.parentNode).index()+3)+')').each(function() {
 																										  $( this ).css("transform","translate(0,0)")
 																										  .css('position', 'relative');
 																									});
@@ -129,11 +129,11 @@ var DashboardGraph = kanban_widgets.AbstractField.extend({
 					//mostrar solo el grafico del index					
             		
         	});     
-        	$('.o_kanban_graph_section > div.oe_gauge:not(first-child)').each(function() {
+        	$('.o_kanban_graph_section > div.oe_gauge,div.oe_hours_by_month').each(function() {
 																				 $( this ).css("transform","translate(0,2000px)");
 																				 $( this ).css('position', 'absolute');
         	});
-        	$('.o_kanban_graph_section > div.oe_gauge:first-child').each(function() {
+        	$('.o_kanban_graph_section > div.oe_gauge:nth-child(6n),div.oe_hours_by_month:nth-child(6n)').each(function() {
 																				 $( this ).css("transform","translate(0,0)");
 																				 $( this ).css('position', 'relative');
         	});
@@ -141,6 +141,11 @@ var DashboardGraph = kanban_widgets.AbstractField.extend({
         												
 																				 $('div.o_kanban_graph_section > div.oe_gauge:nth-child('+(i+1)+') > svg > text:nth-child(5) > tspan').html($( this ).html());
 																		});        
+			$('.o_kanban_graph_section > div.oe_gauge > svg > text:nth-child(6n) > tspan').each(function(){
+				if (!$( this ).text().includes("%")){
+				 	$( this ).text($( this ).text()+'%')
+				}
+			});																		
         }
     },
 
