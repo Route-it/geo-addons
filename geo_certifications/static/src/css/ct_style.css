@@ -7,3 +7,7 @@
 div.user-image > img {
   max-width:100%;
 }
+
+.oe_list_content th{
+	vertical-align: inherit
+}

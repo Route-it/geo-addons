@@ -1,4 +1,4 @@
-Copiar addons
-Actualizar gro_certification
-desinstalar Web-Printscreen
-Instalar web export view 
+1) copiar geo_certifications
+2) copiar web_export_view
+3) ir a lenguajes, editar el lenguaje es_es y modificar los formatos de numero y fecha.
+4) Verificar "equipo" en coiled tubing que su migracion sea correcta.

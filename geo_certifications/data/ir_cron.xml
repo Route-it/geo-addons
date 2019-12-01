@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <record id="ir_cron_automatic_calculation_hours_by_month_for_plant" model="ir.cron">
+            <field name='name'>Certifications - Calculo automatico de horas por mes para equipos</field>
+            <field name='interval_number'>1</field>
+            <field name='interval_type'>months</field>
+            <field name="numbercall">-1</field>
+            <field name="active" eval="False"/>
+            <field name="model">certifications.automatic_calculation_hours_by_month_for_plant</field>
+            <field name="function">process</field>
+        </record>
+
+    </data>
+</openerp>
