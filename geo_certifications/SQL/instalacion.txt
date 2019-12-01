@@ -1,4 +1,22 @@
-Copiar addons
-Actualizar gro_certification
-desinstalar Web-Printscreen
-Instalar web export view 
+1) copiar geo_certifications
+2) copiar web_export_view
+3) ir a lenguajes, editar el lenguaje es_es y modificar los formatos de numero y fecha.
+4) Verificar "equipo" en coiled tubing que su migracion sea correcta.
+5) activar el cron de calculo de hs por mes.
+
+
+correr :
+sudo apt-get update
+sudo apt-get -f install 
+sudo apt-get install language-pack-es
+sudo dpkg-reconfigure locales
+
+Para cada mes correr:
+update certifications_coiled_tubing_time_losed set mes='Octubre'
+where mes='October'
+
+
+instalar 
+model_certification_plant
+model_certification_certification_coiled_tubing
+model_certification_certification_coiled_tubing_time_losed
