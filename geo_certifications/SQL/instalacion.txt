@@ -1,6 +1,7 @@
 1) copiar geo_certifications
 2) copiar web_export_view
 3) ir a lenguajes, editar el lenguaje es_es y modificar los formatos de numero y fecha.
+<<<<<<< HEAD
 4) Verificar "equipo" en coiled tubing que su migracion sea correcta.
 5) activar el cron de calculo de hs por mes.
 
@@ -20,3 +21,6 @@ instalar
 model_certification_plant
 model_certification_certification_coiled_tubing
 model_certification_certification_coiled_tubing_time_losed
+=======
+4) Verificar "equipo" en coiled tubing que su migracion sea correcta.
+>>>>>>> 60ba9574918464110be2cb5f00338927be48b0a3
