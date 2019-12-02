@@ -81,7 +81,7 @@ class certifications_certification_coiled_tubing(models.Model):
 				for tli in op.time_losed_ids:
 					hours_losed = hours_losed + tli.time_losed_quantity
 		
-			real_oper_hours = hours_operated - hours_losed
+			real_oper_hours = hours_operated + hours_losed
 
 			if hours_by_month<real_oper_hours:
 				loc = locale.getlocale(locale.LC_TIME)

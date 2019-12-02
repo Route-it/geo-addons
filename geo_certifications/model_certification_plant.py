@@ -82,8 +82,10 @@ class certification_plant(models.Model):
 		
 		
 		hours_by_month = self._get_hours_by_month_for_month(my_month)
-		if ((horas_operativas-horas_perdidas)>0) & bool(hours_by_month):
-			eficiencia = round(((horas_operativas-horas_perdidas)/(hours_by_month*1.0))*100,1)
+		#if ((horas_operativas-horas_perdidas)>0) & bool(hours_by_month):
+			#eficiencia = round(((horas_operativas-horas_perdidas)/(hours_by_month*1.0))*100,1)
+		if ((horas_operativas)>0) & bool(hours_by_month):
+			eficiencia = round(((horas_operativas)/(hours_by_month*1.0))*100,1)
 		return mes, eficiencia
 	
 	#@api.depends('equipo','operating_hours','certification_coiled_tubing_id.operating_hours','certification_coiled_tubing_id','time_losed_quantity')
