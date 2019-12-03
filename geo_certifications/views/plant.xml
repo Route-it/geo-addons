@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+    <record model="ir.ui.view" id="geo_certifications.plant_list">
+    	<field name="name">Equipos CT</field>
+    	<field name="model">certification.plant</field>
+    	<field name="arch" type="xml">
+    		<tree>
+    			<field name="name"/>
+    			<field name="description"/>
+              	<field name="type"/>
+              	<field name="hours_by_month"/>
+    		</tree>
+		</field>
+    </record>
+    
+    
+	<record id="geo_certifications.plant_form" model="ir.ui.view">
+            <field name="name">certification.plant.form</field>
+            <field name="model">certification.plant</field>
+            <field name="arch" type="xml">
+                <form string="Equipo">
+                <sheet string="Equipo">
+                        <h1>
+                			<label for="name" string="Nombre"/>
+                            <field name="name" placeholder="Nombre" class="oe_inline"/>
+                        </h1>
+                    <group >
+                    		<field name="description"/>
+                          	<field name="type"/>
+                          	<field name="automatic_calculation_hours_by_month"/>
+                          	<field name="hours_by_month" attrs="{'readonly':[('automatic_calculation_hours_by_month','=',True)]}"/>
+
+                    </group>
+                 </sheet>
+            	</form>
+			</field>
+	</record>
+          
+	<record model="ir.ui.view" id="geo_certifications.plant_kanban">
+			<field name="name">certification.plant.kanban</field>
+			<field name="model">certification.plant</field>
+			<field name="arch" type="xml">
+<!-- 				<kanban default_group_by="operadora_id" quick_create="false" delete="false" class="o_kanban_small_column"> -->
+				<kanban quick_create="false" delete="false" class="o_kanban_small_column">
+					<field name="name" />
+					<field name="type" />
+					<field name="hours_by_month" />
+					<templates>
+						<t t-name="kanban-box">
+							<div>
+
+								<div class="o_dropdown_kanban dropdown" groups="base.group_user">
+									<a class="dropdown-toggle btn" data-toggle="dropdown" href="#">
+										<span class="fa fa-bars fa-lg" />
+									</a>
+									<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+										<t t-if="widget.editable">
+											<li>
+												<a type="edit">Editar</a>
+											</li>
+										</t>
+										<t t-if="widget.deletable">
+											<li>
+												<a type="delete">Borrar</a>
+											</li>
+										</t>
+										<li>
+											<ul class="oe_kanban_colorpicker" data-field="id" />
+										</li>
+									</ul>
+								</div>
+								<div class="oe_kanban_details">
+									<div class="oe_partner_heading">
+									<field name="name" />
+									</div>
+									<div class="hsxmes">Horas por mes:</div>
+									<div class="oe_hours_by_month">
+										<field name="hours_by_month6" />
+									</div>
+									<div class="oe_hours_by_month">
+										<field name="hours_by_month5" />
+									</div>
+									<div class="oe_hours_by_month">
+										<field name="hours_by_month4" />
+									</div>
+									<div class="oe_hours_by_month">
+										<field name="hours_by_month3" />
+									</div>
+									<div class="oe_hours_by_month">
+										<field name="hours_by_month2" />
+									</div>
+									<div class="oe_hours_by_month">
+										<field name="hours_by_month" />
+									</div>
+								</div>
+	                        	<div class="o_kanban_graph_section">	
+										<field name="eficiencia6"  widget="gauge" style="width:100%;" options="{'levelcolors':['#d1cf06']}"/>
+										<field name="eficiencia5"  widget="gauge" style="width:100%;" options="{'levelcolors':['#d1cf06']}"/>
+										<field name="eficiencia4"  widget="gauge" style="width:100%;" options="{'levelcolors':['#d1cf06']}"/>
+										<field name="eficiencia3"  widget="gauge" style="width:100%;" options="{'levelcolors':['#d1cf06']}"/>
+										<field name="eficiencia2"  widget="gauge" style="width:100%;" options="{'levelcolors':['#d1cf06']}"/>
+										<field name="eficiencia1"  widget="gauge" style="width:100%;" options="{'levelcolors':['#d1cf06']}"/>
+										<field name="kanban_dashboard_graph" graph_type="bar" widget="dashboard_graph"/>										
+								</div>
+							</div>
+						</t>
+					</templates>
+				</kanban>
+			</field>
+		</record>          
+
+
+                    
+  </data>
+</openerp>

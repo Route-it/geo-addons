@@ -1,18 +1,26 @@
-1) Actualizar infraestructura (con traducciones al español completas) OK!
-1.1) copiar addons actualizadas. OK!
+1) copiar geo_certifications
+2) copiar web_export_view
+3) ir a lenguajes, editar el lenguaje es_es y modificar los formatos de numero y fecha.
+<<<<<<< HEAD
+4) Verificar "equipo" en coiled tubing que su migracion sea correcta.
+5) activar el cron de calculo de hs por mes.
 
-2) instalar sql de columnas de res_partner OK!
-2.1) actualizar la tabla supervisor  OK!
-3) activar modo desarrollador y actualizar lista de aplicaciones. OK!
-4) correr los scripts de migracion de datos. OK!
 
-5) instalar web_m2x_options OK
+correr :
+sudo apt-get update
+sudo apt-get -f install 
+sudo apt-get install language-pack-es
+sudo dpkg-reconfigure locales
 
-6) Utilizar la nueva VM V2 con idiomas actualizados  OK
+Para cada mes correr:
+update certifications_coiled_tubing_time_losed set mes='Octubre'
+where mes='October'
 
-7) Desinstalar Ventas, y web print screen y eliminar el menu "sales" OK
 
-8) instalar tablero de comando, web menu hide, OK
-
-9) instalar y Activar el cron cotizacion BCRA OK!
-
+instalar 
+model_certification_plant
+model_certification_certification_coiled_tubing
+model_certification_certification_coiled_tubing_time_losed
+=======
+4) Verificar "equipo" en coiled tubing que su migracion sea correcta.
+>>>>>>> 60ba9574918464110be2cb5f00338927be48b0a3

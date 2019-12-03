@@ -20,11 +20,9 @@ class certifications_certification(models.Model):
 	@api.model
 	def _get_last_exchange_date(self):
 		try:
-			if bool(self.cotizacion_to_date_charge): 
-				if (self.cotizacion_to_date_charge > 0): 
+			if (not bool(self.cotizacion_to_date_charge)) or (bool(self.cotizacion_to_date_charge) and (self.cotizacion_to_date_charge > 0)): 
 					if (not bool(self.is_antique_register())): 
-						cotiz = self.env['exchange.cotizacion_dolar_bcra'].search(['&',('venta','>=',str(self.cotizacion_to_date_charge)+'0'),('venta','<=',str(self.cotizacion_to_date_charge)+'9')],limit=1)
-						return cotiz.fecha
+						return self.env['exchange.cotizacion_dolar_bcra'].search([],limit=1).fecha
 		except Exception:
 			return
 		return False
@@ -215,13 +213,13 @@ class certifications_certification(models.Model):
 		res = []
 		for record in self.browse(cr, uid, ids, context=context):
 			name = record.operadora_id.name
-			contract = ''
+			pozo = ''
 			invoice_number = ''
-			if record.contrato:
-				contract = '('+record.contrato.name+')' or ''
+			if record.pozo:
+				pozo = '('+record.pozo+')' or ''
 			if record.invoice_number:
 				invoice_number = '- Fact:'+ record.invoice_number or ''
-			appeler = name + contract +invoice_number
+			appeler = name + pozo + invoice_number
 			
 			res.append((record.id, appeler))
 		
@@ -241,7 +239,21 @@ class certifications_certification(models.Model):
 		self.env['exchange.cotizacion_dolar_bcra'].search(('venta','=',self.cotizacion_to_date_charge)],limit=1)
 		pero odoo no ecuentra igual cuando el valor guardado es 54.886 y el buscado es 54.88
 		"""
-		cotiz_register = self.env['exchange.cotizacion_dolar_bcra'].search(['&',('venta','>=',str(self.cotizacion_to_date_charge)+'0'),('venta','<=',str(self.cotizacion_to_date_charge)+'9')],limit=1)
+		#cotiz_register = self.env['exchange.cotizacion_dolar_bcra'].search(['&',('venta','>=',self.cotizacion_to_date_charge-0.01),('venta','<=',self.cotizacion_to_date_charge+0.01)],limit=1)
+		#cotiz_register = self.env['exchange.cotizacion_dolar_bcra'].search(['&',('venta','>=',str(self.cotizacion_to_date_charge)+'0'),('venta','<=',str(self.cotizacion_to_date_charge)+'9')],limit=1)
+		#self.env['exchange.cotizacion_dolar_bcra'].search([('venta','=',self.cotizacion_to_date_charge)],limit=1)
+		#cotiz_register if bool(cotiz_register) else self.env['exchange.cotizacion_dolar_bcra'].search(['&',('venta','>=',self.cotizacion_to_date_charge-0.02),('venta','<=',self.cotizacion_to_date_charge+0.02)],limit=1)
+		
+		list_possible = [item for item in self.env['exchange.cotizacion_dolar_bcra'].search([],limit=250) if (item.venta >= (self.cotizacion_to_date_charge-0.1)) & (item.venta<=(self.cotizacion_to_date_charge+0.1))]
+		if len(list_possible)>0:
+			cotiz_register = list_possible[0] 
+		else:
+			cotiz_register = False
+		if (self.cotizacion_to_date_charge == 0) and (vals.get('cotizacion_to_date_charge') is None):
+			cotiz_register = self.env['exchange.cotizacion_dolar_bcra'].search([('fecha','<=',self.create_date)],limit=1)
+			vals['cotizacion_to_date_charge_date'] = cotiz_register.fecha
+			vals['cotizacion_to_date_charge'] = cotiz_register.venta
+			
 		if (not cotiz_register):
 			#is manual value!
 			if not bool(self.is_antique_register()):
@@ -251,7 +263,7 @@ class certifications_certification(models.Model):
 					#date.today()
 					self.message_post(body='La cotización ahora es un valor introducido manualmente:'+str(self.cotizacion_to_date_charge))
 		else:
-			if ((not bool(self.is_antique_register()))&(not bool(self.cotizacion_to_date_charge_date))):
+			if ((not bool(self.is_antique_register()))&(not bool(self.cotizacion_to_date_charge_date))&(vals.get('cotizacion_to_date_charge') is None)):
 				vals['cotizacion_to_date_charge_date'] = cotiz_register.fecha
 			
 		res = super(certifications_certification, self).write(vals)

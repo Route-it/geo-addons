@@ -40,8 +40,8 @@ ListView.include({
 	    
 	    
 	    /*aca vienen los grupos
-	    view.grouped
-	    view.groups.datagroup.group_by
+	    self.grouped
+	    self.groups.datagroup.group_by
 	    */
 	    
 	    // Find Header Element
@@ -112,7 +112,7 @@ ListView.include({
                 var text = $footer_td_ele.text().trim() || ""
                 if ($footer_td_ele && $footer_td_ele[0].classList.contains('oe_number')){
                     //var text = instance.web.parse_value(text, { type:"float" })
-		var text = formats.parse_value(text, { type:"float" });
+					var text = formats.parse_value(text, { type:"float" });
                     data.push({'data': text || "", 'bold': true, 'number': true})
                 }
                 else{
@@ -128,6 +128,20 @@ ListView.include({
         	ids_to_export = []
         }
         //Export to excel
+        
+        function replacer(key, value) {
+		  // Filtrando propiedades 
+
+		  if ((key === "_proxies") || (key.startsWith("__"))|| (key.startsWith("action"))|| (key.startsWith("view"))|| (key === "group")
+		  
+		  ) {
+		    return undefined;
+		  }
+		  return value;
+		}
+        
+        var grouped = self.grouped
+	    var group_by = self.groups.datagroup.group_by
         $.blockUI();
         if (export_type === 'excel'){
              this.session.get_file({
@@ -139,10 +153,15 @@ ListView.include({
 	                // filtro .filter(function(i,elem) {	return $(elem).find('input:checked').is(":checked") })
 	                ids: ids_to_export,
 					//ids: this.dataset.ids,
+					grouped: self.grouped,
+					group_by: self.groups.datagroup.group_by,
+					children: self.groups.children,
+					datagroup: self.groups.datagroup,
+					footer_eles: export_data[export_data.length-1],
 	                domain: pyeval.eval('domains',[this.dataset._model.domain()]),
 	                context: pyeval.eval('contexts', [this.dataset._model.context()]),
 	                import_compat: true,
-	            })},
+	            },replacer)},
 	            complete: $.unblockUI,//framework.unblockUI,
 	            error: crash_manager.rpc_error.bind(crash_manager),
 	        });
