@@ -46,3 +46,12 @@ class cotizacion_dolar_bcra(models.Model):
             self.last_month = False
         
         return self.last_month
+    
+    
+    @api.one
+    def name_get(self):
+        try:
+            name = self.fecha+' ('+str(self.venta)+')'
+        except:
+            name = self.fecha
+        return (self.id,name)

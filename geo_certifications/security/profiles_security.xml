@@ -9,7 +9,7 @@
     	</record>
     
         <record id="group_name_certifications_administrator" model="res.groups">
-        	<field name="name">Administrador de Certificaciones</field>
+        	<field name="name">Administrador</field>
         	<field name="category_id" ref="module_certifications_profiles_category"/>
         	<field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
         	<field name="users" eval="[(4, ref('base.user_root'))]"/>

@@ -3,7 +3,7 @@
 	<data>
     	
         <record id="group_name_menu_exchange" model="res.groups">
-        	<field name="name">Acceso al menu cotizaciones</field>
+        	<field name="name">Acceso al menu Cotizaciones</field>
         	<field name="category_id" ref="module_exchange_menu_category"/>
         	<field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
         	<field name="users" eval="[(4, ref('base.user_root'))]"/>

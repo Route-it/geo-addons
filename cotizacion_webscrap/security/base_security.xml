@@ -2,13 +2,13 @@
 <openerp>
 	<data>
 		<record model="ir.module.category" id="module_exchange_category">
-            <field name="name">Exchange</field>
+            <field name="name">Cotizaciones</field>
             <field name="description">Módulo de cotizacion BCRA</field>
             <field name="sequence">16</field>
         </record>
 		<record model="ir.module.category" id="module_exchange_menu_category">
-            <field name="name">Menu de cotizaciones</field>
-            <field name="description">Accesos al menu de cotizaciones</field>
+            <field name="name">Menu de Cotizaciones</field>
+            <field name="description">Accesos al menu de Cotizaciones</field>
             <field name="sequence">16</field>
         </record>
 		<record model="ir.module.category" id="module_exchange_profiles_category">
