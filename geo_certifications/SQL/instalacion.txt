@@ -1,6 +1,10 @@
 1) copiar geo_certifications
 2) copiar cotizacion_webscrap
+<<<<<<< HEAD
 3) ir a ajustes y editar los usuarios para setear los permisos.
+=======
+3) ir a ajustes y editar los usuarios para setear los permisos.
+>>>>>>> dbcd94366a0ddb99421fc45ebef010a74b62791d
 
 4) correr sql para elimnar columnas innecesarias
 
