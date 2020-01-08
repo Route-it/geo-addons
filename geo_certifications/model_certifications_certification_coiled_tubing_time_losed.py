@@ -41,7 +41,7 @@ class certifications_coiled_tubing_time_losed(models.Model):
 				self.valor_total_list_view = self.certification_coiled_tubing_id.valor_total_list_view
 			
 	
-	time_losed_quantity = fields.Integer("Horas Perdidas", required=True,group_operator="sum")
+	time_losed_quantity = fields.Float("Horas Perdidas", required=True,group_operator="sum")
 	reason = fields.Selection([
 						("falla_operativa","Falla Operativa"),
 						("falta_habilitacion","Falta habilitación"),
@@ -79,7 +79,7 @@ class certifications_coiled_tubing_time_losed(models.Model):
 	fecha_fin = fields.Date(string="Fecha Fin",  compute="_get_month",store=True)
 	
 	valor_total_list_view = fields.Monetary(string="Valor [USD]", compute="_get_month",store=True)
-	operating_hours = fields.Integer(string="Horas operativas", compute="_get_month",store=True)
+	operating_hours = fields.Float(string="Horas operativas", compute="_get_month",store=True)
 
 	company_id = fields.Many2one('res.company', 'Company',default=lambda self:self.env.user.company_id, index=1)
 	currency_id = fields.Many2one('res.currency', 'Currency', default=lambda self:self.env.user.company_id.currency_id,required=True)	 
