@@ -43,7 +43,7 @@ class certifications_certification_coiled_tubing(models.Model):
 
 	observaciones = fields.Text(string="Observaciones",help="Destinado a clarificar detalles. No incluir eventos, valores, vencimientos, fechas, etc.")
 		
-	operating_hours = fields.Integer("Horas Operativas")
+	operating_hours = fields.Float("Horas Operativas")
 
 	time_losed_ids = fields.One2many(comodel_name="certifications.coiled_tubing_time_losed",inverse_name="certification_coiled_tubing_id",string ="Horas Perdidas", ondelete='cascade', domain=[('time_losed_quantity','!=',0)])
 	

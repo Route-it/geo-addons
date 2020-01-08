@@ -1,26 +1,6 @@
 1) copiar geo_certifications
-2) copiar web_export_view
-3) ir a lenguajes, editar el lenguaje es_es y modificar los formatos de numero y fecha.
-<<<<<<< HEAD
-4) Verificar "equipo" en coiled tubing que su migracion sea correcta.
-5) activar el cron de calculo de hs por mes.
+2) copiar cotizacion_webscrap
+3) ir a ajustes y editar los usuarios para setear los permisos.
 
+4) correr sql para elimnar columnas innecesarias
 
-correr :
-sudo apt-get update
-sudo apt-get -f install 
-sudo apt-get install language-pack-es
-sudo dpkg-reconfigure locales
-
-Para cada mes correr:
-update certifications_coiled_tubing_time_losed set mes='Octubre'
-where mes='October'
-
-
-instalar 
-model_certification_plant
-model_certification_certification_coiled_tubing
-model_certification_certification_coiled_tubing_time_losed
-=======
-4) Verificar "equipo" en coiled tubing que su migracion sea correcta.
->>>>>>> 60ba9574918464110be2cb5f00338927be48b0a3
