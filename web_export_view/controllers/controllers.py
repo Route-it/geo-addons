@@ -285,7 +285,7 @@ class ExcelExportView(ExcelExport):
         if len(rows) > 65535:
             raise UserError(_('There are too many rows (%s rows, limit: 65535) to export as Excel 97-2003 (.xls) format. Consider splitting the export.') % len(rows))
 
-        workbook = xlwt.Workbook()
+        workbook = xlwt.Workbook('UTF-8')
         worksheet = workbook.add_sheet('Sheet 1')
 
         bold_style = xlwt.easyxf('font: bold on;')
@@ -347,6 +347,7 @@ class ExcelExportView(ExcelExport):
                 cell_style.alignment = aligment 
                 if isinstance(cell_value, basestring):
                     cell_value = re.sub("\r", " ", cell_value)
+                    cell_value = cell_value
                 elif isinstance(cell_value, datetime.datetime):
                     cell_style.num_format_str = 'DD/MM/YYYY HH:mm:SS'
                 elif isinstance(cell_value, datetime.date):
