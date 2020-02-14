@@ -11,3 +11,7 @@ div.user-image > img {
 .oe_list_content th{
 	vertical-align: inherit
 }
+
+.ceyf th.oe_list_header_char.oe_sortable[data-id='habilita'],.ceyf td.oe_list_field_char.oe_list_field_cell[data-field='habilita'],.ceyf td.oe_list_footer:nth-child(7) {
+    display: none;
+}

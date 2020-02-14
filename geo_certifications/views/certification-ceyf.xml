@@ -6,12 +6,13 @@
 			<field name="name">certifications.certification_ceyf.list</field>
 			<field name="model">certifications.certification_ceyf</field>
 			<field name="arch" type="xml">
-				<tree colors="green:state in ('facturacion','cobrado')">
+				<tree colors="green:state in ('facturacion','cobrado')" class="ceyf">
 					<field name="operadora_id" />
 					<field name="pozo" />
 					<field name="state"/>
 					<field name="parte"/>
 					<field name="dm"/>
+					<field name="habilita" />
 					<field name="yacimiento" />
 					<field name="operacion"/>
 					<field name="fecha_realizacion" />

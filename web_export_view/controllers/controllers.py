@@ -290,7 +290,9 @@ class ExcelExportView(ExcelExport):
 
         bold_style = xlwt.easyxf('font: bold on;')
         aligment = xlwt.Formatting.Alignment()
-        
+                
+
+        aligment.wrap = 1        
         aligment.horz = 2 #Alignment.HORIZ_CENTER
         aligment.vert = 1 #Alignment.VERT_CENTER
         bold_style.alignment = aligment
@@ -318,13 +320,28 @@ class ExcelExportView(ExcelExport):
         bold_style.pattern = pattern
 
         fields_width_dict = self._get_row_width(rows,fields)
-                
+        
+        hidden_cols = []
+        for i, fieldname in enumerate(fields):
+            if is_hidden_field(fieldname):
+                hidden_cols.append(fields.index(fieldname))
+
+        fields = [f for f in fields if fields.index(f) not in hidden_cols] 
+
         for i, fieldname in enumerate(fields):
             worksheet.write(0, i, fieldname, bold_style)
-            if is_hidden_field(fieldname):
-                worksheet.col(i).width = 0 
+            #if is_hidden_field(fieldname):
+            #    worksheet.col(i).width = 0 
+            #else:
+            mywith = fields_width_dict.get(fieldname) * 330 #8000 # around 220 pixels
+            if mywith >= 25700:
+                worksheet.col(i).width = 25700
             else:
-                worksheet.col(i).width = fields_width_dict.get(fieldname) * 310 #8000 # around 220 pixels
+                worksheet.col(i).width = mywith
+                #this get error when width > 65535
+                #worksheet.col(i).width = fields_width_dict.get(fieldname) * 300 #8000 # around 220 pixels
+                    
+                     
 
         base_style = xlwt.easyxf('align: wrap yes;font: colour black;')
         borders_cell = xlwt.Borders()
@@ -340,9 +357,12 @@ class ExcelExportView(ExcelExport):
         number_style = xlwt.easyxf('align: wrap yes', num_format_str='#,##0.00')
         integer_style = xlwt.easyxf('align: wrap yes', num_format_str='#0')
         """
-        
         for row_index, row in enumerate(rows):
+            hidden = 0
             for cell_index, cell_value in enumerate(row):
+                if cell_index in hidden_cols:
+                    hidden += 1
+                    continue;
                 cell_style = base_style
                 cell_style.alignment = aligment 
                 if isinstance(cell_value, basestring):
@@ -375,9 +395,9 @@ class ExcelExportView(ExcelExport):
                     elif isinstance(cell_value, int):
                         bottom_style.num_format_str = '#0'
 
-                    worksheet.write(row_index + 1, cell_index, cell_value, bottom_style)
+                    worksheet.write(row_index + 1, cell_index-hidden, cell_value, bottom_style)
                 else:
-                    worksheet.write(row_index + 1, cell_index, cell_value, cell_style)
+                    worksheet.write(row_index + 1, cell_index-hidden, cell_value, cell_style)
 
 
 
