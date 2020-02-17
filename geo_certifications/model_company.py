@@ -22,7 +22,7 @@ class client(models.Model):
     #uso interno.
     company_operator_code = fields.Char("Codigo de operadora") 
 
-    is_company_operator = fields.Boolean("Es una compania operadora de petroles", default=False)
+    is_company_operator = fields.Boolean("Es una compania operadora de petroleo", default=False)
 
     #Se comenta por que igual esta la restriccion al agregar manualmente.
     _sql_constraints = [

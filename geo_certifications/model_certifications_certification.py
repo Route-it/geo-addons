@@ -62,7 +62,7 @@ class certifications_certification(models.Model):
 								#groups='geo_certifications.group_name_certifications_administrator')
 	is_administracion_read_only = fields.Boolean(compute="_is_administracion_read_only",readonly=True)
 								
-	company_operator_code = fields.Char(related='operadora_id.company_operator_code')
+	company_operator_code = fields.Char(related='operadora_id.company_operator_code',readonly=True)
 	pozo = fields.Char(required=True,string="Pozo",track_visibility='onchange')
 
 
