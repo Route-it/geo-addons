@@ -6,6 +6,7 @@ Created on 4 de ene. de 2016
 @author: seba
 '''
 
+from mega import Mega
 import requests
 import sys
 import click
@@ -28,7 +29,9 @@ click.option('-f', default='zip',help='Formato (zip/dump):')
 @click.option('-p', default='80',help='Puerto. Por defecto 80')
 @click.option('-d',default='D:/',help='Directorio de salida (debe tener permisos de escritura). Por defecto D:/')
 @click.option('-f', default='zip',help='Formato (zip/dump):')
-def download_database(pw, db,srv,p,d,f):
+@click.option('-um',prompt='Usuario de mega:', help='Usuario de mega')
+@click.option('-pm',prompt='Password de mega:', help='Password de mega')
+def download_database(pw, db,srv,p,d,f,um,pm):
         try:
             #payload = {'master_pwd':'d54b1048','name':'geo_prod','backup_format':'zip'}
             payload = {'master_pwd':pw,'name':db,'backup_format':f}
@@ -47,9 +50,17 @@ def download_database(pw, db,srv,p,d,f):
             with open(d+"/"+filename,'wb') as f: 
                     f.write(r.content) 
 
+
+            mega = Mega()
+
+            m = mega.login(um, pm)
+
+            file = m.upload(d+"/"+filename)
+
         except Exception as e:
             raise Warning("Error: Intente nuevamente mas tarde\\n"+e)
         finally:
+            
             print ("Done")
 
 
